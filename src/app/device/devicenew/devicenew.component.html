@@ -1,0 +1,16 @@
+<mat-form-field>
+  <input matInput i18n-placeholder placeholder="Device code" [(ngModel)]="device.code">
+</mat-form-field>
+<mat-form-field>
+  <input matInput i18n-placeholder placeholder="Device Name" [(ngModel)]="device.name">
+</mat-form-field>
+<mat-form-field>
+  <input matInput i18n-placeholder placeholder="Mac address" [(ngModel)]="device.mac">
+</mat-form-field>
+<mat-form-field>
+  <textarea matInput i18n-placeholder placeholder="Description" [(ngModel)]="device.description">
+    {{device.description}}
+    </textarea>
+
+</mat-form-field>
+<button mat-raised-button (click)="save()" i18n>Save</button>

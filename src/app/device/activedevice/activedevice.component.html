@@ -1,0 +1,16 @@
+<table id="customers">
+    <tr>
+        <td>name</td>
+        <td>uptime</td>
+        <td>T</td>
+        <td>H</td>
+        <td>ip</td>
+    </tr>
+    <tr *ngFor="let ad of rows">
+        <td>{{ad.name}}</td>
+        <td>{{ad.uptime}}</td>
+        <td>{{ad.t}}</td>
+        <td>{{ad.h}}</td>
+        <td>{{ad.ip}}</td>
+    </tr>
+</table>

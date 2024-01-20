@@ -1,0 +1,29 @@
+<mat-form-field>
+    <mat-label>Device code</mat-label>
+    <input matInput i18n-placeholder placeholder="Device code" [(ngModel)]="device.code">
+</mat-form-field>
+<mat-form-field>
+    <mat-label>Device name</mat-label>
+    <input matInput i18n-placeholder placeholder="Device Name" [(ngModel)]="device.name">
+</mat-form-field>
+<mat-form-field>
+    <mat-label>Mac address</mat-label>
+    <input  matInput i18n-placeholder placeholder="Mac address" [(ngModel)]="device.mac">
+</mat-form-field>
+<mat-form-field>
+    <mat-label>IP</mat-label>
+    <input matInput i18n-placeholder placeholder="IP address" [(ngModel)]="device.ip">
+</mat-form-field>
+<mat-form-field>
+    <mat-label>A0</mat-label>
+    <input matInput type="number" placeholder="A0 tune" [(ngModel)]="device.a0">
+</mat-form-field>
+<kyl-kyauto [service]="pgs" [bag]="bag" [p]="'Device group'"></kyl-kyauto>
+<mat-form-field>
+    <textarea matInput i18n-placeholder placeholder="Description" [(ngModel)]="device.description">
+      {{device.description}}
+      </textarea>
+</mat-form-field>
+
+<!-- <kyl-kyauto [service]="us" [bag]="baguser" [p]="'Owner'"></kyl-kyauto> -->
+<button mat-raised-button (click)="save()" i18n>Save</button>

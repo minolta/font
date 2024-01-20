@@ -1,0 +1,115 @@
+<section>
+  <mat-form-field>
+    <!--(keyup)="search$.next($event.target.value)"-->
+    <input
+      matInput
+      (change)="update()"
+      i18n-placeholder
+      placeholder="Search"
+      [(ngModel)]="s"
+      #sss
+    />
+  </mat-form-field>
+  <button mat-button (click)="exportdevice()">Export device</button>
+
+  <mat-form-field>
+    <input
+      matInput
+      i18n-placeholder
+      placeholder="Limit"
+      type="number"
+      [(ngModel)]="limit"
+      (change)="update()"
+    />
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [(ngModel)]="re" placeholder="Refresh" (change)="ref()" />
+  </mat-form-field>
+  <mat-checkbox class="example-margin" (change)="showonlyup($event.checked)"
+    >show only up</mat-checkbox
+  >
+</section>
+<div *ngIf="ws.mobile">
+  <div *ngFor="let r of rows">
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <button mat-button routerLink="/deviceedit/{{ r.id }}" i18n>
+            {{ r.name }}
+          </button>
+        </mat-panel-title>
+        <mat-panel-description>
+          <mat-hint>{{ r.description }}</mat-hint>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <a mat-button href="http://{{ r.ip }}" target="_blank">{{ r.ip }}</a>
+      <a mat-button href="http://{{ r.ip }}/setconfig" target="_blank"
+        >Set config</a
+      >
+      <mat-hint>{{ r.mac }}</mat-hint>
+      <div
+        [ngStyle]="{
+          color:
+            r.lastcheckinlong && r.lastcheckinlong < 100000 ? 'green' : 'red'
+        }"
+      >
+        {{ r.lastupdate | date : "dd/MM/yyyy HH:mm:ss" }}
+      </div>
+      <div
+        *ngIf="r.lastuptime"
+        [ngStyle]="{ color: r.lastuptime > 10000 ? 'green' : 'red' }"
+      >
+        {{ numtostr(r.lastuptime) }}
+      </div>
+    </mat-expansion-panel>
+  </div>
+</div>
+<div *ngIf="!ws.mobile">
+  <table id="customers">
+    <tr>
+      <td>Device name</td>
+      <td>Mac</td>
+      <td>IP</td>
+      <td>Last checkin</td>
+      <td>Uptime</td>
+    </tr>
+    <tr *ngFor="let r of rows">
+      <td>
+        <button mat-button routerLink="/deviceedit/{{ r.id }}" i18n>
+          {{ r.name }}
+        </button>
+        <mat-divider></mat-divider>
+        <mat-hint>{{ r.description }}</mat-hint>
+        <mat-hint>{{ r.mac }}</mat-hint>
+      </td>
+      <td>
+        <a mat-button href="http://{{ r.ip }}" target="_blank">{{ r.ip }}</a>
+        <a mat-button href="http://{{ r.ip }}/setconfig" target="_blank"
+          >Set config</a
+        >
+      </td>
+      <td>
+        <div
+          [ngStyle]="{
+            color:
+              r.lastcheckinlong && r.lastcheckinlong < 100000 ? 'green' : 'red'
+          }"
+        >
+          {{ r.lastupdate | date : "dd/MM/yyyy HH:mm:ss" }}
+        </div>
+      </td>
+      <td>
+        <div
+          *ngIf="r.lastuptime"
+          [ngStyle]="{
+            color: r.lastuptime && r.lastuptime > 10000 ? 'green' : 'red'
+          }"
+        >
+          {{ numtostr(r.lastuptime) }}
+        </div>
+      </td>
+      <td></td>
+    </tr>
+  </table>
+</div>

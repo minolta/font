@@ -1,0 +1,15 @@
+<mat-form-field>
+  <input type="text" matInput [(ngModel)]="ds18sensor.callname" i18n-placeholder placeholder="Call">
+</mat-form-field>
+<!-- <mat-form-field> -->
+<!-- <input type="text" matInput [(ngModel)]="ds18sensor.mac" i18n-placeholder placeholder="Mac address"> -->
+<!-- </mat-form-field> -->
+MAC:{{ds18sensor.name}}
+<mat-form-field>
+  <textarea matInput [(ngModel)]="ds18sensor.description" i18n-placeholder placeholder="description">
+    {{ds18sensor.description}}</textarea>
+</mat-form-field>
+<!-- <kyl-kyauto [service]="us" [bag]="baguser" [p]="'Owner'"></kyl-kyauto> -->
+<button mat-button (click)="save()">Save</button>
+
+{{ds18sensor|json}}

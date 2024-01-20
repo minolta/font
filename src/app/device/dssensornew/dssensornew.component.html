@@ -1,0 +1,8 @@
+<mat-form-field>
+  <input matInput i18n-placeholder placeholder="Mac" [(ngModel)]="sensor.name">
+</mat-form-field>
+<mat-form-field>
+  <input matInput i18n-placeholder placeholder="call Name" [(ngModel)]="sensor.callname">
+</mat-form-field>
+
+<button mat-button (click)="save()">Save</button>

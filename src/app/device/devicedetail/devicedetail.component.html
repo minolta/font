@@ -1,0 +1,408 @@
+<br />
+<br />
+<div *ngIf="threadobj">
+  Active Thread:<b>{{ threadobj.activecount }}/{{ threadobj.coresize }}</b>
+  queue:
+  <b>{{ threadobj.queuesize }}</b>
+</div>
+<button mat-button (click)="s()">Show thread</button>
+<button mat-button (click)="resetstopwarter()">Reset stop warter</button>
+<button mat-button (click)="showstopinfo()">Show low pressure</button>
+<button
+  mat-button
+  (click)="changehjobstatus()"
+  [ngStyle]="{ color: onoffhjob ? 'green' : 'red' }"
+>
+  H job is {{ onoffhjob }}
+</button>
+<button mat-button (click)="showspijob()">Show Pi job</button>
+
+<mat-divider></mat-divider>
+<div *ngIf="ws.mobile">
+  <mat-expansion-panel hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title> Option </mat-panel-title>
+      <mat-panel-description> Show option </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <mat-form-field>
+      <input
+        matInput
+        i18n-placeholder
+        placeholder="update time"
+        [(ngModel)]="updatetime"
+      />
+    </mat-form-field>
+    <mat-checkbox [(ngModel)]="autoupdate">Auto update</mat-checkbox>
+    <mat-checkbox [(ngModel)]="onlyactive">Only active</mat-checkbox>
+    <mat-checkbox [(ngModel)]="dr">Direct read </mat-checkbox>
+    <mat-form-field>
+      <input
+        matInput
+        i18n-placeholder
+        placeholder="By name"
+        [(ngModel)]="filtername"
+      />
+    </mat-form-field>
+    <kyl-kyauto
+      [service]="service"
+      [widthvalue]="'250px'"
+      [bag]="bag"
+      (select)="ss($event)"
+      [p]="'Select device'"
+    >
+    </kyl-kyauto>
+    <mat-form-field>
+      <input matInput i18n-placeholder placeholder="IP" [(ngModel)]="ip" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput i18n-placeholder placeholder="Port" [(ngModel)]="port" />
+    </mat-form-field>
+  </mat-expansion-panel>
+</div>
+<!-- <button mat-button (click)="lq()">Show Queue</button> -->
+<div *ngIf="!ws.mobile">
+  <mat-form-field>
+    <input
+      matInput
+      i18n-placeholder
+      placeholder="update time"
+      (change)="changeupdatetime()"
+      [(ngModel)]="delay"
+    />
+  </mat-form-field>
+  <mat-checkbox [(ngModel)]="autoupdate">Auto update</mat-checkbox>
+  <mat-checkbox [(ngModel)]="onlyactive">Only active</mat-checkbox>
+  <mat-checkbox [(ngModel)]="dr">Direct read </mat-checkbox>
+  <mat-form-field>
+    <input
+      matInput
+      i18n-placeholder
+      placeholder="By name"
+      [(ngModel)]="filtername"
+    />
+  </mat-form-field>
+  <kyl-kyauto
+    [service]="service"
+    [widthvalue]="'250px'"
+    [bag]="bag"
+    (select)="ss($event)"
+    [p]="'Select device'"
+  >
+  </kyl-kyauto>
+  <mat-form-field>
+    <input matInput i18n-placeholder placeholder="IP" [(ngModel)]="ip" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput i18n-placeholder placeholder="Port" [(ngModel)]="port" />
+  </mat-form-field>
+</div>
+<div *ngIf="device">
+  <b>Last checkin : {{ lastcheckin | date : "d/MM/yyyy HH:mm:ss" }}</b> IP:
+  <b>{{ device.ip }}</b>
+  <div *ngIf="lastdhtvalue">H:{{ lastdhtvalue.h }} T:{{ lastdhtvalue.t }}</div>
+  Last update:{{ uptime }} updatetime: {{ day | number : "1.0" }}วัน
+  {{ h }}ชั่วโมง {{ min }}นาที {{ sec }}วินาที
+</div>
+
+<div *ngIf="!ws.mobile">
+  <table id="customers" *ngIf="thread">
+    <tr>
+      <td colspan="8"><b>Thread run</b></td>
+    </tr>
+    <tr>
+      <td>#</td>
+      <td>id</td>
+      <td>Job name</td>
+      <td>Job type</td>
+      <td>Start run</td>
+      <td>State</td>
+      <td>RUN</td>
+      <td>Exit date</td>
+    </tr>
+    <tr *ngFor="let run of thread; index as i">
+      <td>{{ i + 1 }}</td>
+      <td>{{ run.id }}</td>
+      <td>
+        <a
+          mat-button
+          target="_blank"
+          href="#/pijobedit/{{ run.refid }}"
+          appExternalUrl
+          ><label [ngStyle]="{ color: run.runstatus ? 'green' : 'red' }">{{
+            run.name
+          }}</label></a
+        >
+        <button mat-button (click)="kill(run.id)">
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+      </td>
+      <td>{{ run.jobtype }}</td>
+      <td>{{ run.startrun | date : "dd/MM/yyyy HH:mm:ss" }}</td>
+      <td>
+        {{ run.state }}
+      </td>
+      <td>
+        <label [ngStyle]="{ color: run.runstatus ? 'green' : 'red' }">{{
+          run.runstatus
+        }}</label>
+      </td>
+      <td>
+        {{ run.exitdate | date : "dd/MM/yyyy HH:mm:ss" }}
+        <button mat-button (click)="rerun(run.id, run.name)">rerun</button>
+      </td>
+    </tr>
+  </table>
+  <table id="customers" *ngIf="status">
+    <tr *ngFor="let e of status">
+      <td>{{ e.name }}</td>
+      <td>{{ e.ip }}</td>
+      <td>{{ e.ssid }}</td>
+      <td>{{ e.version }}</td>
+    </tr>
+  </table>
+  <hr />
+  <table id="customers" *ngIf="q">
+    <tr>
+      <td colspan="4">Q</td>
+    </tr>
+    <tr>
+      <td>Order</td>
+      <td>Job name</td>
+      <td>In queue Date</td>
+      <td>Message</td>
+    </tr>
+    <tr *ngFor="let qq of q; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>
+        <a
+          mat-button
+          target="_blank"
+          href="#/pijobedit/{{ qq.pijob.refid }}"
+          appExternalUrl
+          >{{ qq.pijob.name }}</a
+        >
+      </td>
+      <td>{{ qq.addDate | date : "dd/MM/yyyy HH:mm:ss" }}</td>
+      <td>{{ qq.message }}</td>
+    </tr>
+  </table>
+  <pre></pre>
+  <table id="customers" *ngIf=dhtcaches && dhtcaches.length > 0">
+    <tr>
+      <td colspan="4">DHT Cache</td>
+    </tr>
+    <tr>
+      <td>H</td>
+      <td>T</td>
+      <td>ID</td>
+      <td>readdate</td>
+    </tr>
+    <tr *ngFor="let dht of dhtcaches; let i = index">
+      <td>{{ dht.h }}</td>
+      <td>{{ dht.t }}</td>
+      <td>{{ dht.sensorid }}</td>
+      <td>{{ dht.readdate | date : "dd/MM/yyyy HH:mm:ss" }}</td>
+    </tr>
+  </table>
+</div>
+
+<div *ngIf="ws.mobile">
+  <table id="customers">
+    <tr>
+      <td>JOB</td>
+      <td>Status</td>
+      <td>End</td>
+      <td>Options</td>
+    </tr>
+
+    <tr *ngFor="let run of thread; index as i">
+      <td>
+        <a
+          mat-button
+          target="_blank"
+          href="#/pijobedit/{{ run.refid }}"
+          appExternalUrl
+          ><label [ngStyle]="{ color: run.runstatus ? 'green' : 'red' }">{{
+            run.name
+          }}</label></a
+        >
+      </td>
+      <td>
+        {{ run.state }}
+      </td>
+
+      <td>
+        {{ run.exitdate | date : "HH:mm:ss" }}
+        <button mat-button (click)="rerun(run.id, run.name)">rerun</button>
+      </td>
+      <td>
+        <button mat-button (click)="kill(run.id)">
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+      </td>
+    </tr>
+  </table>
+  <table id="customers" *ngIf="q">
+    <tr>
+      <td colspan="4">Q</td>
+    </tr>
+    <tr>
+      <td>Order</td>
+      <td>Job name</td>
+      <td>In queue Date</td>
+      <td>Message</td>
+    </tr>
+    <tr *ngFor="let qq of q; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>
+        <a
+          mat-button
+          target="_blank"
+          href="#/pijobedit/{{ qq.pijob.refid }}"
+          appExternalUrl
+          >{{ qq.pijob.name }}</a
+        >
+      </td>
+      <td>{{ qq.addDate | date : "dd/MM/yyyy HH:mm:ss" }}</td>
+      <td>{{ qq.message }}</td>
+    </tr>
+  </table>
+
+  <table id="customers" *ngIf="dhtcaches && dhtcaches.length > 0">
+    <tr>
+      <td colspan="4">Q</td>
+    </tr>
+    <tr>
+      <td>H</td>
+      <td>T</td>
+      <td>ID</td>
+      <td>readdate</td>
+    </tr>
+    <tr *ngFor="let dht of dhtcaches; let i = index">
+      <td>{{ dht.h }}</td>
+      <td>{{ dht.t }}</td>
+      <td>{{ dht.sensorid }}</td>
+      <td>{{ dht.readdate | date : "dd/MM/yyyy HH:mm:ss" }}</td>
+    </tr>
+  </table>
+</div>
+
+<table id="customers" *ngIf="lowinfo">
+  <tr>
+    <td colspan="4">Low pressure</td>
+  </tr>
+
+  <tr>
+    <td>#</td>
+    <td>Job name</td>
+    <td>Pi device</td>
+    <td>Date</td>
+  </tr>
+  <tr *ngFor="let lll of lowinfo; let i = index">
+    <td>{{ i + 1 }}</td>
+    <td>{{ lll.pidevice.name }}</td>
+    <td>{{ lll.job.name }}</td>
+    <td>{{ lll.lowtime | date : "dd-MM-yyyy" }}</td>
+  </tr>
+</table>
+
+<table id="customers" *ngIf="pijobs && pijobs.length > 0">
+  <tr>
+    <td colspan="4">Pijob</td>
+  </tr>
+  <tr>
+    <td>Order</td>
+    <td>Job name</td>
+    <td>Enable</td>
+    <td>Delete</td>
+  </tr>
+  <tr *ngFor="let p of pijobs; let i = index">
+    <td>{{ i + 1 }}</td>
+    <td>
+      <a
+        mat-button
+        target="_blank"
+        href="#/pijobedit/{{ p.id }}"
+        appExternalUrl
+        >{{ p.name }}</a
+      >
+    </td>
+    <td>
+      <a
+        mat-button
+        target="_blank"
+        href="#/pijobedit/{{ p.id }}"
+        appExternalUrl
+      >
+        <label [ngStyle]="{ color: p.enable ? 'green' : 'red' }">{{
+          p.enable
+        }}</label>
+        change</a
+      >
+    </td>
+
+    <td>
+      <a mat-button target="_blank" href="#/pijobedit/{{ p.id }}" appExternalUrl
+        >delete</a
+      >
+    </td>
+  </tr>
+</table>
+
+<table id="customers" *ngIf="powers && powers.length > 0">
+  <tr>
+    <td colspan="4"><b>Job use water/power</b></td>
+  </tr>
+  <tr>
+    <td>#</td>
+    <td>Job</td>
+    <td>Group id</td>
+  </tr>
+  <tr *ngFor="let p of powers; let i = index">
+    <td>{{ i + 1 }}</td>
+    <td>{{ p.jobname }}</td>
+    <td>{{ p.groupid }}</td>
+  </tr>
+</table>
+
+<table id="customers" *ngIf="openpumps">
+  <tr>
+    <td colspan="4"><b>Openpump jobs</b></td>
+  </tr>
+  <tr>
+    <td>#</td>
+    <td>Ip</td>
+    <td>Task name</td>
+    <td>Time</td>
+  </tr>
+  <tr *ngFor="let p of openpumps; let i = index">
+    <td>{{ i + 1 }}</td>
+    <td>{{ p.ip }}</td>
+    <td>{{ p.taskname }}</td>
+    <td>{{ p.timetoopen }}</td>
+
+    <!-- <td>{{p.jobname}}</td> -->
+    <!-- <td>{{p.groupid}}</td> -->
+  </tr>
+</table>
+
+<mat-form-field>
+  <input
+    matInput
+    i18n-placeholder
+    placeholder="By refid"
+    (change)="showbyrefid()"
+    (onok)="showbyrefid()"
+    [(ngModel)]="refid"
+  />
+</mat-form-field>
+<div *ngIf="refidresult">
+  <div class="box box-default">
+    <code>
+      <pre>{{ refidresult | json }}</pre>
+    </code>
+  </div>
+</div>

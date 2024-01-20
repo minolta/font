@@ -1,0 +1,8 @@
+<mat-form-field [ngStyle]="{ 'width': widthvalue }">
+  <input type="text" matInput [formControl]="c" placeholder="{{p}}" [matAutocomplete]="auto" [(ngModel)]="bag.obj.name" >
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let d of datas | async" [value]="d.name" (click)="selectvalue(d)">
+      {{d.callname}} {{ d.name }} 
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
