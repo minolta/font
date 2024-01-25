@@ -1,0 +1,134 @@
+<mat-form-field>
+    <input type="text" matInput [(ngModel)]="pijob.name" placeholder="Job name">
+</mat-form-field>
+<kyl-kyauto [service]="ds" [bag]="devicebag" [widthvalue]="'400px'" [p]="'For Device'"></kyl-kyauto>
+<!-- <kyl-kyauto [service]="dss" [bag]="dssensorbag" [p]="'Ds Sensor'" [widthvalue]="'400px'"></kyl-kyauto> -->
+<kyl-kyauto [service]="ds" [bag]="devicedesbag" [p]="'Target Device'" [widthvalue]="'400px'"></kyl-kyauto>
+<button mat-button (click)="addsensor()">Add sensor</button>
+<mat-divider></mat-divider>
+<mat-form-field>
+    <input type="number" matInput placeholder="T Low" [(ngModel)]="pijob.tlow">
+</mat-form-field>
+<mat-form-field>
+    <input type="number" matInput placeholder="T High" [(ngModel)]="pijob.thigh">
+</mat-form-field>
+
+<mat-form-field>
+    <input type="number" matInput placeholder="H Low" [(ngModel)]="pijob.hlow">
+</mat-form-field>
+<mat-form-field>
+    <input type="number" matInput placeholder="H High" [(ngModel)]="pijob.hhigh">
+</mat-form-field>
+<mat-divider></mat-divider>
+<mat-form-field>
+    <input type="number" matInput placeholder="Time to run" [(ngModel)]="pijob.timetorun">
+</mat-form-field>
+
+<mat-form-field>
+    <input matInput type="time" [(ngModel)]="pijob.stimes" placeholder="Start time" />
+</mat-form-field>
+<mat-form-field>
+    <input matInput type="time" [(ngModel)]="pijob.etimes" placeholder="End time" />
+</mat-form-field>
+
+
+<!-- <mat-form-field>
+    <input matInput [matDatepicker]="picker" [(ngModel)]="pijob.sdate" placeholder="Start date">
+    <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker type="datetime" touchUi="false" #picker></mat-datepicker>
+</mat-form-field>
+<mat-form-field>
+    <input matInput [matDatepicker]="picker1" [(ngModel)]="pijob.edate" placeholder="End date">
+    <mat-datepicker-toggle matPrefix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker type="datetime" touchUi="false" #picker1></mat-datepicker>
+</mat-form-field> -->
+<mat-form-field>
+    <input type="number" matInput placeholder="Run time (in secound)" [(ngModel)]="pijob.runtime">
+</mat-form-field>
+
+<mat-form-field>
+    <input type="number" matInput placeholder="wait time (in secound)" [(ngModel)]="pijob.waittime">
+</mat-form-field>
+<mat-divider></mat-divider>
+<mat-form-field>
+    <input type="number" matInput placeholder="priority" [(ngModel)]="pijob.priority">
+</mat-form-field>
+<kyl-kyauto [service]="js" [bag]="jobbag" [p]="'Job type'" [widthvalue]="'250px'"></kyl-kyauto>
+<mat-checkbox [(ngModel)]="pijob.enable" i18n>Enable</mat-checkbox>
+<kyl-kyauto [service]="pijobgroupservice" [bag]="pijobgroupbag" [p]="'Job group'" [widthvalue]="'250px'"></kyl-kyauto>
+<mat-form-field>
+    <textarea matInput [(ngModel)]="pijob.description" placeholder="Description">{{pijob.description}}</textarea>
+</mat-form-field>
+<mat-form-field>
+    <input type="text" matInput [(ngModel)]="pijob.token" placeholder="Token">
+</mat-form-field>
+
+
+<kyl-kyauto [service]="pjs" [bag]="runwithbag" [p]="'Run with'" [widthvalue]="'400px'"></kyl-kyauto>
+
+
+
+<label i18n>Port status</label>
+<button mat-button (click)="addport()">
+  <mat-icon>add</mat-icon>Add port
+</button>
+<button mat-button (click)="autofill()">
+    <mat-icon>drag_indicator</mat-icon>Auto fill
+  </button>
+
+<table id="customers">
+    <tr>
+        <td>Target</td>
+        <td>Port</td>
+        <td>Logic</td>
+        <td>Run time</td>
+        <td>Wait time</td>
+        <td>Option</td>
+    </tr>
+
+    <tr *ngFor="let p of ports">
+        <td>
+            <kyl-kyauto [service]="ds" [p]="'Traget'" [bag]="p.traget"></kyl-kyauto>
+        </td>
+        <td>
+            <kyl-kyauto [service]="pns" [p]="'Portname'" [bag]="p.portname"></kyl-kyauto>
+        </td>
+        <td>
+            <kyl-kyauto [service]="ls" [p]="'Logic'" [bag]="p.logic"></kyl-kyauto>
+        </td>
+        <td>
+            <mat-form-field>
+                <input type="number" matInput placeholder="Run time (in secound)" onclick="select()" [(ngModel)]="p.runtime">
+            </mat-form-field>
+        </td>
+        <td>
+            <mat-form-field>
+                <input type="number" matInput placeholder="wait time (in secound)" onclick="select()" [(ngModel)]="p.waittime">
+            </mat-form-field>
+        </td>
+        <td>
+            <button mat-button (click)="removeport(p)">
+        <mat-icon>remove</mat-icon>
+        <label i18n>remove</label>
+      </button>
+        </td>
+    </tr>
+</table>
+
+<kyl-kyauto [service]="ds" [bag]="pumpbag" [p]="'Pump in job'" [widthvalue]="'400px'"></kyl-kyauto>
+<button (click)="addpump()" mat-button>Add pumps</button>
+<div *ngFor="let p of pumps;index as i">
+    {{p.name}} <button mat-button (click)="removepump(i)">x</button>
+</div>
+<hr>
+<button mat-button (click)="save()" i18n>Save</button>
+
+
+
+
+<table *ngIf="sensors.length>0">
+    <tr><td></td></tr>
+    <tr *ngFor="let i of sensors">
+        <td>{{i.sensor!!.name}}</td>
+    </tr>
+</table>

@@ -1,0 +1,68 @@
+<mat-form-field>
+    <input matInput (keyup.enter)="update()" (change)="update()" i18n-placeholder placeholder="Search" [(ngModel)]="savesearch" #sss>
+</mat-form-field>
+<mat-form-field>
+    <input matInput type="number" [(ngModel)]="limit" placeholder="limit" (change)="update()">
+</mat-form-field>
+<kyl-kyauto [service]="pds" (select)="listbydevice($event)" [p]="'Device'" [widthvalue]="'400px'" [bag]="bag">
+</kyl-kyauto>
+<button mat-button (click)="removedevice()">x</button>
+<div *ngIf="!ws.mobile">
+    <table id="customers">
+        <tr>
+            <td>#</td>
+            <td>Device name</td>
+            <td>JOB ID</td>
+            <td>JOB NAME</td>
+            <td>Enable</td>
+            <td>Run time</td>
+            <td>Waittime time</td>
+            <td>Descriotion</td>
+            <td colspan="4">Option</td>
+        </tr>
+        <tr *ngFor="let r of rows; index as i">
+            <td>{{i}}</td>
+            <td>
+                {{r.pidevice?.name}}
+            </td>
+            <td>{{r.id}}</td>
+            <td> <a mat-button href="#/pijobedit/{{r.id}}" target="_blank"><label
+                        [ngStyle]="{'color':r.enable ? 'green' : 'red' }">{{r.name}}</label></a></td>
+            <td><button mat-button (click)="enable(r.id!!,i)"><label
+                        [ngStyle]="{'color':r.enable ? 'green' : 'red' }">{{r.enable}}</label></button></td>
+            <td>{{r.runtime}}</td>
+            <td>{{r.waittime}}</td>
+            <td>{{r.descriotion}}</td>
+            <td>
+                <a mat-button target="_blank" href="#/pijobedit/{{r.id}}" appExternalUrl>Edit</a>
+                <!-- <button mat-button (click)="edit(r.id,i)"  i18n>Edit</button> -->
+            </td>
+            <td><button mat-button (click)="run(r)">
+                    <label i18n>Run now</label>
+                </button></td>
+            <td> <button mat-button (click)="delete(r,i)">
+                    <label i18n>Delete pijob</label>
+                </button></td>
+        </tr>
+    </table>
+</div>
+<div *ngIf="ws.mobile">
+    <table id="customers">
+        <tr>
+            <td>JOB NAME</td>
+            <td colspan="4">Option</td>
+        </tr>
+        <tr *ngFor="let r of rows; index as i">
+
+            <td> <a mat-button href="#/pijobedit/{{r.id}}" target="_blank"><label
+                        [ngStyle]="{'color':r.enable ? 'green' : 'red' }">{{r.name}}</label></a></td>
+
+            <td><button mat-button (click)="enable(r.id!!,i)"><label
+                        [ngStyle]="{'color':r.enable ? 'green' : 'red' }">{{r.enable}}</label></button></td>
+            <td><button mat-button (click)="run(r)">
+                    <label i18n>Run now</label>
+                </button></td>
+
+        </tr>
+    </table>
+</div>

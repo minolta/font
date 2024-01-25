@@ -1,0 +1,24 @@
+<mat-form-field>
+  <input matInput  (keyup)="search$.next($event.target.value)" i18n-placeholder placeholder="Search" #sss>
+</mat-form-field>
+<app-portnew (newItemEvent)="updatefromnewcomponent($event)"></app-portnew>
+<table id="customers">
+  <tr>
+    <td colspan="3"><h3>Port name</h3></td>
+  </tr>
+  <tr>
+    <td>Port</td>
+    <td>Enable</td>
+    <td>Option</td>
+
+  </tr>
+  <tr *ngFor="let r of rows">
+    <td> {{r.name}}</td>
+    <td> {{r.portenable}}</td>
+    <td> <button mat-raised-button routerLink="/portedit/{{r.id}}" i18n>Edit</button></td>
+  </tr>
+</table>
+<!-- <mat-card *ngFor="let r of rows">
+  {{r.name}}
+  <button mat-raised-button routerLink="/portedit/{{r.id}}" i18n>Edit</button>
+</mat-card> -->

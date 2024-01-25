@@ -1,0 +1,22 @@
+<mat-form-field>
+    <input matInput (keyup.enter)="search()" i18n-placeholder [(ngModel)]="s" placeholder="Search" #sss>
+</mat-form-field>
+
+<table id="customers">
+    <tr>
+        <td>Id</td>
+        <td>Name</td>
+        <td>Description</td>
+        <td>Edit</td>
+    </tr>
+    <tr *ngFor="let r of rows">
+        <td>{{r.id}}</td>
+        <td>{{r.name}}</td>
+        <td>{{r.description}}</td>
+        <td> <button mat-raised-button routerLink="/jobedit/{{r.id}}" i18n>Edit</button></td>
+    </tr>
+</table>
+
+<kyl-kyauto [service]="service" [bag]="zonebag" [p]="'Zone'" [widthvalue]="'400px'"></kyl-kyauto>
+<kyl-kyauto [service]="ds" [bag]="devicebag" [p]="'Device'" [widthvalue]="'400px'"></kyl-kyauto>
+<button mat-button (click)="adddtz()">Add device to zone</button>
