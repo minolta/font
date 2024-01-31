@@ -17,7 +17,7 @@ export class DevicenewComponent implements OnInit {
   }
 
   save() {
-
+    console.debug('Add new device',this.device)
     this.service.add(this.device).subscribe(d => {
       this.bar.open('Add device', '', { duration: 5000 })
       this.device = {}

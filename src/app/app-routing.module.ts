@@ -9,6 +9,11 @@ import { JoblistComponent } from './job/joblist/joblist.component';
 import { PijobeditComponent } from './job/pijobedit/pijobedit.component';
 import { PijoblistComponent } from './job/pijoblist/pijoblist.component';
 import { PijobnewComponent } from './job/pijobnew/pijobnew.component';
+import { ZonelistComponent } from './job/zonelist/zonelist.component';
+import { ParameterviewComponent } from './piinfo/parameterview/parameterview.component';
+import { DhtinfoComponent } from './piinfo/dhtinfo/dhtinfo.component';
+import { JobnewComponent } from './job/jobnew/jobnew.component';
+import { VbattinfoComponent } from './piinfo/vbattinfo/vbattinfo.component';
 
 const routes: Routes = [
   { path: 'devicelist', component: DeviceListComponent },
@@ -23,10 +28,23 @@ const routes: Routes = [
   { path: "joblist", component: JoblistComponent },
   { path: "pijoblist", component: PijoblistComponent },
   { path: "pijobnew", component: PijobnewComponent },
+  { path: "jobnew", component: JobnewComponent },
+  { path: "zonelist", component: ZonelistComponent },
+
+
+  { path: "deviceparameter", component: ParameterviewComponent },
+
+
+  { path: "dhtinfo", component: DhtinfoComponent },
+  { path: "vbattinfo", component: VbattinfoComponent },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes,{
+    enableTracing: false,
+    useHash: true,
+    // relativeLinkResolution: "legacy",
+  })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

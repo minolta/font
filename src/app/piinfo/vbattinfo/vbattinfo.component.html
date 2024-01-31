@@ -1,0 +1,41 @@
+<!-- <mat-form-field>
+    <input matInput [matDatepicker]="picker" [(ngModel)]="sd" placeholder="Start date">
+    <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker type="datetime" touchUi="false" #picker></mat-datepicker>
+</mat-form-field>
+<mat-form-field>
+    <input matInput [matDatepicker]="picker1" [(ngModel)]="ed" placeholder="End date">
+    <mat-datepicker-toggle matPrefix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker type="datetime" touchUi="false" #picker1></mat-datepicker>
+</mat-form-field> -->
+<app-datetime [(datetime)]="sd"></app-datetime>
+<app-datetime [(datetime)]="ed"></app-datetime>
+<kyl-kyauto [service]="ds" [widthvalue]="'250px'" [bag]="bag" [p]="'Select device'"></kyl-kyauto>
+<kyl-kyauto [service]="ds" [widthvalue]="'250px'" [bag]="bag1" [p]="'Select device 1'"></kyl-kyauto>
+<button mat-button (click)="showdata()">
+    <label i18n>Show value</label>
+</button>
+<button mat-button (click)="findwatt()">
+    <label i18n>findwatt</label>
+</button>
+
+<button mat-button (click)="finddiffwatt()">
+    <label i18n>find Diff watt</label>
+</button> 
+
+<div *ngIf="diffwatt">
+    {{diffwatt.watt1}} - {{diffwatt.watt2}} <b> {{diffwatt.watt1- diffwatt.watt2}}</b>
+</div>
+<mat-checkbox [(ngModel)]="autoupdate" value="false" color="primary">Autoupdate</mat-checkbox>
+
+<h1>V:{{lastvalue}}/{{min}}/{{max}} I:{{lasti}}/{{imin}}/{{imax}} W:{{cwatt | number:'1.2-2'}}  Total W {{watt | number :'1.2-2' }} Kwh today:{{tde|number:'1.2-2'}} total:{{tte|number:'1.2-2'}}  </h1>
+<div *ngIf="chart" class="chart-container">
+    <canvas id="canvas"></canvas>
+</div>
+
+
+<div style="height:550px;">
+        <canvas baseChart [data]="lineChartData" [options]="lineChartOptions"
+                [type]="lineChartType">
+            </canvas>
+</div>

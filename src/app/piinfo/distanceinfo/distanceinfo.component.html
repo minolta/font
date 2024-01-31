@@ -1,0 +1,20 @@
+<!-- <mat-form-field>
+    <input matInput [matDatepicker]="picker" [(ngModel)]="sd" placeholder="Start date">
+    <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker type="datetime" touchUi="false" #picker></mat-datepicker>
+</mat-form-field>
+<mat-form-field>
+    <input matInput [matDatepicker]="picker1" [(ngModel)]="ed" placeholder="End date">
+    <mat-datepicker-toggle matPrefix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker type="datetime" touchUi="false" #picker1></mat-datepicker>
+</mat-form-field> -->
+<kyl-kyauto [service]="ds" [widthvalue]="'250px'" [bag]="bag" [p]="'Select sensor'">
+</kyl-kyauto>
+<button mat-button (click)="showdata()">
+    <label i18n>Show value</label>
+  </button>
+<mat-checkbox [(ngModel)]="autoupdate" value="false" color="primary">Autoupdate</mat-checkbox>
+<h3> LAST: {{lastvalue}} AVG: {{avg}}</h3>
+<div *ngIf="chart" class="chart-container">
+    <canvas id="canvas"></canvas>
+</div>

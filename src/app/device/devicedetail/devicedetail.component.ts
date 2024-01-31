@@ -50,7 +50,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
   threadobj?: any;
   updatetime = 1;
   lowinfo?: any;
-  dhtcaches?: Dhtcaches[];
+  dhtcaches: Dhtcaches[] = Array<Dhtcaches>();
   onoffhjob = true;
   pijobs?: Pijob[];
   openpumps?: Openpumps[];
@@ -269,9 +269,10 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
   }
   showdhts() {
     let url = 'http://' + this.ip + ':' + this.port + '/dhtcaches';
-    this.service.http.get(url).subscribe((d) => {
-      this.dhtcaches = d as any;
-      console.log('dht:', this.dhtcaches);
+    this.service.http.get<Dhtcaches[]>(url).subscribe((d) => {
+      console.log('cache dht:', this.dhtcaches);
+      this.dhtcaches = d 
+     
     });
   }
   showthread(ip: string) {

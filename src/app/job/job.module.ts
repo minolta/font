@@ -44,6 +44,8 @@ import { IplistComponent } from './iplist/iplist.component';
 import { DirectioComponent } from './directio/directio.component';
 import { PijobgroupnewComponent } from './pijobgroupnew/pijobgroupnew.component';
 import { ZonelistComponent } from './zonelist/zonelist.component';
+import { PortService } from '../port/port.service';
+import { LogicService } from '../port/logic.service';
 
 /*
 สำหรับจัดการงานต่างๆของ PI
@@ -104,28 +106,13 @@ export class JobModule {
   static forRoot(): ModuleWithProviders<JobModule> {
     return {
       ngModule: JobModule,
-      providers: [PijobService,OnecommandService,JobService
-        // { provide: JOB_OPTIONS, useValue: cfg },
-        // {
-        //   provide: JobService,
-        //   useFactory: newjobservice,
-        //   deps: [JOB_OPTIONS, HttpClient]
-        // },
-        // {
-        //   provide: PijobService,
-        //   useFactory: newpijobservice,
-        //   deps: [JOB_OPTIONS, HttpClient]
-        // },
-        // {
-        //   provide: OnecommandService,
-        //   useFactory: newonecommandservice,
-        //   deps: [JOB_OPTIONS, HttpClient]
-        // },
-        // {
-        //   provide: PijobgroupService,
-        //   useFactory: npjg,
-        //   deps: [HttpClient, JOB_OPTIONS]
-        // },
+      providers: [
+        PijobService,
+        OnecommandService,
+        JobService,
+        PortService,
+        LogicService,
+        PijobgroupService,
       ],
     };
   }

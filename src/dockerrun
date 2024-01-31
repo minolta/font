@@ -1,0 +1,48 @@
+ng b -c production
+docker build -t kykub/pinfont:micro .
+docker push  kykub/pinfont:micro
+
+docker rm -f pifont
+docker pull  kykub/pinfont:micro
+docker run -p 900:80 --name pifont -d   --restart=always  kykub/pinfont:micro
+docker image prune -a -f
+docker logs -f pifont
+
+ng b -c production
+docker build -t kykub/pinfont:gti .
+docker push  kykub/pinfont:gti
+
+docker rm -f pifont
+docker pull  kykub/pinfont:gti
+docker run -p 900:80 --name pifont -d   --restart=always  kykub/pinfont:gti
+docker image prune -a -f
+docker logs -f pifont
+
+docker build -t kykub/pinfont:showdhtcache .
+docker push  kykub/pinfont:showdhtcache
+
+docker rm -f pifont
+docker pull  kykub/pinfont:showdhtcache
+docker run -p 900:80 --name pifont -d   --restart=always  kykub/pinfont:showdhtcache
+docker image prune -a -f
+docker logs -f pifont
+
+
+docker build -t kykub/pinfont:jk .
+docker push  kykub/pinfont:jk
+
+docker rm -f pifont
+docker pull  kykub/pinfont:jk
+docker run -p 900:80 --name pifont -d   --restart=always  kykub/pinfont:jk
+docker image prune -a -f
+docker logs -f pifont
+
+ng b
+docker build -t kykub/pinfont:17 .
+docker push  kykub/pinfont:17
+
+docker rm -f pifont17
+docker pull  kykub/pinfont:17
+docker run -p 900:80 --name pifont17 -d   --restart=always  kykub/pinfont:17
+docker image prune -a -f
+docker logs -f pifont17

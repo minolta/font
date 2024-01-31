@@ -1,0 +1,35 @@
+.row {
+    /* width: 100%;*/
+    overflow: hidden;
+    /*  text-align: center;*/
+}
+
+.block {
+    width: 400px;
+    margin: 5px;
+    cursor: pointer;
+    /*float: left;*/
+    display: inline-block;
+    zoom: 1;
+}
+
+div.one {
+    padding: 3px;
+    border-color: black;
+    border-style: solid;
+    background: rgb(236, 235, 235);
+    margin: 1px;
+}
+
+hr.style-one {
+    border: 0;
+    height: 1px;
+    background: #333;
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}
+
+hr.style-three {
+    border: 0;
+    border-bottom: 1px dashed #ccc;
+    background: #999;
+}

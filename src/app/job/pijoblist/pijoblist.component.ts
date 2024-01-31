@@ -71,7 +71,7 @@ export class PijoblistComponent implements OnInit {
     if (d) {
       let dl = JSON.parse(d);
       console.log('Load device', dl);
-      this.bag.obj = dl;
+      if (dl != null && dl != 'null') this.bag.obj = dl;
     }
 
     if (this.savesearch != null && this.savesearch !== '') {
@@ -88,7 +88,7 @@ export class PijoblistComponent implements OnInit {
     );
     this.service
       .sn({ search: this.savesearch, page: 0, limit: this.limit })
-      .subscribe((d: any) => {
+      .subscribe((d) => {
         console.log('Found ' + JSON.stringify(d));
         this.rows = d;
         if (this.savesearch)
@@ -96,7 +96,7 @@ export class PijoblistComponent implements OnInit {
         // localStorage.setItem('listbydevice', null);
       });
   }
-  listbydevice(d: Device) {
+  listbydevice(d?: Device) {
     if (d != null) {
       this.device = d;
       localStorage.setItem('listbydevice', JSON.stringify(d));
@@ -117,17 +117,15 @@ export class PijoblistComponent implements OnInit {
 
     console.log('Run one command ', pj);
     let url = 'http://' + pj.pidevice!!.ip + ':3334/rundirect/' + pj.id;
-
-    this.http
-      .post(environment.host + '/rest/piserver/getrequest', { url: url })
-      .subscribe(
-        (d) => {
-          this.bar.open('Run job', pj.name, { duration: 5000 });
-        },
-        (e) => {
-          console.error('Run function ', e);
-        }
-      );
+    console.debug('Direct run', url);
+    this.http.get(url).subscribe(
+      (d) => {
+        this.bar.open('Run job', pj.name, { duration: 5000 });
+      },
+      (e) => {
+        console.error('Run function ', e);
+      }
+    );
   }
 
   delete(r: Pijob, i: number) {

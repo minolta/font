@@ -1,6 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "../../environments/environment";
+import { Dsobj } from "./dsobj";
+import { Ds18b20sensor } from "./ds18b20sensor";
 @Injectable()
 export class Ds18b20Service {
   constructor(public http: HttpClient) {
@@ -18,10 +20,10 @@ export class Ds18b20Service {
   graph(id:number, s:any, e:any) {
     let url = environment.host + "/rest/piserver/dssensor/getgraphvalue";
     let o = { id: id, s: s, e: e };
-    return this.http.post(url, o);
+    return this.http.post<Dsobj[]>(url, o);
   }
   updatebylast(devices:any) {
     let url = environment.host + "/rest/piserver/ds18value/lasts";
-    return this.http.post(url, devices);
+    return this.http.post<Ds18b20sensor[]>(url, devices);
   }
 }

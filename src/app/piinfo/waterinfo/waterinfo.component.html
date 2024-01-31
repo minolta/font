@@ -1,0 +1,5 @@
+<mat-card appearance="outlined" *ngIf="info">
+   Last use: {{info.pidevice.name}} {{info.enduse | date:'dd/MM/yyyy HH:mm:ss'}}
+</mat-card>
+
+<button (click)="getinfo()" mat-button>Get data</button>

@@ -33,7 +33,7 @@ export class PijobService {
   }
   get(id: number) {
     return this.http.get<Pijob>(
-      environment.host + '/rest/piserver/pijob/get' + id
+      environment.host + '/rest/piserver/pijob/get/' + id
     );
   }
   sn(s: any) {

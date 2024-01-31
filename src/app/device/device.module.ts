@@ -42,8 +42,12 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { ActivedeviceComponent } from './activedevice/activedevice.component';
 import { Ds18sensorService } from './ds18sensor.service';
 import { Dht22valueService } from './dht22value.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { DeviceeditComponent } from './deviceedit/deviceedit.component';
 @NgModule({
   imports: [
+    BrowserAnimationsModule,
     CommonModule,
     AutoModule,
     MatDatepickerModule,
@@ -64,6 +68,8 @@ import { Dht22valueService } from './dht22value.service';
     ReactiveFormsModule,
     RouterModule,
     MatExpansionModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   declarations: [
     DeviceListComponent,
@@ -75,17 +81,19 @@ import { Dht22valueService } from './dht22value.service';
     DssensoreditComponent,
     DssensornewComponent,
     ActivedeviceComponent,
+    DeviceeditComponent
+    
   ],
   exports: [
-    // DeviceListComponent,
-    // DevicenewComponent,
+    DeviceListComponent,
+    DevicenewComponent,
     // DevicegrouplistComponent,
-    // DevicegroupnewComponent,
-    // DeviceListComponent,
-    // // DeviceeditComponent,
-    // DevicedetailComponent,
-    // DssensorautoComponent,
-    // DssensornewComponent,
+    DevicegroupnewComponent,
+    DeviceListComponent,
+    DeviceeditComponent,
+    DevicedetailComponent,
+    DssensorautoComponent,
+    DssensornewComponent,
   ],
 })
 export class DeviceModule {
@@ -93,29 +101,11 @@ export class DeviceModule {
     return {
       ngModule: DeviceModule,
       providers: [
-        // { provide: DEVICE_OPTIONS, useValue: cfg },
-        DeviceService,Ds18b20Service,Ds18sensorService,Dht22valueService
-        // {
-        //   provide: DevicegroupService,
-        //   useFactory: newdevicegroupservice,
-        //   deps: [DEVICE_OPTIONS, HttpClient],
-        // },
-        // {
-        //   provide: Dht22valueService,
-        //   useFactory: newdht22service,
-        //   deps: [DEVICE_OPTIONS, HttpClient],
-        // },
-        // {
-        //   provide: Ds18b20Service,
-        //   useFactory: newds18b20service,
-        //   deps: [DEVICE_OPTIONS, HttpClient],
-        // },
-        // {
-        //   provide: Ds18sensorService,
-        //   useFactory: newds18sensorservice,
-        //   deps: [DEVICE_OPTIONS, HttpClient],
-        // },
-        // WService
+        DeviceService,
+        Ds18b20Service,
+        Ds18sensorService,
+        Dht22valueService,
+        DevicegroupService
       ],
     };
   }

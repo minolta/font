@@ -65,6 +65,7 @@ export class PijobeditComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log('Call pijobedit')
     this.route.params.subscribe((params) => {
       this.id = params['id'];
       console.info('id:' + this.id);
@@ -94,6 +95,8 @@ export class PijobeditComponent implements OnInit {
 
         if (this.pijob.job) this.jobbag.obj = this.pijob.job as any;
         console.log(this.pijob);
+      },e=>{
+        console.error('Error',e)
       });
     });
   }

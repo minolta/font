@@ -1,0 +1,26 @@
+<kyl-kyauto [service]="pidevices" [widthvalue]="'250px'" [bag]="bag" [p]="'Select sensor'">
+</kyl-kyauto>
+
+<button mat-button (click)="addtodisplay()">
+  <label i18n>Add todisplay</label>
+</button>
+
+<button mat-button (click)="updatetmp()">
+  <label i18n>Show</label>
+</button>
+<mat-checkbox [(ngModel)]="autoupdate">Auto update</mat-checkbox>
+<div *ngFor="let d of devices;index as i">
+  {{d.name}} <button mat-button (click)="remove(i)">X</button>
+</div>
+<table id="customers">
+  <tr>
+    <td>Device</td>
+    <td>Last tmp</td>
+    <td>Value date</td>
+  </tr>
+  <tr *ngFor="let r of rows">
+    <td>{{r.pidevice?.name}}</td>
+    <td><b>{{r.t}}</b></td>
+    <td>{{r.valuedate | date:'yyyy-MM-dd HH:mm:ss':'UTC'}}</td>
+  </tr>
+</table>

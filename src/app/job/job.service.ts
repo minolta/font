@@ -14,7 +14,7 @@ export class JobService {
     return this.http.get<Job>(environment.host + '/rest/piserver/job/get' + id);
   }
   sn(s: any) {
-    return this.http.post<Job[]>(environment + '/rest/piserver/job/sn', s);
+    return this.http.post<Job[]>(environment.host + '/rest/piserver/job/sn', s);
   }
   edit(job: Job) {
     return this.http.post<Job>(
