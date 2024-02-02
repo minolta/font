@@ -109,10 +109,10 @@ export class PijobnewComponent implements OnInit {
       p.ports = this.ports?.map((i) => {
         let pij: Portinjob = {};
         pij.id = i.id;
-        pij.device = i.traget.obj;
+        pij.device = i.device.obj;
         pij.enable = i.enable;
         pij.portname = i.portname.obj;
-        pij.status = i.logic.obj;
+        pij.status = i.status.obj;
         pij.runtime = i.runtime;
         pij.waittime = i.waittime;
         pij.ver = i.ver;
@@ -178,13 +178,13 @@ export class PijobnewComponent implements OnInit {
       }
 
       if (
-        this.ports.find((i) => i.traget.obj.id == 0 || i.traget.obj.name == '')
+        this.ports.find((i) => i.device.obj.id == 0 || i.device.obj.name == '')
       ) {
         this.bar.open('ERROR', 'Port traget  not set', { duration: 5000 });
         return false;
       }
       if (
-        this.ports.find((i) => i.logic.obj.id == 0 || i.logic.obj.name == '')
+        this.ports.find((i) => i.status.obj.id == 0 || i.status.obj.name == '')
       ) {
         this.bar.open('ERROR', 'Port logic  not set', { duration: 5000 });
         return false;
@@ -206,8 +206,8 @@ export class PijobnewComponent implements OnInit {
       }
 
       //  i.portname =  first.portname
-      i.traget.obj = JSON.parse(JSON.stringify(first.traget.obj));
-      i.logic.obj = JSON.parse(JSON.stringify(first.logic.obj));
+      i.device.obj = JSON.parse(JSON.stringify(first.device.obj));
+      i.status.obj = JSON.parse(JSON.stringify(first.status.obj));
       i.runtime = first.runtime;
       i.waittime = first.waittime;
       console.log('IIII' + JSON.stringify(i));

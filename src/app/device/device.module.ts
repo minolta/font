@@ -45,6 +45,7 @@ import { Dht22valueService } from './dht22value.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DeviceeditComponent } from './deviceedit/deviceedit.component';
+import { DatetimeModule } from '../datetime/datetime.module';
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -70,6 +71,7 @@ import { DeviceeditComponent } from './deviceedit/deviceedit.component';
     MatExpansionModule,
     MatFormFieldModule,
     MatInputModule,
+    DatetimeModule,
   ],
   declarations: [
     DeviceListComponent,
@@ -81,8 +83,7 @@ import { DeviceeditComponent } from './deviceedit/deviceedit.component';
     DssensoreditComponent,
     DssensornewComponent,
     ActivedeviceComponent,
-    DeviceeditComponent
-    
+    DeviceeditComponent,
   ],
   exports: [
     DeviceListComponent,
@@ -105,7 +106,7 @@ export class DeviceModule {
         Ds18b20Service,
         Ds18sensorService,
         Dht22valueService,
-        DevicegroupService
+        DevicegroupService,
       ],
     };
   }

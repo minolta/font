@@ -12,8 +12,8 @@
 
     <!-- <input matInput i18n-placeholder placeholder="parameter to show" width="400px" [(ngModel)]="parametertoshow"> -->
 </mat-form-field>
-<kyl-kyauto [service]="service" [widthvalue]="'250px'" [bag]="bag" [p]="'Select device'"></kyl-kyauto>
-
+<!-- <kyl-kyauto [service]="service" [widthvalue]="'250px'" [bag]="bag" [p]="'Select device'"></kyl-kyauto> -->
+<app-auto [service]="service" [p]="'select device to add'" [(obj)]="device"></app-auto>
 <mat-form-field>
     <input matInput i18n-placeholder placeholder="parameter" [(ngModel)]="parameter">
 </mat-form-field>

@@ -16,6 +16,7 @@ import { Chart, ChartConfiguration, ChartType } from 'chart.js';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { BaseChartDirective } from 'ng2-charts';
+import { Device } from '../../device/device';
 @Component({
   selector: 'app-dhtinfo',
   templateUrl: './dhtinfo.component.html',
@@ -26,12 +27,12 @@ export class DhtinfoComponent implements OnInit, OnDestroy {
   hmax? = 0;
   tmax? = 0;
   tmin? = 0;
+  device: Device = {};
   hdata: number[] = [];
   tdata: number[] = [];
   labels: string[] = [];
-  getdate(event:string)
-  {
-    console.debug('Get date func',event)
+  getdate(event: string) {
+    console.debug('Get date func', event);
   }
   public lineChartData: ChartConfiguration['data'] = {
     datasets: [
@@ -98,7 +99,7 @@ export class DhtinfoComponent implements OnInit, OnDestroy {
       'dhtdateinfo',
       JSON.stringify({ sd: this.sd, ed: this.ed })
     );
-    localStorage.setItem('dhtinfodevice', JSON.stringify(this.bag.obj));
+    localStorage.setItem('dhtinfodevice', JSON.stringify(this.device));
   }
   loadinfo() {
     if (localStorage.getItem('dhtdateinfo')) {
@@ -110,8 +111,8 @@ export class DhtinfoComponent implements OnInit, OnDestroy {
     }
 
     if (localStorage.getItem('dhtinfodevice') != null) {
-      let device = JSON.parse(localStorage.getItem('dhtinfodevice')!!);
-      this.bag.obj = device;
+      this.device = JSON.parse(localStorage.getItem('dhtinfodevice')!!);
+      // this.bag.obj = device;
     }
   }
 
@@ -146,7 +147,7 @@ export class DhtinfoComponent implements OnInit, OnDestroy {
 
   showdata() {
     console.log(JSON.stringify(this.bag));
-    this.dhts.getResult(this.sd, this.ed, this.bag.obj.id).subscribe((d) => {
+    this.dhts.getResult(this.sd, this.ed, this.device.id!!).subscribe((d) => {
       this.hdata.length = 0;
       this.tdata.length = 0;
       this.labels.length = 0;
@@ -242,7 +243,7 @@ export class DhtinfoComponent implements OnInit, OnDestroy {
     this.bar.open('Update ', ' ' + Date(), { duration: 5000 });
   }
 
-  makedata(d:Forgraph[]) {
+  makedata(d: Forgraph[]) {
     let buf = [];
     let buf1 = [];
     let buf2: number[] = [];
@@ -251,7 +252,6 @@ export class DhtinfoComponent implements OnInit, OnDestroy {
     let oh;
     let ot;
     for (let i of d) {
-      
       buf.push({ value: i.h });
       buf1.push({ value: i.t });
       buf2.push(0);
@@ -260,7 +260,7 @@ export class DhtinfoComponent implements OnInit, OnDestroy {
       category.push({
         label: i.hour + ':' + i.day + '/' + i.month + '/' + i.year,
       });
-      labels.push(i.hour + ' /' + i.day + '/' +i.month);
+      labels.push(i.hour + ' /' + i.day + '/' + i.month);
     }
 
     this.setsrc();
@@ -271,7 +271,7 @@ export class DhtinfoComponent implements OnInit, OnDestroy {
         category,
       },
     ];
-    this.dataSource.chart.caption = 'DHT22 value ' + this.bag.obj.name;
+    this.dataSource.chart.caption = 'DHT22 value ' + this.device.name;
     this.dataSource.chart.subCaption =
       this.sd.toLocaleString() + ' ' + this.ed.toLocaleString();
     this.dataSource.dataset = [

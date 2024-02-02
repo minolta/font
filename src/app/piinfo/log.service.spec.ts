@@ -17,7 +17,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
-import { MatMomentDateModule } from '@coachcare/datepicker';
 import { AutoModule } from '@kykub/auto';
 import { DeviceModule } from '../device/device.module';
 import { ActivedeviceComponent } from './activedevice/activedevice.component';
@@ -64,7 +63,6 @@ describe('LogService', () => {
         RouterModule,
         DeviceModule,
         MatDatepickerModule,
-        MatMomentDateModule,
       ],
       declarations: [
         DhtinfoComponent,

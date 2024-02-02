@@ -87,6 +87,6 @@ describe("Test short array", () => {
   });
 });
 
-function p(item) {
+function p(item:any) {
   console.log("DATA:============" + JSON.stringify(item));
 }

@@ -17,6 +17,7 @@ import { Status } from '../status';
   styleUrls: ['./devicedetail.component.css'],
 })
 export class DevicedetailComponent implements OnInit, OnDestroy {
+  getresult = true;
   uptime = 0;
   day = 0;
   h = 0;
@@ -65,10 +66,12 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
 
   bag = { obj: { name: '', id: 0, ip: '' } };
   ngOnDestroy(): void {
+    console.debug('desttoy devicedetail');
     if (this.subscription) {
       this.subscription.unsubscribe();
       console.log('Unsubscription');
     }
+    this.getresult = false;
     clearInterval(this.itid);
   }
 
@@ -112,10 +115,18 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
   }
   showstopinfo() {
     let url = 'http://' + this.ip + ':' + this.port + '/listlows';
-    this.service.http.get(url).subscribe((d) => {
-      console.log('List lows', d);
-      this.lowinfo = d;
-    });
+    this.getresult = false;
+    this.service.http.get(url).subscribe(
+      (d) => {
+        console.log('List lows', d);
+        this.getresult = true;
+        this.lowinfo = d;
+      },
+      (e) => {
+        console.error('Error', e);
+        this.getresult = true;
+      }
+    );
   }
   rerun(id: number, name: string) {
     console.log('ID', id);
@@ -154,7 +165,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
     let d = localStorage.getItem('devicedetaildevice');
     if (d != null) {
       this.bag = JSON.parse(d);
-      this.device = this.bag.obj;
+      // this.device = this.bag.obj;
     }
 
     let l = localStorage.getItem('detailip');
@@ -188,34 +199,36 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
     this.loaddevice();
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
-        console.info('Hidden info ', 'Hidden');
+        console.debug('getout device detail', 'Hidden');
         // if (this.subscription) {
         //   this.subscription.unsubscribe();
         //   console.log("Unsubscription");
         // }
+        this.getresult = false;
         clearInterval(this.itid);
         // tab is changed
       } else {
+        this.getresult = true;
         // console.info("Hidden info", "Actinve");
         // this.subscription = source.subscribe((val) => this.update());
         this.itid = setInterval(() => {
-          this.update();
+          if (this.getresult) this.update();
         }, this.delay * 1000);
       }
     });
 
-    if (this.bag.obj.id != 0) {
-      this.showthread(this.bag.obj.ip);
+    if (this.device.id != 0) {
+      this.showthread(this.device.ip!!);
       this.getwarterstatus();
     } else {
       this.route.params.subscribe((params) => {
         this.id = params['id'];
         this.service.get(this.id).subscribe((d) => {
           this.device = d;
-          this.bag.obj = d as any;
+          // this.bag.obj = d as any;
           if (this.device.id) this.last(this.device.id);
           this.lastdht(this.device.id);
-          this.showthread(this.bag.obj.ip);
+          this.showthread(this.device.ip!!);
         });
       });
     }
@@ -269,22 +282,31 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
   }
   showdhts() {
     let url = 'http://' + this.ip + ':' + this.port + '/dhtcaches';
-    this.service.http.get<Dhtcaches[]>(url).subscribe((d) => {
-      console.log('cache dht:', this.dhtcaches);
-      this.dhtcaches = d 
-     
-    });
+    this.getresult = false;
+    this.service.http.get<Dhtcaches[]>(url).subscribe(
+      (d) => {
+        console.log('cache dht:', this.dhtcaches);
+        this.dhtcaches = d;
+        this.getresult = true;
+      },
+      (e) => {
+        console.error('error', e);
+        this.getresult = true;
+      }
+    );
   }
   showthread(ip: string) {
     if (this.ip != null && this.ip.length != 0) ip = this.ip;
     let url = 'http://' + ip + ':' + this.port + '/listtask';
     console.log(url);
+    this.getresult = false;
     if (!this.dr)
       this.service.http
         // .post(environment.host + "/rest/piserver/getrequest", { url: url })
         .get(url)
         .subscribe(
           (d: any) => {
+            this.getresult = true;
             console.log('listtask', d);
             if (this.onlyactive)
               this.thread = d.filter((i: any) => i.runstatus);
@@ -293,20 +315,24 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
           },
           (e) => {
             // this.error = e;
+            console.error('ERROR list task', e);
+            this.getresult = true;
           }
         );
-    else
-      this.service.http.get(url).subscribe(
-        (d) => {
-          this.thread = d;
-          console.log('listtask', d);
-          // this.q = null;
-          console.log('Thread info:' + JSON.stringify(d));
-        },
-        (e) => {
-          console.error(e);
-        }
-      );
+    else this.getresult = false;
+    this.service.http.get(url).subscribe(
+      (d) => {
+        this.getresult = true;
+        this.thread = d;
+        console.log('listtask', d);
+        // this.q = null;
+        console.log('Thread info:' + JSON.stringify(d));
+      },
+      (e) => {
+        this.getresult=true
+        console.error('list task II',e);
+      }
+    );
   }
   showqueue(ip: string) {
     let url = 'http://' + ip + ':' + this.port + '/lq';
@@ -374,10 +400,17 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
 
     let url = 'http://' + ip + ':' + this.port + '/threadinfo';
     console.log(url);
-    this.service.http.get(url).subscribe((d) => {
-      console.log(JSON.stringify(d));
-      this.threadobj = d;
-    });
+    this.getresult = false;
+    this.service.http.get(url).subscribe(
+      (d) => {
+        console.log(JSON.stringify(d));
+        this.threadobj = d;
+        this.getresult = true;
+      },
+      (e) => {
+        this.getresult = true;
+      }
+    );
   }
   getcoresize() {
     let ip = this.device.ip;
@@ -391,6 +424,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
   getqueuesize() {
     let ip = this.device.ip;
     if (this.ip) ip = this.ip;
+
     this.service.http
       .get('http://' + ip + ':' + this.port + '/queuesize')
       .subscribe((d) => {
@@ -399,6 +433,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
   }
   update() {
     // this.error = null;
+    this.getresult = false;
     console.log('To show ' + this.toshow);
     this.activejob();
     if (this.autoupdate) {
@@ -412,6 +447,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
       this.getusepowerjob();
       this.showopenpumps();
       this.showdhts();
+      this.getresult = true;
     }
   }
 
@@ -432,7 +468,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
   changeupdatetime() {
     console.log('Change updete time', this.delay);
     clearInterval(this.itid);
-    setInterval(() => {
+    this.itid = setInterval(() => {
       this.update();
     }, this.delay * 1000);
     this.savedevice();
@@ -477,14 +513,14 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
   }
 
   showopenpumps() {
-    let url = 'http://' + this.ip + ':' + this.port + '/openpumps';
-    this.service.http
-      // .post(environment.host + "/rest/piserver/getrequest", { url: url })
-      .get(url)
-      .subscribe((d) => {
-        console.log('Openpumps jobs', d);
-        this.openpumps = d as any;
-      });
+    // let url = 'http://' + this.ip + ':' + this.port + '/openpumps';
+    // this.service.http
+    //   // .post(environment.host + "/rest/piserver/getrequest", { url: url })
+    //   .get(url)
+    //   .subscribe((d) => {
+    //     console.log('Openpumps jobs', d);
+    //     this.openpumps = d as any;
+    //   });
   }
 
   showbyrefid() {

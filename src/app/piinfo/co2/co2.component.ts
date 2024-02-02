@@ -29,6 +29,7 @@ export class Co2Component implements OnInit, OnDestroy {
   tdata: number[] = [];
   co2data: number[] = [];
   pmdata: number[] = [];
+  device:any
   bag = { obj: { name: '', id: 0 } };
   public lineChartData: ChartConfiguration['data'] = {
     datasets: [
@@ -163,7 +164,7 @@ export class Co2Component implements OnInit, OnDestroy {
   }
   update() {
     this.co2s
-      .sn({ search: '', s: this.sd, e: this.ed, id: this.bag.obj.id })
+      .sn({ search: '', s: this.sd, e: this.ed, id: this.device.id })
       .subscribe((d) => {
         console.log('Data', d);
         this.makedata(d);

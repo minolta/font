@@ -44,14 +44,16 @@
         [(ngModel)]="filtername"
       />
     </mat-form-field>
-    <kyl-kyauto
+    <!-- <kyl-kyauto
       [service]="service"
       [widthvalue]="'250px'"
       [bag]="bag"
       (select)="ss($event)"
       [p]="'Select device'"
     >
-    </kyl-kyauto>
+    </kyl-kyauto> -->
+
+    <app-auto [service]="service" [(obj)]="device" [p]="'device to get task'"></app-auto>
     <mat-form-field>
       <input matInput i18n-placeholder placeholder="IP" [(ngModel)]="ip" />
     </mat-form-field>

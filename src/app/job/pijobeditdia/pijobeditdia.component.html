@@ -78,7 +78,7 @@
   <mat-card appearance="outlined" *ngFor="let p of ports">
     <mat-checkbox [(ngModel)]="p.enable" color="primary">Enable</mat-checkbox>
     <kyl-kyauto [service]="pns" [p]="'Portname'" [bag]="p.portname" [widthvalue]="'250px'"> </kyl-kyauto>
-    <kyl-kyauto [service]="ls" [p]="'Logic'" [bag]="p.logic" [widthvalue]="'250px'"></kyl-kyauto>
+    <kyl-kyauto [service]="ls" [p]="'Logic'" [bag]="p.status" [widthvalue]="'250px'"></kyl-kyauto>
     <button mat-button (click)="removeport(p)">
       <mat-icon>remove</mat-icon>
       <label i18n>remove</label>

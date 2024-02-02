@@ -46,6 +46,7 @@ import { PijobgroupnewComponent } from './pijobgroupnew/pijobgroupnew.component'
 import { ZonelistComponent } from './zonelist/zonelist.component';
 import { PortService } from '../port/port.service';
 import { LogicService } from '../port/logic.service';
+import { DatetimeModule } from '../datetime/datetime.module';
 
 /*
 สำหรับจัดการงานต่างๆของ PI
@@ -71,6 +72,7 @@ import { LogicService } from '../port/logic.service';
     ReactiveFormsModule,
     RouterModule,
     DeviceModule,
+    DatetimeModule,
   ],
   declarations: [
     PijoblistComponent,

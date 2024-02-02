@@ -10,6 +10,7 @@ import { SavedataService } from '../../savedata.service';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Vdata } from '../../piinof/vdata';
+import { Device } from '../../device/device';
 @Component({
   selector: 'app-vbattinfo',
   templateUrl: './vbattinfo.component.html',
@@ -68,6 +69,8 @@ export class VbattinfoComponent implements OnInit {
   min? = 0;
   max? = 0;
   chart: any;
+  device: Device = {};
+  device1: Device = {};
   havechart = false; //สำหรับบอกว่าสร้าง charts แล้วหรือยังถ้ายังสร้างใหม่
   bag = { obj: { name: '', id: 0 } };
   bag1 = { obj: { name: '', id: 0 } };
@@ -127,7 +130,7 @@ export class VbattinfoComponent implements OnInit {
     console.log('Save', o);
   }
   findwatt() {
-    this.service.findwatt(this.bag.obj.id, this.sd, this.ed).subscribe(
+    this.service.findwatt(this.device.id!!, this.sd, this.ed).subscribe(
       (d) => {
         this.watt = d as any;
         this.bar.open('Find watt', this.watt.toString(), { duration: 3000 });
@@ -142,8 +145,8 @@ export class VbattinfoComponent implements OnInit {
     let url = environment.host + '/rest/piserver/finddiffwatt';
     this.http
       .post(url, {
-        id: this.bag.obj.id,
-        search: this.bag1.obj.id,
+        id: this.device.id,
+        search: this.device1.id,
         s: this.sd,
         e: this.ed,
       })
@@ -154,12 +157,14 @@ export class VbattinfoComponent implements OnInit {
       });
   }
   showdata() {
-    console.log(this.bag);
-    this.service.getGraph(this.bag.obj.id, this.sd, this.ed).subscribe((d) => {
-      console.log(d);
-      this.makenewdata(d as Array<Vbatt>);
-      if (this.chart1) this.chart1.update();
-    });
+    console.log('Show device:', this.device);
+    this.service
+      .getGraph(this.device.id!!, this.sd, this.ed)
+      .subscribe((d: any) => {
+        console.debug('Found data ', d.length);
+        this.makenewdata(d as Array<Vbatt>);
+        if (this.chart1) this.chart1.update();
+      });
     this.savedate();
   }
   makenewdata(datas: Array<Vbatt>) {

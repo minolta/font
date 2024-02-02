@@ -9,15 +9,17 @@
     <mat-datepicker type="datetime" touchUi="false" #picker1></mat-datepicker>
 </mat-form-field> -->
 
-<label>Start date:</label><app-datetime [(datetime)]="sd"></app-datetime> - 
+<label>Start date:</label><app-datetime [(datetime)]="sd"></app-datetime> -
 <app-datetime [(datetime)]="ed"></app-datetime>
-
+<!-- 
 <kyl-kyauto
   [service]="ds"
   [widthvalue]="'250px'"
   [bag]="bag"
   [p]="'Select device'"
-></kyl-kyauto>
+></kyl-kyauto> -->
+
+<app-auto [service]="ds" [(obj)]="device" [p]="'Device to display'"></app-auto>
 <button mat-button (click)="showdata()">
   <label i18n>Show value</label>
 </button>

@@ -88,13 +88,13 @@
 
     <tr *ngFor="let p of ports">
         <td>
-            <kyl-kyauto [service]="ds" [p]="'Traget'" [bag]="p.traget"></kyl-kyauto>
+            <kyl-kyauto [service]="ds" [p]="'Traget'" [bag]="p.device"></kyl-kyauto>
         </td>
         <td>
             <kyl-kyauto [service]="pns" [p]="'Portname'" [bag]="p.portname"></kyl-kyauto>
         </td>
         <td>
-            <kyl-kyauto [service]="ls" [p]="'Logic'" [bag]="p.logic"></kyl-kyauto>
+            <kyl-kyauto [service]="ls" [p]="'Logic'" [bag]="p.status"></kyl-kyauto>
         </td>
         <td>
             <mat-form-field>

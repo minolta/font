@@ -18,6 +18,9 @@ import { HttpClient } from '@angular/common/http';
 import { Portinjob } from '../portinjob';
 import { Portinjobobj } from '../portinjobobj';
 import { Pumpinjob } from '../pumpinjob';
+import { Device } from '../../device/device';
+import { Job } from '../job';
+import { Pijobgroup } from '../pijobgroup';
 
 @Component({
   selector: 'app-pijobedit',
@@ -37,7 +40,7 @@ export class PijobeditComponent implements OnInit {
   pijobgroupbag = {
     obj: { id: 0, name: '' },
   };
-
+  pijobgroup: Pijobgroup = {};
   dssensorbag = {
     obj: { id: 0, name: '' },
   };
@@ -50,6 +53,11 @@ export class PijobeditComponent implements OnInit {
   runwithbag = {
     obj: { name: '', id: 0 },
   };
+
+  device: Device = {};
+  devicedes: Device = {};
+  devicesensor: any;
+  jobtype: Job = {};
   constructor(
     public pjs: PijobService,
     public ds: DeviceService,
@@ -65,39 +73,41 @@ export class PijobeditComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log('Call pijobedit')
+    console.log('Call pijobedit');
     this.route.params.subscribe((params) => {
       this.id = params['id'];
       console.info('id:' + this.id);
-      this.pjs.get(this.id).subscribe((d) => {
-        this.pijob = d;
-        this.loadSensorinpijob();
-        if (this.pijob.id) this.loadpump(this.pijob.id);
-        // this.setport(this.id);
-        this.setport2();
-        if (this.pijob.pidevice)
-          this.devicebag.obj = this.pijob.pidevice as any;
+      this.pjs.get(this.id).subscribe(
+        (d) => {
+          this.pijob = d;
+          this.loadSensorinpijob();
+          if (this.pijob.id) this.loadpump(this.pijob.id);
+          // this.setport(this.id);
+          this.setport2();
+          if (this.pijob.pidevice) this.device = this.pijob.pidevice;
 
-        if (this.pijob.runwithid != null && this.pijob.runwithid != 0)
-          this.pjs.get(this.pijob.runwithid).subscribe((rw) => {
-            this.runwithbag.obj = rw as any;
-          });
+          if (this.pijob.runwithid != null && this.pijob.runwithid != 0)
+            this.pjs.get(this.pijob.runwithid).subscribe((rw) => {
+              this.runwithbag.obj = rw as any;
+            });
 
-        if (this.pijob.desdevice != null)
-          this.devicedesbag.obj = this.pijob.desdevice as any;
-        else this.devicedesbag.obj = { id: 0, name: '' };
-        if (this.pijob.pijobgroup != null) {
-          this.pijobgroupbag.obj = this.pijob.pijobgroup as any;
-        } else this.pijobgroupbag.obj = { id: 0, name: '' };
-        if (this.pijob.ds18sensor != null)
-          this.dssensorbag.obj = this.pijob.ds18sensor as any;
-        else this.dssensorbag.obj = { id: 0, name: '' };
+          if (this.pijob.desdevice != null)
+            this.devicedes = this.pijob.desdevice;
+          else this.devicedesbag.obj = { id: 0, name: '' };
+          if (this.pijob.pijobgroup != null) {
+            this.pijobgroup = this.pijob.pijobgroup;
+          }
 
-        if (this.pijob.job) this.jobbag.obj = this.pijob.job as any;
-        console.log(this.pijob);
-      },e=>{
-        console.error('Error',e)
-      });
+          if (this.pijob.ds18sensor != null)
+            this.devicesensor = this.pijob.ds18sensor;
+          else this.dssensorbag.obj = { id: 0, name: '' };
+
+          if (this.pijob.job) this.jobtype = this.pijob.job as any;
+        },
+        (e) => {
+          console.error('Error', e);
+        }
+      );
     });
   }
   loadSensorinpijob() {
@@ -120,13 +130,11 @@ export class PijobeditComponent implements OnInit {
     });
   }
   addsensor() {
-    console.log('Sensor', this.devicedesbag);
+    console.log('Sensor', this.devicedes);
 
     let found: Sensorinjob | undefined;
     if (this.sensors) {
-      found = this.sensors.find(
-        (i) => i.sensor!!.id == this.devicedesbag.obj.id
-      );
+      found = this.sensors.find((i) => i.sensor!!.id == this.devicedes.id);
     }
     if (!found) {
       if (!this.sensors) this.sensors = Array<Sensorinjob>();
@@ -172,12 +180,14 @@ export class PijobeditComponent implements OnInit {
    */
   addport() {
     let p: Portinjobobj = {
-      portname: { obj: { name: '' } },
-      logic: { obj: { name: '' } },
+      portname: {},
+      status: {},
       enable: true,
       runtime: 0,
       waittime: 0,
-      traget: { obj: { name: '' } },
+      device: {},
+      pijob: this.pijob,
+      pijob_id: this.pijob.id,
     };
     if (!this.ports) this.ports = Array<Portinjobobj>();
     this.ports.push(p);
@@ -206,16 +216,12 @@ export class PijobeditComponent implements OnInit {
   }
   save() {
     let p: Pijobsave = {};
-    this.pijob.ds18sensor = this.dssensorbag.obj;
-    this.pijob.pidevice = this.devicebag.obj;
-    this.pijob.job = this.jobbag.obj;
-    this.pijob.desdevice = this.devicedesbag.obj;
-    this.pijob.pijobgroup = this.pijobgroupbag.obj;
-    console.log(
-      'p =========== ' + JSON.stringify(this.pijob) + ' ===================='
-    );
+    // this.pijob.ds18sensor = this.dssensor;
+    this.pijob.pidevice = this.device;
+    this.pijob.job = this.jobtype;
+    this.pijob.desdevice = this.devicedes;
+    this.pijob.pijobgroup = this.pijobgroup;
 
-    console.log('1');
     if (this.runwithbag.obj != null) {
       let pj = this.runwithbag.obj as Pijob;
       this.pijob.runwithid = pj.id;
@@ -226,27 +232,45 @@ export class PijobeditComponent implements OnInit {
 
     p.pijob = this.pijob;
 
-    console.log('Port before conver ' + JSON.stringify(this.ports));
+    console.debug('editpijob 1', p);
+    console.debug('editpijob Port before conver ', this.ports);
 
     p.ports = this.ports?.map((i) => {
       let pij: Portinjob = {};
       pij.id = i.id;
-      pij.device = i.traget.obj;
+      pij.device = i.device;
       pij.enable = i.enable;
-      pij.portname = i.portname.obj;
-      pij.status = i.logic.obj;
+      pij.portname = i.portname;
+      pij.status = i.status;
       pij.runtime = i.runtime;
       pij.waittime = i.waittime;
       pij.ver = i.ver;
+      pij.pijob_id = i.pijob_id;
+      pij.pijob = i.pijob;
       return pij;
     });
+    console.debug('port to edit', p.ports);
+    this.http
+      .post<Portinjobobj[]>(
+        environment.host + '/rest/piserver/pijob/editport',
+        p.ports
+      )
+      .subscribe(
+        (d) => {
+          console.debug('Edit port return ', d);
+          this.ports = d;
+          console.debug('ser  new port ', this.ports);
+        },
+        (e) => {
+          console.error('ERROR edit port', e);
+        }
+      );
 
-    console.log('Save obj:' + JSON.stringify(p));
-    console.log('2');
+    console.debug('editpijob Save obj:', p);
 
-    this.pjs.edit(p).subscribe(
+    this.pjs.edit(this.pijob).subscribe(
       (d) => {
-        console.log('Edit D: ' + JSON.stringify(d));
+        console.debug('Edit D: ', d);
         this.pijob = d;
         this.setport();
         this.bar.open('Edit ', '' + this.pijob.name, { duration: 2000 });
@@ -300,23 +324,26 @@ export class PijobeditComponent implements OnInit {
   setport2() {
     this.pjs.listport(this.id).subscribe(
       (d) => {
+        console.debug('Load port', d);
         let s = d.map((item) => {
           let o: Portinjobobj = {
             id: item.id,
             enable: item.enable,
-            portname: { obj: item.portname },
-            logic: { obj: item.status },
+            portname: item.portname,
+            status: item.status,
             runtime: item.runtime,
             waittime: item.waittime,
-            traget: { obj: item.device },
+            device: item.device,
+            pijob_id: item.pijob_id,
+            pijob:this.pijob, //ไม่ติด pijob มา
             ver: item.ver, //สำหรับ delete
           };
           return o;
         });
 
         s.sort(function (a, b) {
-          var x = a.traget.obj.name.toLowerCase();
-          var y = b.traget.obj.name.toLowerCase();
+          var x = a.device.obj.name.toLowerCase();
+          var y = b.device.obj.name.toLowerCase();
           var p1 = a.portname.obj.name.toLocaleLowerCase();
           var p2 = b.portname.obj.name.toLocaleLowerCase();
 
@@ -331,6 +358,7 @@ export class PijobeditComponent implements OnInit {
           return 0;
         });
 
+        console.debug('load port', s);
         this.ports = s;
       },
       (e) => (this.error = e)
@@ -346,49 +374,24 @@ export class PijobeditComponent implements OnInit {
 
     this.pjs.listport(this.id).subscribe((d) => {
       console.log('Port in side:' + JSON.stringify(d));
-      // let ports = d
-      // for (let i = 0; i < ports.length; i++) {
-      //   let t = {
-      //     obj: {
-      //       name: '',
-      //     },
-      //   };
-      //   if (ports[i].device != null) {
-      //     t.obj = ports[i].device;
-      //   }
-
-      //   let o = {
-      //     id: ports[i].id,
-      //     enable: ports[i].enable,
-      //     portname: { obj: ports[i].portname },
-      //     logic: { obj: ports[i].status },
-      //     runtime: ports[i].runtime,
-      //     waittime: ports[i].waittime,
-      //     traget: t,
-      //     ver: ports[i].ver, //สำหรับ delete
-      //   };
-      //   // ports[i].traget = t
-      //   // ports[i].logic = { obj: ports[i].status }
-
-      //   this.ports.push(o);
-      // }
-
+      console.debug('load port 1', d);
       this.ports = d
         .map((i) => {
           let po: Portinjobobj = {};
           po.enable = i.enable;
           po.id = i.id;
-          po.logic.obj = i.status;
-          po.portname.obj = i.portname;
+          po.status = i.status;
+          po.portname = i.portname;
           po.runtime = i.runtime;
           po.waittime = i.waittime;
           po.ver = i.ver;
-          po.traget.obj = i.device;
+          po.device = i.device;
+          po.pijob = i.pijob
           return po;
         })
         .sort(function (a, b) {
-          var x = a.traget.obj.name.toLowerCase();
-          var y = b.traget.obj.name.toLowerCase();
+          var x = a.device.obj.name.toLowerCase();
+          var y = b.device.obj.name.toLowerCase();
           var p1 = a.portname.obj.name.toLocaleLowerCase();
           var p2 = b.portname.obj.name.toLocaleLowerCase();
 

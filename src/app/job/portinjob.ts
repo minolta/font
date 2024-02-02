@@ -1,6 +1,7 @@
 import { Device } from '../device/device';
 import { Portname } from '../device/portname';
 import { Logic } from '../port/logic';
+import { Pijob } from './pijob';
 
 export interface Portinjob {
   id?: number;
@@ -12,4 +13,6 @@ export interface Portinjob {
   device?: Device;
   ver?: number;
   status?: Logic;
+  pijob_id?:number
+  pijob?:Pijob
 }

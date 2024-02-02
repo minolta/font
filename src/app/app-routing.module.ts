@@ -14,6 +14,7 @@ import { ParameterviewComponent } from './piinfo/parameterview/parameterview.com
 import { DhtinfoComponent } from './piinfo/dhtinfo/dhtinfo.component';
 import { JobnewComponent } from './job/jobnew/jobnew.component';
 import { VbattinfoComponent } from './piinfo/vbattinfo/vbattinfo.component';
+import { DirectioComponent } from './job/directio/directio.component';
 
 const routes: Routes = [
   { path: 'devicelist', component: DeviceListComponent },
@@ -34,7 +35,7 @@ const routes: Routes = [
 
   { path: "deviceparameter", component: ParameterviewComponent },
 
-
+  { path: "directio", component: DirectioComponent },
   { path: "dhtinfo", component: DhtinfoComponent },
   { path: "vbattinfo", component: VbattinfoComponent },
 ];

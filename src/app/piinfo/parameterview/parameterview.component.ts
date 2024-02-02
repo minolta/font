@@ -11,6 +11,8 @@ import { Devicetoshow } from '../devicetoshow';
   styleUrls: ['./parameterview.component.css'],
 })
 export class ParameterviewComponent implements OnInit, OnDestroy {
+  device: any;
+  getresult = false;
   parametertoshow? = '';
   search = '';
   subscription: any;
@@ -49,12 +51,14 @@ export class ParameterviewComponent implements OnInit, OnDestroy {
         //   console.log("Unsubscription");
         // }
         clearInterval(this.id);
+        this.getresult = false;
         // tab is changed
       } else {
         // console.info("Hidden info", "Actinve");
         // this.subscription = source.subscribe((val) => this.update());
+        this.getresult = true;
         this.id = setInterval(() => {
-          this.g();
+          if (this.getresult) this.g();
         }, this.timetoupdate);
       }
     });
@@ -63,7 +67,7 @@ export class ParameterviewComponent implements OnInit, OnDestroy {
     // });
 
     this.id = setInterval(() => {
-      this.g();
+      if (this.getresult) this.g();
     }, this.timetoupdate);
     // console.log('SUB', this.sub)
     this.g();
@@ -148,9 +152,10 @@ export class ParameterviewComponent implements OnInit, OnDestroy {
     return null;
   }
   add() {
-    let havedevice = this.finddevice(this.bag.obj.id);
+    let havedevice = this.finddevice(this.device.id);
+    console.debug('find Device ', havedevice);
     if (!havedevice) {
-      let d = this.service.get(this.bag.obj.id).subscribe((d) => {
+      let d = this.service.get(this.device.id).subscribe((d) => {
         let o: Devicetoshow = {
           ip: this.bag.obj.ip,
           device: d,
@@ -213,7 +218,7 @@ export class ParameterviewComponent implements OnInit, OnDestroy {
     // });
     clearInterval(this.id);
     this.id = setInterval(() => {
-      this.g();
+      if (this.getresult) this.g();
     }, this.timetoupdate);
   }
   // seterror(i, e) {
@@ -266,14 +271,17 @@ export class ParameterviewComponent implements OnInit, OnDestroy {
     this.showsomeparameter();
     if (this.search == '') {
       this.devicestoshow = this.devices;
+
       if (this.devicestoshow)
         this.devicestoshow.map((i) => {
           let url = 'http://' + i.device?.ip;
+          this.getresult = false;
           this.http
             .get(url) ///delay เปลียนเป็น millisec แล้ว
             .subscribe(
               (d) => {
                 i.result = d;
+                this.getresult = true;
                 // i.shows = this.parameter.split(',')
                 console.debug('Device paramter view', i);
                 // let found = this.errormessage.findIndex(
@@ -285,6 +293,7 @@ export class ParameterviewComponent implements OnInit, OnDestroy {
               },
               (e) => {
                 console.log('IIIIIIIIIIIIII' + JSON.stringify(i));
+                this.getresult = true;
                 // this.seterror(i, e);
               }
             );

@@ -20,6 +20,7 @@ import {
   MAT_DATE_LOCALE,
   provideNativeDateAdapter,
 } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -27,6 +28,7 @@ import {
     AppRoutingModule,
     BrowserAnimationsModule,
     MatIconModule,
+    MatFormFieldModule,
     MatInputModule,
     MatMenuModule,
     AutoModule,

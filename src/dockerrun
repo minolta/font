@@ -21,11 +21,11 @@ docker logs -f pifont
 docker build -t kykub/pinfont:showdhtcache .
 docker push  kykub/pinfont:showdhtcache
 
-docker rm -f pifont
+docker rm -f pifontbackup
 docker pull  kykub/pinfont:showdhtcache
-docker run -p 900:80 --name pifont -d   --restart=always  kykub/pinfont:showdhtcache
+docker run -p 901:80 --name pifont -d   --restart=always  kykub/pinfont:showdhtcache
 docker image prune -a -f
-docker logs -f pifont
+docker logs -f pifontbackup
 
 
 docker build -t kykub/pinfont:jk .

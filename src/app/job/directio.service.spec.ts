@@ -34,7 +34,7 @@ describe("DirectioService", () => {
     service.updaterun()
     let device = service.getbydeviceid(1)
 
-    expect(device.nowrun).toEqual(1);
+    expect(device?.nowrun).toEqual(1);
   })
 
   it("Test run updaterun",()=>{

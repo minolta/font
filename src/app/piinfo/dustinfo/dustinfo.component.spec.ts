@@ -9,7 +9,7 @@ describe('DustinfoComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports:[PiinfoModule.forRoot({})],
+      imports:[PiinfoModule.forRoot()],
       declarations: [ DustinfoComponent ]
     })
     .compileComponents();

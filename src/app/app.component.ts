@@ -5,6 +5,7 @@ import { FormControl } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
 import { Time } from '@angular/common';
 import moment from 'moment';
+import { DeviceService } from './device/device.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -31,7 +32,8 @@ export class AppComponent {
   hideTime: boolean = false;
   minDate: any;
   dateControl = new FormControl();
-  constructor(public ws: WService) {}
+  obj: any;
+  constructor(public ws: WService, public ds: DeviceService) {}
   printsd(t1?: string, t2?: string) {
     console.debug('sd value', this.sd);
     console.debug('t1', t1, t2);
