@@ -342,10 +342,10 @@ export class PijobeditComponent implements OnInit {
         });
 
         s.sort(function (a, b) {
-          var x = a.device.obj.name.toLowerCase();
-          var y = b.device.obj.name.toLowerCase();
-          var p1 = a.portname.obj.name.toLocaleLowerCase();
-          var p2 = b.portname.obj.name.toLocaleLowerCase();
+          var x = a.device.name.toLowerCase();
+          var y = b.device.name.toLowerCase();
+          var p1 = a.portname.name.toLocaleLowerCase();
+          var p2 = b.portname.name.toLocaleLowerCase();
 
           if (x < y) return -1;
           if (x > y) return 1;
