@@ -39,3 +39,6 @@
     margin: 1em;
   }
 
+  input.mat-mdc-input-element::-webkit-calendar-picker-indicator {
+    display: block;
+  }

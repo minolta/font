@@ -10,7 +10,8 @@ export class DatetimeComponent {
   date? = new Date();
   time: Time = { hours: 0, minutes: 0 };
   full?: string;
-
+  @Input() tl: string = 'Time';
+  @Input() dl: string = 'Date';
   @Input() datetime?: Date;
   @Output() datetimeChange = new EventEmitter<Date>();
 

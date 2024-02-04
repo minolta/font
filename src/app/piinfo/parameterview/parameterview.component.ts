@@ -39,6 +39,7 @@ export class ParameterviewComponent implements OnInit, OnDestroy {
     // console.log("SUB", this.sub);
     // this.sub.unsubscribe();
     console.debug('stop Interval', this.id);
+    this.getresult = false;
     clearInterval(this.id);
   }
   ngOnInit(): void {
@@ -46,30 +47,20 @@ export class ParameterviewComponent implements OnInit, OnDestroy {
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
         console.info('Hidden info ', 'Hidden');
-        // if (this.subscription) {
-        //   this.subscription.unsubscribe();
-        //   console.log("Unsubscription");
-        // }
         clearInterval(this.id);
         this.getresult = false;
         // tab is changed
       } else {
-        // console.info("Hidden info", "Actinve");
-        // this.subscription = source.subscribe((val) => this.update());
         this.getresult = true;
         this.id = setInterval(() => {
           if (this.getresult) this.g();
-        }, this.timetoupdate);
+        }, this.timetoupdate*1000);
       }
     });
-    // this.sub = interval(this.timetoupdate).subscribe((val) => {
-    //   this.g();
-    // });
 
     this.id = setInterval(() => {
       if (this.getresult) this.g();
-    }, this.timetoupdate);
-    // console.log('SUB', this.sub)
+    }, this.timetoupdate*1000);
     this.g();
   }
   updateprofile() {
@@ -205,50 +196,17 @@ export class ParameterviewComponent implements OnInit, OnDestroy {
 
       this.g();
     }
-    // this.devicestoshow.splice(i, 1)
-
-    // this.devices = this.devicestoshow
     this.savedevice();
   }
   updatetimetonew() {
     console.log('Change speed ' + this.timetoupdate);
-    // if (this.subscription) this.subscription.unsubscribe();
-    // this.subscription = interval(this.timetoupdate).subscribe((val) => {
-    //   this.g();
-    // });
     clearInterval(this.id);
     this.id = setInterval(() => {
       if (this.getresult) this.g();
-    }, this.timetoupdate);
+    }, this.timetoupdate * 1000);
+    this.savedevice();
   }
-  // seterror(i, e) {
-  //   console.error(e);
-  //   if (i.result) i.result.errormessage = 'ERROR ' + Date();
-  //   let found = this.errormessage.find((r) => i.device.id == r.device.id);
 
-  //   console.log(JSON.stringify(e));
-  //   if (found) {
-  //     let m = e.status;
-  //     if (e.error) {
-  //       m = m + ' ' + e.error.error + ' ' + e.error.error.message;
-  //     }
-
-  //     found.message = m;
-  //     found.time = Date();
-  //     found.error = e;
-  //   } else {
-  //     let m = e.status;
-  //     if (e.error) {
-  //       m = m + ' ' + e.error.error + ' ' + e.error.error.message;
-  //     }
-  //     this.errormessage.push({
-  //       device: i.device,
-  //       message: m,
-  //       error: e,
-  //       time: Date(),
-  //     });
-  //   }
-  // }
   customshow?: string[];
   showsomeparameter() {
     if (this.parametertoshow) {

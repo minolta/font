@@ -1,20 +1,24 @@
 <mat-form-field>
+   <mat-label>Profile</mat-label>
     <input matInput i18n-placeholder placeholder="profile" (change)="updateprofile()" [(ngModel)]="profile">
 </mat-form-field>
 
 
 <mat-form-field>
+    <mat-label>Search</mat-label>
     <input matInput i18n-placeholder placeholder="search" [(ngModel)]="search">
 </mat-form-field>
 
 <mat-form-field>
-    <textarea matInput placeholder="parameter to show" [(ngModel)]="parametertoshow" rows="4" cols="50"></textarea>
+    <mat-label>Parameter to show</mat-label>
 
+    <textarea matInput placeholder="parameter to show" [(ngModel)]="parametertoshow" rows="4" cols="50"></textarea>
     <!-- <input matInput i18n-placeholder placeholder="parameter to show" width="400px" [(ngModel)]="parametertoshow"> -->
 </mat-form-field>
 <!-- <kyl-kyauto [service]="service" [widthvalue]="'250px'" [bag]="bag" [p]="'Select device'"></kyl-kyauto> -->
-<app-auto [service]="service" [p]="'select device to add'" [(obj)]="device"></app-auto>
+<app-auto [service]="service" [p]="'select device to add'" [(obj)]="device" [label]="'Device to show'"></app-auto>
 <mat-form-field>
+    <mat-label>Parameter</mat-label>
     <input matInput i18n-placeholder placeholder="parameter" [(ngModel)]="parameter">
 </mat-form-field>
 <!-- 
@@ -24,6 +28,7 @@
 
 <button mat-button (click)="add()">Add</button>
 <mat-form-field>
+    <mat-label>Time to show</mat-label>
     <input matInput i18n-placeholder placeholder="updatetime" (change)="updatetimetonew()" [(ngModel)]="timetoupdate">
 </mat-form-field>
 <button mat-button (click)="g()">get</button>

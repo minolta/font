@@ -11,6 +11,7 @@ import { environment } from '../../../environments/environment';
 import { Pumptoopen } from '../../pumptoopen';
 import { Status } from '../../device/status';
 import { Port } from '../../port/port';
+import { Device } from '../../device/device';
 @Component({
   selector: 'app-directio',
   templateUrl: './directio.component.html',
@@ -30,6 +31,7 @@ export class DirectioComponent implements OnInit, OnDestroy {
       duty: 0,
     },
   };
+  device: Device = {};
   errors = [];
   portbag = { obj: { name: '', ip: '' } };
   runtime = 1;
@@ -49,7 +51,7 @@ export class DirectioComponent implements OnInit, OnDestroy {
     localStorage.setItem('pumps', JSON.stringify(this.pumptoopen));
     localStorage.setItem(
       'directruntimedevicebag',
-      JSON.stringify(this.devicebag.obj)
+      JSON.stringify(this.device)
     );
   }
 
@@ -70,9 +72,10 @@ export class DirectioComponent implements OnInit, OnDestroy {
       console.log(this.showenable);
     }
 
-    console.log(localStorage.getItem('directruntimedevicebag'));
+    // console.log(localStorage.getItem('directruntimedevicebag'));
     if (localStorage.getItem('directruntimedevicebag'))
-      this.devicebag.obj = JSON.parse(
+    console.debug('Save device',localStorage.getItem('directruntimedevicebag'))
+      this.device = JSON.parse(
         localStorage.getItem('directruntimedevicebag')!!
       );
 
@@ -220,15 +223,14 @@ export class DirectioComponent implements OnInit, OnDestroy {
       }
     });
   }
-  f(e:boolean) {
+  f(e: boolean) {
     console.log(e);
     if (e) {
       this.pns.sn({ search: '', page: 0, limit: 1000 }).subscribe((d) => {
-       
-        this.ports = d.filter(item => 
-          item.portenable
-        );
-        console.log(this.ports);
+        this.ports = d.filter((item) => item.portenable);
+        console.debug('Load port for direct',this.ports);
+      },e=>{
+        console.error('Can not load port for direct',e)
       });
     } else {
       this.pns.sn({ search: '', page: 0, limit: 1000 }).subscribe((d) => {
@@ -278,37 +280,49 @@ export class DirectioComponent implements OnInit, OnDestroy {
   //ใช้สำหรับเพิ่มตัวแสดงผล
   set(p: Port) {
     this.callrun = 0;
-
     this.savetolocal();
     this.openpump(this.runtime);
-    let url = 'http://' + this.devicebag.obj.ip + '/run?delay=' + this.runtime;
+    let url =
+      'http://' +
+      this.device.ip +
+      '/run?delay=' +
+      this.runtime +
+      '&port=' +
+      p.name+'&value='+this.value;
+    console.debug('direct port ', url);
     this.http.get(url).subscribe((d) => {
+
+      console.debug('Call is ok',d)
+      let endtime = new Date().getTime()*this.runtime
       let obj: Runobject = {
-        deviceid: this.devicebag.obj.id,
-        ip: this.devicebag.obj.ip,
+        deviceid: this.device.id,
+        devicename:this.device.name,
+        ip: this.device.ip,
         portid: p.id,
         logic: this.value,
         runtime: this.runtime,
+        enddate: endtime,
         url: url,
+        value:this.value+'',
         portname: p.name,
-        devicename: this.devicebag.obj.name,
         nowrun: 0,
       };
       let found = this.drs.find(obj);
-      console.log('Foudn drs', found);
+      console.debug('Found drs', found);
       if (!found) {
         this.drs.add(obj);
       } else {
         found.nowrun = 0; //reset run
       }
+    },e=>{
+      console.error('ERROR Openport',url)
     });
-   
   }
   getdevice() {
     this.ip = this.devicebag.obj.ip;
   }
 
-  rh(r:Runobject) {
+  rh(r: Runobject) {
     this.drs.removehistory(r);
   }
 
@@ -336,13 +350,14 @@ export class DirectioComponent implements OnInit, OnDestroy {
       '/run?port=' +
       objrun.portname +
       '&value=' +
-      objrun.logic +
+      !objrun.value +
       '&delay=' +
       1;
+      console.debug('Stop run',url)
     this.http
-      .post(environment.host + '/rest/piserver/getrequest', { url: url })
+      .get(url)
       .subscribe((d) => {
-        console.log(d);
+        console.debug('Stop run ok',d);
         objrun.nowrun = objrun.runtime;
       });
   }

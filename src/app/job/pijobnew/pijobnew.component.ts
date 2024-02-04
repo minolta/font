@@ -15,6 +15,9 @@ import { Sensorinjob } from '../sensorinjob';
 import { Pumpinjob } from '../pumpinjob';
 import { Portinjobobj } from '../portinjobobj';
 import { Portinjob } from '../portinjob';
+import { Device } from '../../device/device';
+import { Job } from '../job';
+import { Pijobgroup } from '../pijobgroup';
 
 @Component({
   selector: 'app-pijobnew',
@@ -46,8 +49,13 @@ export class PijobnewComponent implements OnInit {
   runwithbag = {
     obj: { name: '', id: 0 },
   };
+  device: Device = {};
+  devicedes: Device = {};
+  pijobgroup: Pijobgroup = {};
   //สำหรับบอกว่าต้องเปิด pump ตัวไหนบ้าง
   pumps: Pumpinjob[] = Array<Pumpinjob>();
+  job: Job = {};
+  pump: Pumpinjob = {};
   constructor(
     public pjs: PijobService,
     public ds: DeviceService,
@@ -68,19 +76,19 @@ export class PijobnewComponent implements OnInit {
     this.pumps.splice(i, 1);
   }
   addpump() {
-    let id = this.pumpbag.obj.id;
+    let id = this.pump.id;
     let found = this.pumps.find((i) => i.id === id);
 
     if (!found) {
-      this.pumps.push(JSON.parse(JSON.stringify(this.pumpbag.obj)));
+      this.pumps.push(this.pump);
     }
   }
 
   addport() {
-    let p = {
-      portname: { obj: { name: '' } },
-      logic: { obj: { name: '' } },
-      traget: { obj: { name: '' } },
+    let p: Portinjob = {
+      portname: {},
+      status: {},
+      traget: {},
       //issue #11
       enable: true,
       runtime: 0,
@@ -100,10 +108,10 @@ export class PijobnewComponent implements OnInit {
     if (this.check()) {
       let p: Pijobsave = {};
       this.pijob.ds18sensor = this.dssensorbag.obj;
-      this.pijob.pidevice = this.devicebag.obj;
-      this.pijob.job = this.jobbag.obj;
-      this.pijob.desdevice = this.devicedesbag.obj;
-      this.pijob.pijobgroup = this.pijobgroupbag.obj;
+      this.pijob.pidevice = this.device;
+      this.pijob.job = this.job;
+      this.pijob.desdevice = this.devicedes;
+      this.pijob.pijobgroup = this.pijobgroup;
 
       p.pijob = this.pijob;
       p.ports = this.ports?.map((i) => {
@@ -119,7 +127,7 @@ export class PijobnewComponent implements OnInit {
         return pij;
       });
       p.pumps = this.pumps;
-      console.log('Port : ' + JSON.stringify(p.ports));
+      console.log('Port : ', p.ports);
       p.pijob.runwithid = this.runwithbag.obj.id;
       console.log('New pijob with other job : ' + p.pijob.runfirstid);
       console.log('Save obj:' + JSON.stringify(p));
@@ -129,12 +137,12 @@ export class PijobnewComponent implements OnInit {
           this.bar.open('Add', '' + this.pijob.name, { duration: 2000 });
           this.savesensor();
           // this.pijob = {}
-          this.pijob.name = ""; //reset แต่ ชื่ออย่างเดียวเอาละ
+          this.pijob.name = ''; //reset แต่ ชื่ออย่างเดียวเอาละ
           this.ports = [];
         },
         (e) => {
           // this.error = e;
-          console.error('Save pijob ',e)
+          console.error('Save pijob ', e);
         }
       );
     } else {
@@ -195,7 +203,7 @@ export class PijobnewComponent implements OnInit {
   }
   autofill() {
     let count = 0;
-    let first:Portinjobobj;
+    let first: Portinjobobj;
     this.ports = this.ports.map((i) => {
       console.log(i);
       if (count == 0) {
@@ -219,12 +227,10 @@ export class PijobnewComponent implements OnInit {
   addsensor() {
     console.log('Sensor', this.devicedesbag);
 
-    let found = this.sensors.find(
-      (i) => i.sensor?.id == this.devicedesbag.obj.id
-    );
+    let found = this.sensors.find((i) => i.sensor?.id == this.devicedes.id);
     if (!found) {
       this.sensors.push({
-        sensor: JSON.parse(JSON.stringify(this.devicedesbag.obj)),
+        sensor: this.devicedes,
       });
       this.bar.open('add sensor', this.devicedesbag.obj.name);
     } else console.error('Found same sensor', found);

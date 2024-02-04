@@ -11,4 +11,5 @@ export interface Runobject {
   rundate?: Date;
   ip?: string;
   value?: string;
+  enddate?:number
 }

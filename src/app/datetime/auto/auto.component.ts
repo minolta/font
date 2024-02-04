@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 
@@ -8,6 +16,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
   styleUrl: './auto.component.css',
 })
 export class AutoComponent implements OnInit, OnChanges {
+  @Input() label: string = 'Auto';
   @Input() service: any;
   @Input() obj: any;
   @Output() objChange = new EventEmitter();
@@ -21,16 +30,15 @@ export class AutoComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['obj']) {
-      console.debug('Change obj',this.obj)
-      if(this.obj)
-      {
-        this.name = this.obj.name
+    if (changes['obj']) {
+      console.debug('Change obj', this.obj);
+      if (this.obj) {
+        this.name = this.obj.name;
       }
     }
   }
   ngOnInit(): void {
-    console.debug('init obj',this.obj)
+    console.debug('init obj', this.obj);
     this.c.valueChanges
       .pipe(debounceTime(300))
       .pipe(distinctUntilChanged())
@@ -41,8 +49,7 @@ export class AutoComponent implements OnInit, OnChanges {
             .sn({ search: term, limit: 50, page: 0 })
             .subscribe((d: Array<any>) => {
               if (d.length > 0) {
-                if (this.datas)
-                 (this.datas as Array<any>).length = 0;
+                if (this.datas) (this.datas as Array<any>).length = 0;
                 else this.datas = Array<any>;
 
                 if (d[0])

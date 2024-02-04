@@ -21,6 +21,7 @@ import { Pumpinjob } from '../pumpinjob';
 import { Device } from '../../device/device';
 import { Job } from '../job';
 import { Pijobgroup } from '../pijobgroup';
+import { Port } from '../../port/port';
 
 @Component({
   selector: 'app-pijobedit',
@@ -58,6 +59,8 @@ export class PijobeditComponent implements OnInit {
   devicedes: Device = {};
   devicesensor: any;
   jobtype: Job = {};
+  pump: Pumpinjob = {};
+  pn: Port = {};
   constructor(
     public pjs: PijobService,
     public ds: DeviceService,
@@ -305,15 +308,15 @@ export class PijobeditComponent implements OnInit {
     });
   }
   addpump() {
-    console.log('add');
-    console.log(this.pumpbag);
-    console.log(this.pijob);
+    // console.log('add');
+    // console.log(this.pumpbag);
+    // console.log(this.pijob);
     let url = environment.host + '/rest/piserver/addpumptopijob';
     this.http
       .post<Pumpinjob>(url, {
-        pid: this.pumpbag.obj.id,
+        pid: this.pump.id,
         jid: this.pijob.id,
-        portname_id: this.pbag.obj.id,
+        portname_id: this.pn.id,
       })
       .subscribe((d) => {
         // console.log('Add')
@@ -335,7 +338,7 @@ export class PijobeditComponent implements OnInit {
             waittime: item.waittime,
             device: item.device,
             pijob_id: item.pijob_id,
-            pijob:this.pijob, //ไม่ติด pijob มา
+            pijob: this.pijob, //ไม่ติด pijob มา
             ver: item.ver, //สำหรับ delete
           };
           return o;
@@ -386,7 +389,7 @@ export class PijobeditComponent implements OnInit {
           po.waittime = i.waittime;
           po.ver = i.ver;
           po.device = i.device;
-          po.pijob = i.pijob
+          po.pijob = i.pijob;
           return po;
         })
         .sort(function (a, b) {

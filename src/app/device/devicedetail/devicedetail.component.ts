@@ -11,6 +11,7 @@ import { Pijob } from '../pijob';
 import { WService } from '../../w.service';
 import { Dhtcaches } from '../dhtcaches';
 import { Status } from '../status';
+import { Monitorcache } from '../monitorcache';
 @Component({
   selector: 'app-devicedetail',
   templateUrl: './devicedetail.component.html',
@@ -55,6 +56,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
   onoffhjob = true;
   pijobs?: Pijob[];
   openpumps?: Openpumps[];
+  monitors?: Monitorcache[] = [];
   constructor(
     public ts: Ds18sensorService,
     private route: ActivatedRoute,
@@ -146,7 +148,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
   }
   savedevice() {
     localStorage.setItem('detailip', JSON.stringify(this.ip));
-    localStorage.setItem('devicedetaildevice', JSON.stringify(this.bag));
+    localStorage.setItem('devicedetaildevice', JSON.stringify(this.device));
     localStorage.setItem('devicedetaildeviceport', JSON.stringify(this.port));
     localStorage.setItem(
       'devicedetaildevicesearch',
@@ -164,7 +166,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
     if (dd != null) this.delay = dd as any;
     let d = localStorage.getItem('devicedetaildevice');
     if (d != null) {
-      this.bag = JSON.parse(d);
+      this.device = JSON.parse(d);
       // this.device = this.bag.obj;
     }
 
@@ -240,6 +242,19 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
     //output: 0
     // this.subscription = source.subscribe((val) => this.update());
     this.update();
+  }
+  getMonitorcache() {
+    let url = 'http://' + this.device.ip +':'+this.port+'/monitorcache';
+    console.debug('load monitor ',url,this.device)
+    this.ts.http.get<Monitorcache[]>(url).subscribe(
+      (d) => {
+        this.monitors = d;
+        console.debug('Load monitor', d);
+      },
+      (e) => {
+        console.error('Load monitor cache', e);
+      }
+    );
   }
   export(device: any) {
     console.log(JSON.stringify(device));
@@ -329,8 +344,8 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
         console.log('Thread info:' + JSON.stringify(d));
       },
       (e) => {
-        this.getresult=true
-        console.error('list task II',e);
+        this.getresult = true;
+        console.error('list task II', e);
       }
     );
   }
@@ -447,6 +462,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
       this.getusepowerjob();
       this.showopenpumps();
       this.showdhts();
+      this.getMonitorcache();
       this.getresult = true;
     }
   }

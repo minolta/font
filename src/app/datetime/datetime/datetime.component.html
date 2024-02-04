@@ -1,2 +1,8 @@
-<input matInput type="date" [(ngModel)]="date" (change)="onSet()" />
-<input matInput type="time" [(ngModel)]="time" (change)="onSet()" />
+<mat-form-field>
+  <mat-label>{{ dl }}</mat-label>
+  <input matInput type="date" [(ngModel)]="date" (change)="onSet()" />
+</mat-form-field>
+<mat-form-field>
+  <mat-label>{{ tl }}</mat-label>
+  <input matInput type="time" [(ngModel)]="time" (change)="onSet()" />
+</mat-form-field>

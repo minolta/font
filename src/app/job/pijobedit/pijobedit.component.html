@@ -1,4 +1,5 @@
 <mat-form-field>
+  <mat-label>Job name</mat-label>
   <input
     type="text"
     matInput
@@ -11,17 +12,19 @@
 <kyl-kyauto [service]="dss" [bag]="dssensorbag" [p]="'Ds Sensor'" [widthvalue]="'400px'"></kyl-kyauto>
 <kyl-kyauto [service]="ds" [bag]="devicedesbag" [p]="'Target Device'" [widthvalue]="'400px'"></kyl-kyauto> -->
 
-<app-auto [service]="ds" [(obj)]="device" [p]="'Device'"></app-auto>
+<app-auto [service]="ds" [(obj)]="device" [p]="'Device'"   [label]="'For Device'"></app-auto>
 <app-auto
+
   [service]="dss"
   [(obj)]="devicesensor"
   [p]="'Device sensor'"
 ></app-auto>
-<app-auto [service]="ds" [(obj)]="devicedes" [p]="'Device traget'"></app-auto>
+<app-auto [service]="ds" [(obj)]="devicedes" [p]="'Device traget'"   [label]="'Traget Device'"></app-auto>
 
 <button mat-button (click)="addsensor()">+</button>
 <mat-divider></mat-divider>
 <mat-form-field>
+  <mat-label>T low</mat-label>
   <input
     type="number"
     matInput
@@ -31,6 +34,7 @@
   />
 </mat-form-field>
 <mat-form-field>
+  <mat-label>T high</mat-label>
   <input
     type="number"
     matInput
@@ -41,6 +45,7 @@
 </mat-form-field>
 
 <mat-form-field>
+  <mat-label>H low</mat-label>
   <input
     type="number"
     matInput
@@ -50,6 +55,7 @@
   />
 </mat-form-field>
 <mat-form-field>
+  <mat-label>H high</mat-label>
   <input
     type="number"
     matInput
@@ -59,6 +65,7 @@
   />
 </mat-form-field>
 <mat-form-field>
+  <mat-label>Time to run</mat-label>
   <input
     type="number"
     matInput
@@ -67,16 +74,19 @@
     onclick="select()"
   />
 </mat-form-field>
-
-<mat-form-field>
-  <input
+<mat-form-field
+  >
+  
+  <mat-label>Start time</mat-label><input
     matInput
     type="time"
     [(ngModel)]="pijob.stimes"
     placeholder="เวลาเริ่มต้นของวัน"
   />
 </mat-form-field>
+
 <mat-form-field>
+  <mat-label>End time</mat-label>
   <input
     matInput
     type="time"
@@ -84,19 +94,10 @@
     placeholder="เวลาสิ้นสุดของวัน"
   />
 </mat-form-field>
-<!-- <mat-form-field> -->
-<!-- <app-datetime [date]=""></app-datetime> -->
-<!-- <input matInput [matDatepicker]="picker" [(ngModel)]="pijob.sdate" placeholder="Start date">
-    <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker type="datetime" touchUi="false" #picker></mat-datepicker>
-</mat-form-field>
+<app-datetime [(datetime)]="pijob.sdate" [dl]="'Start Date'"></app-datetime>
+<app-datetime [(datetime)]="pijob.edate" [dl]="'End Date'"></app-datetime>
 <mat-form-field>
-    <input matInput [matDatepicker]="picker1" [(ngModel)]="pijob.edate" placeholder="End date">
-    <mat-datepicker-toggle matPrefix [for]="picker1"></mat-datepicker-toggle>
-    <mat-datepicker type="datetime" touchUi="false" #picker1></mat-datepicker>
-</mat-form-field> -->
-
-<mat-form-field>
+  <mat-label>Run time </mat-label>
   <input
     type="number"
     matInput
@@ -107,6 +108,7 @@
 </mat-form-field>
 
 <mat-form-field>
+  <mat-label>Wait time </mat-label>
   <input
     type="number"
     matInput
@@ -116,6 +118,7 @@
   />
 </mat-form-field>
 <mat-form-field>
+  <mat-label>Priority</mat-label>
   <input
     type="number"
     matInput
@@ -125,20 +128,19 @@
 </mat-form-field>
 <!-- <kyl-kyauto [service]="js" [bag]="jobbag" [p]="'Job type'" [widthvalue]="'400px'"></kyl-kyauto>
  -->
-<app-auto [service]="js" [(obj)]="jobtype" [p]="'Job type'"></app-auto>
+<app-auto [service]="js" [(obj)]="jobtype" [p]="'Job type'"  [label]="'Job type'"></app-auto>
 <mat-checkbox [(ngModel)]="pijob.enable" i18n>Enable</mat-checkbox>
-<kyl-kyauto
+<app-auto 
   [service]="pijobgroupservice"
-  [bag]="pijobgroupbag"
-  [p]="'Job group'"
-  [widthvalue]="'250px'"
-></kyl-kyauto>
+  [(obj)]="pijobgroup"
+  [p]="'Job group'" [label]="'Job group'"
+></app-auto>
 <!-- <kyl-kyauto [service]="pijobgroupservice" [bag]="pijobgroupbag" [p]="'Job group'" [widthvalue]="'250px'"></kyl-kyauto> -->
-<app-auto
+<!-- <app-auto
   [service]="pijobgroupservice"
   [(obj)]="pijobgroup"
   [p]="'Pijob group'"
-></app-auto>
+></app-auto> -->
 <button mat-button (click)="delete(pijob)">
   <label i18n>Delete pijob</label>
 </button>
@@ -152,7 +154,8 @@
   >
 </mat-form-field>
 <mat-form-field>
-  <input type="text" matInput [(ngModel)]="pijob.token" placeholder="Token" />
+  <mat-label>Token</mat-label>
+  <input type="text" matInput [(ngModel)]="pijob.token" placeholder="Token for line" />
 </mat-form-field>
 <!-- <kyl-kyauto
   [service]="pjs"
@@ -178,7 +181,7 @@
     </td>
     <td>
       <!-- <kyl-kyauto [service]="ds" [p]="'Target'" [(obj)]="p.device" [bag]="p.device"></kyl-kyauto> -->
-      <app-auto [service]="ds" [p]="'Traget'" [(obj)]="p.device"></app-auto>
+      <app-auto [service]="ds" [p]="'Traget'"  [label]="'Traget device'"  [(obj)]="p.device"></app-auto>
     </td>
     <td>
       <!-- <kyl-kyauto
@@ -187,14 +190,15 @@
         [bag]="p.portname"
       ></kyl-kyauto> -->
 
-      <app-auto [service]="pns" [p]="'Port'" [(obj)]="p.portname"></app-auto>
+      <app-auto [service]="pns" [p]="'Port'" [(obj)]="p.portname"  [label]="'Port name'"></app-auto>
     </td>
     <td>
       <!-- <kyl-kyauto [service]="ls" [p]="'Logic'" [bag]="p.status"></kyl-kyauto> -->
-      <app-auto [service]="ls" [p]="'Logic'" [(obj)]="p.status"></app-auto>
+      <app-auto [service]="ls" [p]="'Logic'"   [label]="'Logic'" [(obj)]="p.status"></app-auto>
     </td>
     <td>
       <mat-form-field>
+        <mat-label>Runtime</mat-label>
         <input
           type="number"
           matInput
@@ -206,6 +210,7 @@
     </td>
     <td>
       <mat-form-field>
+        <mat-label>Wait time</mat-label>
         <input
           type="number"
           matInput
@@ -228,18 +233,20 @@
 <button mat-button (click)="copy()" i18n>Copy</button>
 
 <hr />
-<kyl-kyauto
+<!-- <kyl-kyauto
   [service]="ds"
   [bag]="pumpbag"
   [p]="'Pump'"
   [widthvalue]="'400px'"
-></kyl-kyauto>
-<kyl-kyauto
+></kyl-kyauto> -->
+<app-auto [service]="ds" [(obj)]="pump" [p]="'Pump'"  [label]="'Pump'"></app-auto>
+<!-- <kyl-kyauto
   [service]="pns"
   [bag]="pbag"
   [p]="'Port '"
   [widthvalue]="'400px'"
-></kyl-kyauto>
+></kyl-kyauto> -->
+<app-auto [service]="pns" [(obj)]="pn" [p]="'Port'" [label]="'Port'"></app-auto>
 <button mat-button (click)="addpump()">Add pump</button>
 <mat-divider></mat-divider>
 <table id="customers">

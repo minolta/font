@@ -8,7 +8,7 @@ import { Portinjobobj } from './portinjobobj';
 @Injectable()
 export class PijobService {
   bydeviceid: string = environment.host + '/rest/piserver/pijob/searchbydevice';
-  enableurl: string = environment.host + '/rest/piserver/pijob/searchbydevice';
+  enableurl: string = environment.host + '/rest/piserver/pijob/enable';
   // this.enableurl = this.config.host + '/rest/piserver/pijob/enable'
   constructor(private http: HttpClient) {
     // super(h, cfg)
