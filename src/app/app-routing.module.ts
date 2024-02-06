@@ -15,6 +15,10 @@ import { DhtinfoComponent } from './piinfo/dhtinfo/dhtinfo.component';
 import { JobnewComponent } from './job/jobnew/jobnew.component';
 import { VbattinfoComponent } from './piinfo/vbattinfo/vbattinfo.component';
 import { DirectioComponent } from './job/directio/directio.component';
+import { DevicegroupnewComponent } from './device/devicegroupnew/devicegroupnew.component';
+import { DevicegroupeditComponent } from './device/devicegroupedit/devicegroupedit.component';
+import { DevicegrouplistComponent } from './device/devicegrouplist/devicegrouplist.component';
+import { PijobgroupnewComponent } from './job/pijobgroupnew/pijobgroupnew.component';
 
 const routes: Routes = [
   { path: 'devicelist', component: DeviceListComponent },
@@ -24,6 +28,10 @@ const routes: Routes = [
   { path: 'dd', component: DevicedetailComponent },
 
 
+  { path: "devicegroupnew", component: DevicegroupnewComponent },
+  { path: "devicegrouplist", component: DevicegrouplistComponent },
+  { path: "devicegroupedit/:id", component: DevicegroupeditComponent },
+
   { path: "importpijob", component: ImportpijobComponent },
   { path: "pijobedit/:id", component: PijobeditComponent },
   { path: "joblist", component: JoblistComponent },
@@ -31,7 +39,7 @@ const routes: Routes = [
   { path: "pijobnew", component: PijobnewComponent },
   { path: "jobnew", component: JobnewComponent },
   { path: "zonelist", component: ZonelistComponent },
-
+  { path: "pijobgroupnew", component: PijobgroupnewComponent },
 
   { path: "deviceparameter", component: ParameterviewComponent },
 

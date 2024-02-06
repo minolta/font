@@ -46,6 +46,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DeviceeditComponent } from './deviceedit/deviceedit.component';
 import { DatetimeModule } from '../datetime/datetime.module';
+import { DevicegroupeditComponent } from './devicegroupedit/devicegroupedit.component';
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -72,6 +73,7 @@ import { DatetimeModule } from '../datetime/datetime.module';
     MatFormFieldModule,
     MatInputModule,
     DatetimeModule,
+    MatFormFieldModule
   ],
   declarations: [
     DeviceListComponent,
@@ -84,11 +86,13 @@ import { DatetimeModule } from '../datetime/datetime.module';
     DssensornewComponent,
     ActivedeviceComponent,
     DeviceeditComponent,
+    DevicegroupeditComponent,
+    DevicegrouplistComponent
   ],
   exports: [
     DeviceListComponent,
     DevicenewComponent,
-    // DevicegrouplistComponent,
+    DevicegrouplistComponent,
     DevicegroupnewComponent,
     DeviceListComponent,
     DeviceeditComponent,

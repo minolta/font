@@ -1,7 +1,6 @@
 import { DevicegroupService } from './../devicegroup.service';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { LsService } from '../../ls.service';
 import { ActivatedRoute } from '@angular/router';
 import { Devicegroup } from '../devicegroup';
 
@@ -12,8 +11,8 @@ import { Devicegroup } from '../devicegroup';
 })
 export class DevicegroupeditComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, public bar: MatSnackBar, public service: DevicegroupService, public ls: LsService) { }
-  id
+  constructor(private route: ActivatedRoute, public bar: MatSnackBar, public service: DevicegroupService) { }
+  id:number =0
   devicegroup: Devicegroup = {}
   ngOnInit() {
 
@@ -23,13 +22,12 @@ export class DevicegroupeditComponent implements OnInit {
         this.devicegroup = d
       })
     })
-    this.ls.message('Device edit')
   }
 
   save() {
     this.service.edit(this.devicegroup).subscribe(d => {
       this.bar.open('Edit', '', { duration: 5000 })
-     // this.devicegroup = {}
+      this.devicegroup = d
     })
   }
 

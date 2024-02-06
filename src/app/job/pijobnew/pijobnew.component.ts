@@ -155,45 +155,37 @@ export class PijobnewComponent implements OnInit {
       this.bar.open('ERROR', 'Not have job name', { duration: 5000 });
       return false;
     }
-    if (this.devicebag.obj.name == '' || this.devicebag.obj.id == 0) {
+    if (this.device.name == '' || this.device.id == 0) {
       this.bar.open('ERROR', 'For device not have', { duration: 5000 });
       return false;
     }
 
-    if (this.devicedesbag.obj.name == '' || this.devicedesbag.obj.id == 0) {
+    if (this.devicedes.name == '' || this.devicedes.id == 0) {
       this.bar.open('ERROR', 'Des traget not have', { duration: 5000 });
       return false;
     }
 
-    if (this.jobbag.obj.name == '' || this.jobbag.obj.id == 0) {
+    if (this.job.name == '' || this.job.id == 0) {
       this.bar.open('ERROR', 'Job type not have', { duration: 5000 });
       return false;
     }
 
-    if (this.pijobgroupbag.obj.name == '' || this.pijobgroupbag.obj.id == 0) {
+    if (this.pijobgroup.name == '' || this.pijobgroup.id == 0) {
       this.bar.open('ERROR', 'Job group not set', { duration: 5000 });
       return false;
     }
 
     if (this.ports != null && this.ports.length > 0) {
-      if (
-        this.ports.find(
-          (p) => p.portname.obj.id == 0 || p.portname.obj.name == ''
-        )
-      ) {
+      if (this.ports.find((p) => p.portname.id == 0 || p.portname.name == '')) {
         this.bar.open('ERROR', 'Port name not set', { duration: 5000 });
         return false;
       }
 
-      if (
-        this.ports.find((i) => i.device.obj.id == 0 || i.device.obj.name == '')
-      ) {
+      if (this.ports.find((i) => i.device.id == 0 || i.device.name == '')) {
         this.bar.open('ERROR', 'Port traget  not set', { duration: 5000 });
         return false;
       }
-      if (
-        this.ports.find((i) => i.status.obj.id == 0 || i.status.obj.name == '')
-      ) {
+      if (this.ports.find((i) => i.status.id == 0 || i.status.name == '')) {
         this.bar.open('ERROR', 'Port logic  not set', { duration: 5000 });
         return false;
       }
@@ -241,11 +233,14 @@ export class PijobnewComponent implements OnInit {
       i.pijob = this.pijob;
       return i;
     });
-    let url = environment.host + '/addsensorinpijob';
-    this.dss.http.post(url, l).subscribe((d) => {
-      console.log('add sensor', d);
-    });
-
+    if (l.length > 0) {
+      let url = environment.host + '/rest/piserver/addsensorinpijob';
+      this.dss.http.post(url, l).subscribe((d) => {
+        console.log('add sensor', d);
+      },e=>{
+        console.error('Save sensor error',e)
+      });
+    }
     console.log('Data sensor for save:', l);
   }
 }
