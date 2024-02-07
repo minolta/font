@@ -21,6 +21,7 @@ import {
   provideNativeDateAdapter,
 } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { FwModule } from './fw/fw.module';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -40,10 +41,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     JobModule.forRoot(),
     NgChartsModule,
     PiinfoModule.forRoot(),
-    // NgxMatDatetimePickerModule,
-    // NgxMatTimepickerModule,
-    // NgxMatNativeDateModule,
-    // NgxMatDatetimePickerModule,
+    FwModule.forRoot()
   ],
   exports: [],
   providers: [

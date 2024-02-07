@@ -19,6 +19,8 @@ import { DevicegroupnewComponent } from './device/devicegroupnew/devicegroupnew.
 import { DevicegroupeditComponent } from './device/devicegroupedit/devicegroupedit.component';
 import { DevicegrouplistComponent } from './device/devicegrouplist/devicegrouplist.component';
 import { PijobgroupnewComponent } from './job/pijobgroupnew/pijobgroupnew.component';
+import { FwuploadComponent } from './fw/fwupload/fwupload.component';
+// import { FwuploadComponent } from './fw/fwupload/fwupload.component';
 
 const routes: Routes = [
   { path: 'devicelist', component: DeviceListComponent },
@@ -46,6 +48,8 @@ const routes: Routes = [
   { path: "directio", component: DirectioComponent },
   { path: "dhtinfo", component: DhtinfoComponent },
   { path: "vbattinfo", component: VbattinfoComponent },
+
+  { path: "fwupload", component: FwuploadComponent },
 ];
 
 @NgModule({

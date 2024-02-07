@@ -1,0 +1,1 @@
+ng b;docker build -t kykub/pinfont:17 .;docker push  kykub/pinfont:17
