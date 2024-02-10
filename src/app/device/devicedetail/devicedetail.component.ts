@@ -462,7 +462,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
       this.getusepowerjob();
       this.showopenpumps();
       this.showdhts();
-      this.getMonitorcache();
+      // this.getMonitorcache();
       this.getresult = true;
     }
   }
