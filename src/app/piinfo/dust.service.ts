@@ -11,7 +11,7 @@ export class DustService  {
   }
 
   getGraph(id:number, s:any, e:any) {
-    let url = environment + "/pm/findbydate";
+    let url = environment.host + "/pm/findbydate";
     return this.http.post<Pm[]>(url, { id: id, s: s, e: e });
   }
 }

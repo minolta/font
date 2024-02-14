@@ -8,7 +8,11 @@
     <mat-datepicker-toggle matPrefix [for]="picker1"></mat-datepicker-toggle>
     <mat-datepicker type="datetime" touchUi="false" #picker1></mat-datepicker>
 </mat-form-field> -->
-<kyl-kyauto [service]="ds" [widthvalue]="'250px'" [bag]="bag" [p]="'Select device'"></kyl-kyauto>
+<!-- <kyl-kyauto [service]="ds" [widthvalue]="'250px'" [bag]="bag" [p]="'Select device'"></kyl-kyauto> -->
+<app-auto [service]="ds" [(obj)]="device" [label]="'Device to display'" [p]="'DEvice'"></app-auto>
+<app-datetime [(datetime)]="sd"></app-datetime>
+<app-datetime [(datetime)]="ed"></app-datetime>
+
 <button mat-button (click)="showdata()">
   <label i18n>Show value</label>
 </button>
@@ -18,6 +22,6 @@ PM1:<b>{{totalpm1 |number:'1.1-2'}}</b> Pm10:<b>{{totalpm10 |number:'1.1-2'}}</b
 <mat-divider></mat-divider>
 Last PM PM1 <b style="color:#3cba9f">{{lastpm1|number:'1.1-2'}}</b> Pm 2.5
 <b style="color:#fc3d03">{{lastpm25|number:'1.1-2'}}</b> Pm10 <b style="color:#42f54e">{{lastpm10|number:'1.1-2'}}</b>
-<div *ngIf="chart" class="chart-container">
+<div  class="chart-container">
     <canvas id="canvas"></canvas>
 </div>

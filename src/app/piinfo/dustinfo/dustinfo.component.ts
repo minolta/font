@@ -8,6 +8,8 @@ import { interval } from 'rxjs';
 import { OnDestroy } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DeviceService } from '../../device/device.service';
+import { Device } from '../../device/device';
+import { SavedataService } from '../../savedata.service';
 @Component({
   selector: 'app-dustinfo',
   templateUrl: './dustinfo.component.html',
@@ -27,12 +29,12 @@ export class DustinfoComponent implements OnInit, OnDestroy {
   dataSource: any;
   autoupdate = false;
   subscription: any;
-
+  device: Device = {};
   constructor(
     public ds: DeviceService,
     public service: DustService,
     private elementRef: ElementRef,
-    public bar: MatSnackBar
+    public bar: MatSnackBar,private ss:SavedataService
   ) {}
   ngOnDestroy(): void {
     if (this.subscription) {
@@ -51,33 +53,44 @@ export class DustinfoComponent implements OnInit, OnDestroy {
   }
 
   savedata() {
-    localStorage.setItem(
-      'dustdata',
-      JSON.stringify({
-        sd: this.sd,
-        ed: this.ed,
-        obj: this.bag.obj,
-      })
-    );
+    // localStorage.setItem(
+    //   'dustdata',
+    //   JSON.stringify({
+    //     sd: this.sd,
+    //     ed: this.ed,
+    //     obj: this.bag.obj,
+    //   })
+    // );
+    this.ss.save('dustdata',{sd:this.sd,ed:this.ed,device:this.device})
   }
   loaddata() {
-    if (localStorage.getItem('dustdata') != null) {
-      if (localStorage.getItem('dustdata') != null) {
-        let data = JSON.parse(localStorage.getItem('dustdata')!!);
-        this.sd = data.sd;
-        this.ed = data.ed;
-        this.bag.obj = data.obj;
-      }
+    let d = this.ss.load('dustdata')
+    if(d)
+    {
+      this.sd = d.sd
+      this.ed = d.ed
+      this.device = d.device
+
     }
+    // if (localStorage.getItem('dustdata') != null) {
+    //   if (localStorage.getItem('dustdata') != null) {
+    //     let data = JSON.parse(localStorage.getItem('dustdata')!!);
+    //     this.sd = data.sd;
+    //     this.ed = data.ed;
+    //     this.bag.obj = data.obj;
+    //   }
+    // }
   }
   showdata() {
-    console.log(this.bag.obj.id);
-    console.log(this.sd + ' ' + this.ed);
-    this.service.getGraph(this.bag.obj.id, this.sd, this.ed).subscribe((d) => {
-      console.log(d);
-      this.makegraph(d);
-      this.savedata();
-    });
+    console.debug('Search dust',this.device,this.sd,this.ed)
+    if (this.device)
+      this.service
+        .getGraph(this.device.id!!, this.sd, this.ed)
+        .subscribe((d) => {
+          console.debug('',d);
+          this.makegraph(d);
+          this.savedata();
+        });
   }
 
   totalpm1 = 0;

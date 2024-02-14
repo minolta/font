@@ -20,6 +20,7 @@ import { DevicegroupeditComponent } from './device/devicegroupedit/devicegrouped
 import { DevicegrouplistComponent } from './device/devicegrouplist/devicegrouplist.component';
 import { PijobgroupnewComponent } from './job/pijobgroupnew/pijobgroupnew.component';
 import { FwuploadComponent } from './fw/fwupload/fwupload.component';
+import { DustinfoComponent } from './piinfo/dustinfo/dustinfo.component';
 // import { FwuploadComponent } from './fw/fwupload/fwupload.component';
 
 const routes: Routes = [
@@ -48,7 +49,7 @@ const routes: Routes = [
   { path: "directio", component: DirectioComponent },
   { path: "dhtinfo", component: DhtinfoComponent },
   { path: "vbattinfo", component: VbattinfoComponent },
-
+  { path: "dustinfo", component: DustinfoComponent },
   { path: "fwupload", component: FwuploadComponent },
 ];
 
