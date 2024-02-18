@@ -28,14 +28,22 @@ docker image prune -a -f
 docker logs -f pifontbackup
 
 
-docker build -t kykub/pinfont:jk .
-docker push  kykub/pinfont:jk
-
+#jk
+ng b -c jk;docker build -t kykub/pinfont:jk .;docker push  kykub/pinfont:jk
 docker rm -f pifont
 docker pull  kykub/pinfont:jk
 docker run -p 900:80 --name pifont -d   --restart=always  kykub/pinfont:jk
 docker image prune -a -f
 docker logs -f pifont
+
+#jktest
+ng b -c jktest;docker build -t kykub/pinfont:jktest .;docker push  kykub/pinfont:jktest
+docker rm -f pifonttest
+docker pull  kykub/pinfont:jktest
+docker run -p 901:80 --name pifonttest -d   --restart=always  kykub/pinfont:jktest
+docker image prune -a -f
+docker logs -f pifonttest
+
 
 ng b;docker build -t kykub/pinfont:17 .;docker push  kykub/pinfont:17
 

@@ -15,6 +15,7 @@ import { Pressure } from '../pressure';
 import { BaseChartDirective } from 'ng2-charts';
 import { SavedataService } from '../../savedata.service';
 import { environment } from '../../../environments/environment';
+import { Device } from '../../device/device';
 @Component({
   selector: 'app-pressureinfo',
   templateUrl: './pressureinfo.component.html',
@@ -36,6 +37,7 @@ export class PressureinfoComponent implements OnInit, OnDestroy {
   subscription: any;
   avg: any;
   last: any;
+  device: Device = {};
 
   vdata: number[] = [];
   labels: string[] = [];
@@ -150,7 +152,7 @@ export class PressureinfoComponent implements OnInit, OnDestroy {
     this.chart1?.update();
   }
   makedata1(d: Pressure[]) {
-    let data:number[] = [];
+    let data: number[] = [];
     let category = [];
     for (let o of d) {
       o as Pressure;

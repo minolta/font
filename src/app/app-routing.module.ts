@@ -21,6 +21,7 @@ import { DevicegrouplistComponent } from './device/devicegrouplist/devicegroupli
 import { PijobgroupnewComponent } from './job/pijobgroupnew/pijobgroupnew.component';
 import { FwuploadComponent } from './fw/fwupload/fwupload.component';
 import { DustinfoComponent } from './piinfo/dustinfo/dustinfo.component';
+import { PressureinfoComponent } from './pressure/pressureinfo/pressureinfo.component';
 // import { FwuploadComponent } from './fw/fwupload/fwupload.component';
 
 const routes: Routes = [
@@ -50,6 +51,10 @@ const routes: Routes = [
   { path: "dhtinfo", component: DhtinfoComponent },
   { path: "vbattinfo", component: VbattinfoComponent },
   { path: "dustinfo", component: DustinfoComponent },
+  { path: "pressureinfo", component: PressureinfoComponent },
+
+
+
   { path: "fwupload", component: FwuploadComponent },
 ];
 

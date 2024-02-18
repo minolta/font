@@ -22,6 +22,7 @@ import {
 } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FwModule } from './fw/fw.module';
+import { PressureModule } from './pressure/pressure.module';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -41,7 +42,8 @@ import { FwModule } from './fw/fw.module';
     JobModule.forRoot(),
     NgChartsModule,
     PiinfoModule.forRoot(),
-    FwModule.forRoot()
+    FwModule.forRoot(),
+    PressureModule.forRoot()
   ],
   exports: [],
   providers: [

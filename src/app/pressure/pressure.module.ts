@@ -17,15 +17,14 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { PRESSURE_OPTIONS } from './pressure.config';
-import { HttpClient } from '@angular/common/http';
-import { newpressureService } from './pressure.func';
 import { PressureinfoComponent } from './pressureinfo/pressureinfo.component';
 import { NgChartsModule } from 'ng2-charts';
+import { DatetimeModule } from '../datetime/datetime.module';
 @NgModule({
   imports: [
     CommonModule,
     AutoModule,
+    DatetimeModule,
     MatButtonModule,
     MatIconModule,
     MatTabsModule,
@@ -48,17 +47,10 @@ import { NgChartsModule } from 'ng2-charts';
   exports: [PressureinfoComponent],
 })
 export class PressureModule {
-  static forRoot(cfg: Configfile): ModuleWithProviders<PressureModule> {
+  static forRoot(): ModuleWithProviders<PressureModule> {
     return {
       ngModule: PressureModule,
-      providers: [
-        { provide: PRESSURE_OPTIONS, useValue: cfg },
-        {
-          provide: PressureService,
-          useFactory: newpressureService,
-          deps: [PRESSURE_OPTIONS, HttpClient],
-        },
-      ],
+      providers: [PressureService],
     };
   }
 }
