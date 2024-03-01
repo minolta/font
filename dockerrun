@@ -44,6 +44,14 @@ docker run -p 901:80 --name pifonttest -d   --restart=always  kykub/pinfont:jkte
 docker image prune -a -f
 docker logs -f pifonttest
 
+#jktest
+ng b -c local;docker build -t kykub/pinfont:jktestlocal .;docker push  kykub/pinfont:jktestlocal
+docker rm -f pifonttest
+docker pull  kykub/pinfont:jktestlocal
+docker run -p 903:80 --name pifonttestlocalhost -d   --restart=always  kykub/pinfont:jktestlocal
+docker image prune -a -f
+docker logs -f pifonttest
+
 
 ng b;docker build -t kykub/pinfont:17 .;docker push  kykub/pinfont:17
 
