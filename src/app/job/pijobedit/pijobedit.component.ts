@@ -140,9 +140,10 @@ export class PijobeditComponent implements OnInit {
       found = this.sensors.find((i) => i.sensor!!.id == this.devicedes.id);
     }
     if (!found) {
-      if (!this.sensors) this.sensors = Array<Sensorinjob>();
+      if (!this.sensors)
+       this.sensors = Array<Sensorinjob>();
       this.sensors.push({
-        sensor: JSON.parse(JSON.stringify(this.devicedesbag.obj)),
+        sensor: this.devicedes,
       });
       this.bar.open('add sensor', this.devicedesbag.obj.name);
       this.savesensor();
