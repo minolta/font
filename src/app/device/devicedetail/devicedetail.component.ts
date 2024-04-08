@@ -74,6 +74,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
       console.log('Unsubscription');
     }
     this.getresult = false;
+    console.debug("Clear Interval",this.itid)
     clearInterval(this.itid);
   }
 
