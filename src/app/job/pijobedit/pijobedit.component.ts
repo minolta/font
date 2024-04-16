@@ -245,12 +245,13 @@ export class PijobeditComponent implements OnInit {
       pij.device = i.device;
       pij.enable = i.enable;
       pij.portname = i.portname;
+      pij.portname_id = i.portname.id
       pij.status = i.status;
       pij.runtime = i.runtime;
       pij.waittime = i.waittime;
       pij.ver = i.ver;
-      pij.pijob_id = i.pijob_id;
-      pij.pijob = i.pijob;
+      pij.pijob_id = this.pijob.id;
+      pij.pijob = this.pijob;
       return pij;
     });
     console.debug('port to edit', p.ports);
@@ -365,7 +366,9 @@ export class PijobeditComponent implements OnInit {
         console.debug('load port', s);
         this.ports = s;
       },
-      (e) => (this.error = e)
+      (e) => {
+        console.error('load port error',e)
+      }
     );
   }
 
@@ -394,10 +397,10 @@ export class PijobeditComponent implements OnInit {
           return po;
         })
         .sort(function (a, b) {
-          var x = a.device.obj.name.toLowerCase();
-          var y = b.device.obj.name.toLowerCase();
-          var p1 = a.portname.obj.name.toLocaleLowerCase();
-          var p2 = b.portname.obj.name.toLocaleLowerCase();
+          var x = a.device.name.toLowerCase();
+          var y = b.device.name.toLowerCase();
+          var p1 = a.portname.name.toLocaleLowerCase();
+          var p2 = b.portname.name.toLocaleLowerCase();
 
           if (x < y) return -1;
           if (x > y) return 1;

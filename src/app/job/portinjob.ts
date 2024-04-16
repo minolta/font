@@ -14,5 +14,6 @@ export interface Portinjob {
   ver?: number;
   status?: Logic;
   pijob_id?:number
+  portname_id?:number;
   pijob?:Pijob
 }
