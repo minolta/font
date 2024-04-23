@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { DeviceModule } from './device/device.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { JobModule } from './job/job.module';
@@ -23,6 +23,8 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FwModule } from './fw/fw.module';
 import { PressureModule } from './pressure/pressure.module';
+import { provideHttpClient } from '@angular/common/http';
+import { GetserviceService } from './getservice.service';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -48,7 +50,10 @@ import { PressureModule } from './pressure/pressure.module';
   exports: [],
   providers: [
     provideNativeDateAdapter(),
+    provideAnimations(),
+    provideHttpClient(),
     { provide: MAT_DATE_LOCALE, useValue: 'th-TH' },
+    GetserviceService
   ],
   bootstrap: [AppComponent],
 })

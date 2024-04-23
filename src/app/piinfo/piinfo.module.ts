@@ -42,6 +42,8 @@ import { Co2Component } from './co2/co2.component';
 import { Co2Service } from './co2.service';
 import { NgChartsModule } from 'ng2-charts';
 import { DatetimeModule } from '../datetime/datetime.module';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideHttpClient } from '@angular/common/http';
 @NgModule({
   imports: [
     CommonModule,
@@ -65,8 +67,7 @@ import { DatetimeModule } from '../datetime/datetime.module';
     RouterModule,
     DeviceModule,
     NgChartsModule,
-    DatetimeModule
-   
+    DatetimeModule,
   ],
   declarations: [
     DhtinfoComponent,
@@ -97,6 +98,7 @@ export class PiinfoModule {
         LogService,
         DistanceService,
         Co2Service,
+      
       ],
     };
   }

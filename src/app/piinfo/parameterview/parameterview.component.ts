@@ -5,6 +5,7 @@ import { DeviceService } from '../../device/device.service';
 import { Profiles } from '../profiles';
 import { Device } from '../../device/device';
 import { Devicetoshow } from '../devicetoshow';
+import { GetserviceService } from '../../getservice.service';
 @Component({
   selector: 'app-parameterview',
   templateUrl: './parameterview.component.html',
@@ -33,7 +34,8 @@ export class ParameterviewComponent implements OnInit, OnDestroy {
   constructor(
     public http: HttpClient,
     public service: DeviceService,
-    public bar: MatSnackBar
+    public bar: MatSnackBar,
+    public getService:GetserviceService
   ) {}
   ngOnDestroy(): void {
     // console.log("SUB", this.sub);
@@ -234,27 +236,35 @@ export class ParameterviewComponent implements OnInit, OnDestroy {
         this.devicestoshow.map((i) => {
           let url = 'http://' + i.device?.ip;
           this.getresult = false;
-          this.http
-            .get(url) ///delay เปลียนเป็น millisec แล้ว
-            .subscribe(
-              (d) => {
-                i.result = d;
-                this.getresult = true;
-                // i.shows = this.parameter.split(',')
-                console.debug('Device paramter view', i);
-                // let found = this.errormessage.findIndex(
-                //   (r) => i.device?.id == r.device.id
-                // );
-                // if (found > -1) this.errormessage.splice(found, 1);
 
-                // console.log('found:' + found);
-              },
-              (e) => {
-                console.log('IIIIIIIIIIIIII' + JSON.stringify(i));
-                this.getresult = true;
-                // this.seterror(i, e);
-              }
-            );
+          this.getService.get(url).subscribe(d=>{
+            i.result = d;
+            this.getresult = true;
+            // i.shows = this.parameter.split(',')
+            console.debug('Device paramter view', i);
+          })
+          
+          // this.http
+          //   .get(url) ///delay เปลียนเป็น millisec แล้ว
+          //   .subscribe(
+          //     (d) => {
+          //       i.result = d;
+          //       this.getresult = true;
+          //       // i.shows = this.parameter.split(',')
+          //       console.debug('Device paramter view', i);
+          //       // let found = this.errormessage.findIndex(
+          //       //   (r) => i.device?.id == r.device.id
+          //       // );
+          //       // if (found > -1) this.errormessage.splice(found, 1);
+
+          //       // console.log('found:' + found);
+          //     },
+          //     (e) => {
+          //       console.log('IIIIIIIIIIIIII' + JSON.stringify(i));
+          //       this.getresult = true;
+          //       // this.seterror(i, e);
+          //     }
+          //   );
         });
     } else {
       // this.devicestoshow = this.devices.filter((i) => {

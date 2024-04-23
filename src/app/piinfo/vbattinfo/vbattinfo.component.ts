@@ -113,9 +113,11 @@ export class VbattinfoComponent implements OnInit {
     let o = {
       sdate: this.sd,
       edate: this.ed,
-      device: this.bag,
+      device: this.device,
+      device1: this.device1,
       auto: this.autoupdate,
     };
+    console.debug('save vbattobject', o);
     this.ss.save('vbattobject', o);
   }
   loaddate() {
@@ -123,11 +125,12 @@ export class VbattinfoComponent implements OnInit {
     if (o != null) {
       this.sd = o.sdate;
       this.ed = o.edate;
-      this.bag = o.device;
+      this.device = o.device;
+      this.device1 = o.device1;
       this.autoupdate = o.auto;
     }
 
-    console.log('Save', o);
+    console.debug('load vbatt', o);
   }
   findwatt() {
     this.service.findwatt(this.device.id!!, this.sd, this.ed).subscribe(
@@ -151,10 +154,10 @@ export class VbattinfoComponent implements OnInit {
         e: this.ed,
       })
       .subscribe((d) => {
-        console.log(d);
         this.diffwatt = d;
-        this.savedate();
+        this.bar.open('find message', '', { duration: 1000 });
       });
+    this.savedate();
   }
   showdata() {
     console.log('Show device:', this.device);
