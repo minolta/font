@@ -1,5 +1,5 @@
 <mat-form-field>
-    <input matInput  (keyup)="search$.next($event.target.value)" i18n-placeholder placeholder="Search" #sss>
+    <input matInput   i18n-placeholder placeholder="Search" #sss>
   </mat-form-field>
   <mat-card appearance="outlined" *ngFor="let r of rows">
     {{r.name}}

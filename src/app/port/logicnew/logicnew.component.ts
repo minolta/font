@@ -1,5 +1,4 @@
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { LsService } from './../../ls.service';
 import { LogicService } from './../logic.service';
 import { Component, OnInit } from '@angular/core';
 import { Logic } from '../logic';
@@ -10,11 +9,11 @@ import { Logic } from '../logic';
   styleUrls: ['./logicnew.component.css']
 })
 export class LogicnewComponent implements OnInit {
-
   logic: Logic = {}
-  constructor(public service: LogicService, public ls: LsService, public bar: MatSnackBar) { }
+  constructor(public service: LogicService, public bar: MatSnackBar) { }
 
   ngOnInit() {
+    
   }
 
   save() {

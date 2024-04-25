@@ -25,6 +25,7 @@ import { FwModule } from './fw/fw.module';
 import { PressureModule } from './pressure/pressure.module';
 import { provideHttpClient } from '@angular/common/http';
 import { GetserviceService } from './getservice.service';
+import { PortModule } from './port/port.module';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -45,7 +46,10 @@ import { GetserviceService } from './getservice.service';
     NgChartsModule,
     PiinfoModule.forRoot(),
     FwModule.forRoot(),
-    PressureModule.forRoot()
+    PressureModule.forRoot(),
+    PortModule.forRoot()
+
+    
   ],
   exports: [],
   providers: [

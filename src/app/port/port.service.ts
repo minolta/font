@@ -11,7 +11,29 @@ export class PortService {
     // this.urlsn="/rest/piserver/portname/sn",
     // this.urlsm="/rest/piserver/portname/sm"
   }
+
+  edit(p: Port) {
+    return this.http.post<Port>(
+      environment.host + '/rest/piserver/portname/edit',
+      p
+    );
+  }
   sn(s: any) {
-    return this.http.post<Port[]>(environment.host + '/rest/piserver/portname/sn', s);
+    return this.http.post<Port[]>(
+      environment.host + '/rest/piserver/portname/sn',
+      s
+    );
+  }
+  
+  get(id: number) {
+    return this.http.get<Port>(
+      environment.host + '/rest/piserver/portname/get/' + id
+    );
+  }
+  add(s: any) {
+    return this.http.post<Port>(
+      environment.host + '/rest/piserver/portname/add',
+      s
+    );
   }
 }
