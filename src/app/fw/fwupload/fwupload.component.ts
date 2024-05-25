@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, effect, signal } from '@angular/core';
 import { FwService } from '../fw.service';
 import { Pifw } from '../pifw';
 
@@ -13,11 +13,16 @@ export class FwuploadComponent implements OnInit {
   msg:string = ''
   file:any
   lastver:number =0
-
+  
+  testvalue = signal(1)
   constructor(public service: FwService) { }
 
   ngOnInit() {
     this.updatelast()
+
+   effect(()=>{
+    console.log('have effect',this.testvalue())
+   })
   }
 
   setfile(e:any) {
