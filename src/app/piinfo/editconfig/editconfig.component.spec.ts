@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EditconfigComponent } from './editconfig.component';
 import { DeviceService } from '../../device/device.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { AutoModule } from '@kykub/auto';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -23,6 +23,7 @@ import { RouterModule } from '@angular/router';
 import { NgChartsModule } from 'ng2-charts';
 import { DatetimeModule } from '../../datetime/datetime.module';
 import { DeviceModule } from '../../device/device.module';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('EditconfigComponent', () => {
   let component: EditconfigComponent;
@@ -30,9 +31,8 @@ describe('EditconfigComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        AutoModule,
+    declarations: [EditconfigComponent],
+    imports: [AutoModule,
         MatButtonModule,
         MatIconModule,
         MatTabsModule,
@@ -52,11 +52,9 @@ describe('EditconfigComponent', () => {
         RouterModule,
         DeviceModule,
         NgChartsModule,
-        DatetimeModule,
-      ],
-      declarations: [EditconfigComponent],
-      providers: [DeviceService],
-    }).compileComponents();
+        DatetimeModule],
+    providers: [DeviceService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
   });
 
   beforeEach(() => {
