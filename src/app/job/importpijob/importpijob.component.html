@@ -1,0 +1,12 @@
+<mat-card appearance="outlined">
+  <mat-card-title>upload PI Jobs</mat-card-title>
+  <mat-card-subtitle>ใช้สำหรับ upload pijob ที่เป็น json</mat-card-subtitle>
+  <mat-card-content>
+    <input type="file" (change)="setfile($event)" placeholder="Upload file"> 
+    <button mat-button (click)="fileChange()" i18n>Upload</button>
+  </mat-card-content>
+  <mat-card-footer>
+    <h1>{{msg}}</h1>
+  </mat-card-footer>
+</mat-card>
+

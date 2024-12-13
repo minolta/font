@@ -1,0 +1,11 @@
+<mat-form-field>
+  <input
+    type="text"
+    matInput
+    [(ngModel)]="portname.name"
+    i18n-placeholder
+    placeholder="Port name"
+  />
+</mat-form-field>
+<mat-checkbox [(ngModel)]="portname.portenable">Enable</mat-checkbox>
+<button mat-button i18n (click)="save()">Save</button>

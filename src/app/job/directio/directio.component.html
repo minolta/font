@@ -1,0 +1,119 @@
+<!-- <kyl-kyauto [service]="ds" [bag]="devicebag" [widthvalue]="'400px'" (select)="getdevice()" [p]="'Device'">
+</kyl-kyauto> -->
+<app-auto
+  [service]="ds"
+  [(obj)]="device"
+  [p]="'Traget device'"
+  [label]="'Target'"
+></app-auto>
+<kyl-kyauto
+  [service]="ds"
+  [bag]="pumpbag"
+  [widthvalue]="'400px'"
+  [p]="'Pump'"
+></kyl-kyauto>
+<button mat-button (click)="addpump()">Add pump</button>
+<button mat-button (click)="offallpump()">Off pumps</button>
+<button mat-button (click)="onallpump()">On all pumps</button>
+<mat-form-field>
+  <mat-label>เวลาทำงาน</mat-label>
+  <input
+    type="number"
+    matInput
+    placeholder="Run time (in secound)"
+    [(ngModel)]="runtime"
+  />
+</mat-form-field>
+<mat-form-field>
+  <mat-label>Logic</mat-label>
+  <input type="number" matInput placeholder="Value " [(ngModel)]="value" />
+</mat-form-field>
+<mat-checkbox [(ngModel)]="showenable" (change)="f(showenable)"
+  >Enable</mat-checkbox
+>
+
+<hr />
+<div *ngFor="let p of pumptoopen" class="block">
+  <div>
+    <table id="customers">
+      <tr>
+        <td>Name</td>
+        <td>PSI</td>
+        <td>V</td>
+        <td>Duty</td>
+        <td>Run</td>
+      </tr>
+      <tr>
+        <td>{{ p.pump?.name }}</td>
+        <td>{{ p.psi | number : "1.1-2" }}</td>
+        <td>{{ p.v | number : "1.1-2" }}</td>
+        <td>{{ p.duty }}</td>
+        <td>
+          <label [ngStyle]="{ color: p.run ? 'green' : 'red' }">{{
+            p.run
+          }}</label>
+        </td>
+      </tr>
+    </table>
+    <hr />
+    <!-- <label [ngStyle]="{'color':p.run ? 'green' : 'red' }">PSI: V:{{p.v}}</label> -->
+    <mat-checkbox
+      [(ngModel)]="p.enable"
+      (ngModelChange)="updatepump()"
+    ></mat-checkbox>
+    <button mat-button (click)="removepump(p)">x</button>
+  </div>
+</div>
+<div>
+  <mat-label>Task</mat-label>
+  <div *ngFor="let dir of tasks">
+    IP:{{ dir.ip }} Port: {{ dir.port }} Count:{{ dir.countvalue }}/{{
+      dir.delay
+    }}
+    value:{{ dir.value }} status:{{ dir.status }}
+    <button mat-button (click)="stopdir(dir.id)">x</button>
+  </div>
+</div>
+
+<div *ngIf="drs">
+  <table id="customers">
+    <tr *ngFor="let d of drs.runs">
+    <td>{{d.devicename}}</td>
+    <td>{{d.portname}}</td>
+    <td>{{d.nowrun}}/{{d.runtime}}</td>
+    <td>{{d.value}}</td>
+    <td><button mat-button (click)="stop(d)">x</button></td>
+
+    </tr>
+  </table>
+</div>
+<!-- <div *ngFor="let r of drs.runs">
+    Run: <b>{{r.devicename}}</b> PORT:<b>{{r.portname}}</b> VALUE:{{r.value}}
+    IN:<label style="color: red;">{{r.nowrun}}/{{r.runtime}}</label>
+    <button mat-button (click)="again(r)">Run again</button> / <button mat-button (click)="stop(r)">stop</button>
+</div> -->
+
+<div *ngIf="device">
+  <div class="block" *ngFor="let p of ports">
+    <mat-card appearance="outlined">
+      <button mat-button (click)="set(p)">{{ p.name }}</button>
+    </mat-card>
+  </div>
+</div>
+<button mat-button (click)="removeerros()">Remove ERROR</button>
+<div *ngFor="let e of errors">
+  <label style="color: red">{{ e }} </label>
+</div>
+<button mat-button (click)="removehistory()">Remove History</button>
+<div *ngFor="let r of drs.history">
+  Run: <b>{{ r.devicename }}</b> PORT:<label style="color: green">{{
+    r.portname
+  }}</label>
+  VALUE:{{ r.value }} IN: <label style="color: red">{{ r.nowrun }} </label>/{{
+    r.runtime
+  }}
+  {{ r.rundate | date : "dd/MM/yyyy hh:mm:ss" }}
+  <button mat-button (click)="again(r)">Run again</button> /
+  <button mat-button (click)="stop(r)">stop</button> /
+  <button mat-button (click)="rh(r)">Remove</button>
+</div>

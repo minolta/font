@@ -13,16 +13,23 @@ export class DevicegroupService {
     // this.config.urlget = '/rest/piserver/devicegroup/get'
     // this.config.urledit = '/rest/piserver/devicegroup/edit'
   }
-
+  get(id:number)
+  {
+    return this.http.get<Devicegroup>(environment.host+'/rest/piserver/devicegroup/get/'+id)
+  }
   add(devicegroup: Devicegroup) {
     return this.http.post<Devicegroup>(
       environment.host + '/rest/piserver/devicegroup/add',
       devicegroup
     );
   }
+  edit(dg:Devicegroup)
+  {
+    return this.http.post<Devicegroup>(environment.host+'/rest/piserver/devicegroup/edit',dg)
+  }
   sn(s: any) {
     return this.http.post<Devicegroup[]>(
-      environment.host + '/rest/piserver/devicegroup/add',
+      environment.host + '/rest/piserver/devicegroup/sn',
       s
     );
   }

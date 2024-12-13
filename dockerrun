@@ -1,0 +1,69 @@
+ng b -c production
+docker build -t kykub/pinfont:micro .
+docker push  kykub/pinfont:micro
+
+docker rm -f pifont
+docker pull  kykub/pinfont:micro
+docker run -p 900:80 --name pifont -d   --restart=always  kykub/pinfont:micro
+docker image prune -a -f
+docker logs -f pifont
+
+ng b -c production
+docker build -t kykub/pinfont:gti .
+docker push  kykub/pinfont:gti
+
+docker rm -f pifont
+docker pull  kykub/pinfont:gti
+docker run -p 900:80 --name pifont -d   --restart=always  kykub/pinfont:gti
+docker image prune -a -f
+docker logs -f pifont
+
+docker build -t kykub/pinfont:showdhtcache .
+docker push  kykub/pinfont:showdhtcache
+
+docker rm -f pifontbackup
+docker pull  kykub/pinfont:showdhtcache
+docker run -p 901:80 --name pifont -d   --restart=always  kykub/pinfont:showdhtcache
+docker image prune -a -f
+docker logs -f pifontbackup
+
+
+#jk
+ng b -c jk;docker build -t kykub/pinfont:jk .;docker push  kykub/pinfont:jk
+docker rm -f pifont
+docker pull  kykub/pinfont:jk
+docker run -p 900:80 --name pifont -d   --restart=always  kykub/pinfont:jk
+docker image prune -a -f
+docker logs -f pifont
+
+#jktest
+ng b -c jktest;docker build -t kykub/pinfont:jktest .;docker push  kykub/pinfont:jktest
+docker rm -f pifonttest
+docker pull  kykub/pinfont:jktest
+docker run -p 901:80 --name pifonttest -d   --restart=always  kykub/pinfont:jktest
+docker image prune -a -f
+docker logs -f pifonttest
+
+#jktest
+ng b -c local;docker build -t kykub/pinfont:jktestlocal .;docker push  kykub/pinfont:jktestlocal
+docker rm -f pifonttest
+docker pull  kykub/pinfont:jktestlocal
+docker run -p 903:80 --name pifonttestlocalhost -d   --restart=always  kykub/pinfont:jktestlocal
+docker image prune -a -f
+docker logs -f pifonttest
+
+
+ng b;docker build -t kykub/pinfont:17 .;docker push  kykub/pinfont:17
+
+docker rm -f pifont;docker pull  kykub/pinfont:17;docker run -p 900:80 --name pifont -d   --restart=always  kykub/pinfont:17;docker image prune -a -f;docker logs -f pifont
+
+
+ng b;docker build -t kykub/pinfont:18 .;docker push  kykub/pinfont:18
+
+docker rm -f pifont;docker pull  kykub/pinfont:18;docker run -p 900:80 --name pifont -d   --restart=always  kykub/pinfont:18;docker image prune -a -f;docker logs -f pifont17
+
+
+
+ng b;docker build -t kykub/pinfont:20 .;docker push  kykub/pinfont:20
+
+docker rm -f pifont;docker pull  kykub/pinfont:20;docker run -p 900:80 --name pifont -d   --restart=always  kykub/pinfont:20;docker image prune -a -f;docker logs -f pifont

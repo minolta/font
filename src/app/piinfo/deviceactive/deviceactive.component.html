@@ -1,0 +1,37 @@
+<!-- <mat-checkbox [(ngModel)]="showall">showall</mat-checkbox> -->
+<kyl-kyauto [service]="service" [widthvalue]="'250px'" [bag]="bag" [p]="'Select device'"></kyl-kyauto>
+<button mat-button (click)="add(bag.obj)">Add</button> {{lastupdate | date:'dd-MM-yyyy hh:mm:ss'}}
+<!-- <div class="row">
+  <div *ngFor="let a of buf;let i = index" class="block">
+    {{a.name}} <button mat-button (click)="remove(i)">x</button>
+  </div>
+</div> -->
+<div *ngIf="devices" class="row">
+
+    <div *ngFor="let d of devices" class="block">
+        <!-- <mat-card *ngIf="showall || d.lastcheckinlong < 100000 ">
+      {{d.name}}
+      <div [ngStyle]="{'color':d.lastcheckinlong < 100000 ? 'green' : 'red' }">
+        {{d.lastupdate | date:'dd/MM/yyyy hh:mm:ss a':'+0000'}} </div>
+    </mat-card> -->
+
+        <div class="one">
+            <!-- <mat-card>  -->
+            <b>{{d.name}}</b>
+            <hr class="style-one">
+            <a mat-button href="#/devicedetail/{{d.id}}" target="_blank" i18n>detail</a>
+            <a mat-button href="#/dhtinfo/{{d.id}}" target="_blank" i18n>dht</a>
+            <a mat-button href="#/ds18info/{{d.id}}" target="_blank" i18n>ds</a>
+            <a mat-button href="http://{{d.ip}}/status" i18n target="_blank">status</a>
+
+            <button mat-button (click)="remove(d)">x</button> {{d.ip}}
+            <div [ngStyle]="{'color':d.lastcheckinlong!! < 100000 ? 'green' : 'red' }">
+                {{d.lastupdate | date:'dd/MM/yyyy hh:mm:ss a':'+0000'}}
+            </div>
+            <!-- </mat-card> -->
+
+        </div>
+        <!-- <hr class="style-one"> -->
+
+    </div>
+</div>

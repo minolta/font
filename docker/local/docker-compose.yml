@@ -1,0 +1,74 @@
+version: '3.6'
+
+services:
+  redis:
+    image: redis
+    container_name: redis
+    restart: always
+    networks:
+      - pinetwork
+    environment:
+      - MYSQL_DATABASE=pi
+      - MYSQL_ROOT_PASSWORD=1234
+      - TZ=Asia/Bangkok
+
+
+  db:
+    image: mysql
+    container_name: db
+    restart: always
+    depends_on:
+      - redis
+    ports:
+      - 3306:3306
+    networks:
+      - pinetwork
+    volumes:
+      -  /home/ky/db:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=pi
+      - MYSQL_ROOT_PASSWORD=1234
+      - TZ=Asia/Bangkok
+
+
+  piserver:
+    image: kykub/piserver:nok
+    restart: always
+    container_name: piserver
+    stop_grace_period: 45s
+    depends_on:
+      - db
+    ports:
+      - 3333:8080
+    networks:
+      - pinetwork
+    environment:
+      - JAVA_OPTS=--enable-preview -Dipfile=/root/ip/nmap.out -Dserver.port=8080 -Dspring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver -Dspring.datasource.url=jdbc:mysql://db:3306/pi?useUnicode=yes&characterEncoding=utf8 -Dspring.jpa.database-platform=org.hibernate.dialect.MySQLDialect  -Dfile.encoding=UTF-8  -Dspring.datasource.password=1234  -Dspring.datasource.username=root
+      - ZM_SERVER_HOST=zoneminder1
+      - TZ=Asia/Bangkok
+  font:
+    image: kykub/pinfont:jk
+    restart: always
+    container_name: jk
+    stop_grace_period: 45s
+    depends_on:
+      - piserver
+    ports:
+      - 900:80
+    networks:
+      - pinetwork
+
+  fonttest:
+    image: kykub/pinfont:jktest
+    restart: always
+    container_name: jktest
+    stop_grace_period: 45s
+    depends_on:
+      - piserver
+    ports:
+      - 901:80
+    networks:
+      - pinetwork 
+
+networks:
+  pinetwork:

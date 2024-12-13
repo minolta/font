@@ -1,0 +1,20 @@
+<mat-form-field [ngStyle]="{ width: widthvalue }">
+  <mat-label>{{label}}</mat-label>
+  <input 
+    type="text"
+    matInput
+    [formControl]="c"
+    placeholder="{{ p }}"
+    [matAutocomplete]="auto"
+    [(ngModel)]="name"
+  />
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option 
+      *ngFor="let d of datas"
+      [value]="d.name"
+      (click)="selectvalue(d)"
+    >
+      {{ d.id }} {{ d.name }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

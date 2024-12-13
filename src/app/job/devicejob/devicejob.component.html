@@ -1,0 +1,16 @@
+<table id="customers">
+<tr>
+  <td>ID</td>
+  <td>REFID</td>
+  <td>Name</td>
+  <td>Traget</td>
+</tr>
+<tr *ngFor="let job of jobs">
+  <td>
+    {{job.id}}
+  </td>
+  <td>{{job.refid}}</td>
+  <td>{{job.name}}</td>
+  <td>{{job.desdevice?.name}}</td>
+</tr>
+</table>

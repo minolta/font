@@ -1,0 +1,19 @@
+
+<app-auto [service]="pds" [p]="'Device for show pressure'" [(obj)]="device"></app-auto>
+
+<button mat-button (click)="showdata()">
+  <label i18n>Show value</label>
+</button>
+<mat-checkbox [(ngModel)]="autoupdate" value="false" color="primary">Autoupdate</mat-checkbox>
+<h3>LAST: {{last}} AVG: {{avg}}</h3>
+
+
+<div class="chart-container">
+  <canvas id="canvas"></canvas>
+</div>
+
+
+<!-- <div style="display: block;height: 500px;"> 
+  <canvas baseChart >
+  </canvas>
+</div> -->

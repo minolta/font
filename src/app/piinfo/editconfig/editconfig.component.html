@@ -1,0 +1,27 @@
+<kyl-kyauto [service]="service" [widthvalue]="'250px'" [bag]="bag" [p]="'Select device'"></kyl-kyauto>
+<button mat-button (click)="getConfig()">GET</button>
+
+<table id="customers" *ngIf="config">
+    <tr>
+        <td>1</td>
+        <td>2</td>
+    </tr>
+    <tr *ngFor="let i of keys">
+        <td>{{i}}</td>
+        <td>
+            <mat-form-field>
+                <input matInput i18n-placeholder placeholder="value" [(ngModel)]="config[+i]">
+            </mat-form-field>
+            <button mat-button (click)="edit(+i)">Edit</button>
+
+        </td>
+    </tr>
+</table>
+
+<mat-form-field>
+    <input matInput i18n-placeholder placeholder="config" [(ngModel)]="configname">
+</mat-form-field>
+<mat-form-field>
+    <input matInput i18n-placeholder placeholder="new value" [(ngModel)]="value">
+</mat-form-field>
+<button mat-button (click)="newconfig()">New config</button>

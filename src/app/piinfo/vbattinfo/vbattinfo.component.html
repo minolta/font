@@ -1,0 +1,32 @@
+
+<app-datetime [(datetime)]="sd"></app-datetime>
+<app-datetime [(datetime)]="ed"></app-datetime>
+<app-auto [service]="ds" [(obj)]="device" [p]="'Device 1'"></app-auto>
+<app-auto [service]="ds" [(obj)]="device1" [p]="'Device 2'"></app-auto>
+<button mat-button (click)="showdata()">
+    <label i18n>Show value</label>
+</button>
+<button mat-button (click)="findwatt()">
+    <label i18n>findwatt</label>
+</button>
+
+<button mat-button (click)="finddiffwatt()">
+    <label i18n>find Diff watt</label>
+</button> 
+
+<div *ngIf="diffwatt">
+    {{diffwatt.watt1}} - {{diffwatt.watt2}} <b> {{diffwatt.watt1- diffwatt.watt2}}</b>
+</div>
+<mat-checkbox [(ngModel)]="autoupdate" value="false" color="primary">Autoupdate</mat-checkbox>
+
+<h1>V:{{lastvalue}}/{{min}}/{{max}} I:{{lasti}}/{{imin}}/{{imax}} W:{{cwatt | number:'1.2-2'}}  Total W {{watt | number :'1.2-2' }} Kwh today:{{tde|number:'1.2-2'}} total:{{tte|number:'1.2-2'}}  </h1>
+<div *ngIf="chart" class="chart-container">
+    <canvas id="canvas"></canvas>
+</div>
+
+
+<div style="height:550px;">
+        <canvas baseChart [data]="lineChartData" [options]="lineChartOptions"
+                [type]="lineChartType">
+            </canvas>
+</div>

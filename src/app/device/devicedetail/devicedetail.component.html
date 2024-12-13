@@ -44,14 +44,16 @@
         [(ngModel)]="filtername"
       />
     </mat-form-field>
-    <kyl-kyauto
+    <!-- <kyl-kyauto
       [service]="service"
       [widthvalue]="'250px'"
       [bag]="bag"
       (select)="ss($event)"
       [p]="'Select device'"
     >
-    </kyl-kyauto>
+    </kyl-kyauto> -->
+
+    <app-auto [service]="service" [(obj)]="device" [p]="'device to get task'"></app-auto>
     <mat-form-field>
       <input matInput i18n-placeholder placeholder="IP" [(ngModel)]="ip" />
     </mat-form-field>
@@ -64,10 +66,12 @@
 <!-- <button mat-button (click)="lq()">Show Queue</button> -->
 <div *ngIf="!ws.mobile">
   <mat-form-field>
+    <mat-label>Update time</mat-label>
     <input
       matInput
       i18n-placeholder
       placeholder="update time"
+      
       (change)="changeupdatetime()"
       [(ngModel)]="delay"
     />
@@ -83,14 +87,15 @@
       [(ngModel)]="filtername"
     />
   </mat-form-field>
-  <kyl-kyauto
+  <!-- <kyl-kyauto
     [service]="service"
     [widthvalue]="'250px'"
     [bag]="bag"
     (select)="ss($event)"
     [p]="'Select device'"
   >
-  </kyl-kyauto>
+  </kyl-kyauto> -->
+  <app-auto [service]="service" [label]="'Deviec to get task'" [p]="'Device'" [(obj)]="device"></app-auto>
   <mat-form-field>
     <input matInput i18n-placeholder placeholder="IP" [(ngModel)]="ip" />
   </mat-form-field>
@@ -190,7 +195,7 @@
     </tr>
   </table>
   <pre></pre>
-  <table id="customers" *ngIf=dhtcaches && dhtcaches.length > 0">
+  <table id="customers" *ngIf="dhtcaches.length > 0">
     <tr>
       <td colspan="4">DHT Cache</td>
     </tr>
@@ -205,6 +210,24 @@
       <td>{{ dht.t }}</td>
       <td>{{ dht.sensorid }}</td>
       <td>{{ dht.readdate | date : "dd/MM/yyyy HH:mm:ss" }}</td>
+    </tr>
+  </table>
+
+  <table id="customers" *ngIf="monitors?.length!! > 0">
+    <tr>
+      <td colspan="4">Monitor Cache</td>
+    </tr>
+    <tr>
+      <td>id</td>
+      <td>status</td>
+      <td>output</td>
+      <td>readdate</td>
+    </tr>
+    <tr *ngFor="let m of monitors; let i = index">
+      <td>{{ m.id }}</td>
+      <td>{{ m.status}}</td>
+      <td>{{ m.output }}</td>
+      <td>{{ m.cachetime| date : "dd/MM/yyyy HH:mm:ss" }}</td>
     </tr>
   </table>
 </div>
@@ -271,7 +294,7 @@
     </tr>
   </table>
 
-  <table id="customers" *ngIf="dhtcaches && dhtcaches.length > 0">
+  <table id="customers" *ngIf="dhtcaches.length > 0">
     <tr>
       <td colspan="4">Q</td>
     </tr>

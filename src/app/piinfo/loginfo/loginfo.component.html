@@ -1,0 +1,49 @@
+<!-- <mat-form-field>
+    <input matInput [matDatepicker]="picker" [(ngModel)]="sd" placeholder="Start date">
+    <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker type="datetime" touchUi="false" #picker></mat-datepicker>
+</mat-form-field>
+<mat-form-field>
+    <input matInput [matDatepicker]="picker1" [(ngModel)]="ed" placeholder="End date">
+    <mat-datepicker-toggle matPrefix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker type="datetime" touchUi="false" #picker1></mat-datepicker>
+</mat-form-field> -->
+<mat-form-field>
+    <input matInput i18n-placeholder placeholder="Search" [(ngModel)]="s">
+</mat-form-field>
+<mat-form-field>
+    <input type="number" step="1" matInput i18n-placeholder placeholder="limit" [(ngModel)]="limit">
+</mat-form-field>
+<button mat-button (click)="ss()">Search</button>
+<button mat-button (click)="deletelogbydateask()">Delete</button>
+<h3>Count:{{count}}</h3>
+
+<table id="customers">
+    <tr>
+        <td>Time</td>
+        <td>Level</td>
+        <td>Job</td>
+        <td>Message</td>
+        <td>Device</td>
+        <td>Class</td>
+        <td>Method</td>
+        <td>Line</td>
+        <td>Device own</td>
+
+    </tr>
+    <tr *ngFor="let r of rows">
+        <td>
+            {{r.date | date:'yyyy/MM/dd hh:mm:ss'}}
+        </td>
+        <td>
+            {{r.level?.name}}
+        </td>
+        <td><a mat-button target="_blank" href="#/pijobedit/{{r.arg1}}" appExternalUrl>{{r.arg0}}</a></td>
+        <td>{{r.formatted_message}}</td>
+        <td>{{r.mac}}</td>
+        <td>{{r.caller_class}}</td>
+        <td>{{r.caller_method}}</td>
+        <td>{{r.caller_line}}</td>
+        <td>{{r.arg2}}</td>
+    </tr>
+</table>

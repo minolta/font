@@ -1,0 +1,13 @@
+.row {
+    width: 100%;
+    /*  text-align: center;*/
+}
+
+.block {
+    width: 250px;
+    margin: 30px;
+    cursor: pointer;
+    /*float: left;*/
+    display: inline-block;
+    zoom: 1;
+}

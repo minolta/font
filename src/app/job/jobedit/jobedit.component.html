@@ -1,0 +1,10 @@
+<mat-form-field>
+  <input matInput i18n-placeholder placeholder="Job name" [(ngModel)]="job.name">
+</mat-form-field>
+
+<mat-form-field>
+  <textarea matInput i18n-placeholder placeholder="Description" [(ngModel)]="job.description">
+      {{job.description}}
+      </textarea>
+</mat-form-field>
+<button mat-raised-button (click)="save()" i18n>Save</button>

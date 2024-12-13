@@ -1,0 +1,18 @@
+.chart-container {
+  position: relative;
+  margin: auto;
+  height: 50vh;
+  width: 90vw;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-item {
+  flex-basis: 92%;
+}
+
+tr.line-2 {
+  color: red;
+}

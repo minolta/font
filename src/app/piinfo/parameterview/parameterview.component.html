@@ -1,0 +1,92 @@
+<mat-form-field>
+   <mat-label>Profile</mat-label>
+    <input matInput i18n-placeholder placeholder="profile" (change)="updateprofile()" [(ngModel)]="profile">
+</mat-form-field>
+
+
+<mat-form-field>
+    <mat-label>Search</mat-label>
+    <input matInput i18n-placeholder placeholder="search" [(ngModel)]="search">
+</mat-form-field>
+
+<mat-form-field>
+    <mat-label>Parameter to show</mat-label>
+
+    <textarea matInput placeholder="parameter to show" [(ngModel)]="parametertoshow" rows="4" cols="50"></textarea>
+    <!-- <input matInput i18n-placeholder placeholder="parameter to show" width="400px" [(ngModel)]="parametertoshow"> -->
+</mat-form-field>
+<!-- <kyl-kyauto [service]="service" [widthvalue]="'250px'" [bag]="bag" [p]="'Select device'"></kyl-kyauto> -->
+<app-auto [service]="service" [p]="'select device to add'" [(obj)]="device" [label]="'Device to show'"></app-auto>
+<mat-form-field>
+    <mat-label>Parameter</mat-label>
+    <input matInput i18n-placeholder placeholder="parameter" [(ngModel)]="parameter">
+</mat-form-field>
+<!-- 
+<mat-form-field>
+    <input matInput i18n-placeholder placeholder="description" [(ngModel)]="description">
+</mat-form-field> -->
+
+<button mat-button (click)="add()">Add</button>
+<mat-form-field>
+    <mat-label>Time to show</mat-label>
+    <input matInput i18n-placeholder placeholder="updatetime" (change)="updatetimetonew()" [(ngModel)]="timetoupdate">
+</mat-form-field>
+<button mat-button (click)="g()">get</button>
+<button mat-button (click)="reload()">reload</button>
+<hr>
+<!-- <div *ngIf="errormessage.length>0">
+    <table id="customers">
+        <tr *ngFor="let e of errormessage">
+
+            <td>{{e.device.name}}</td>
+            <td>{{e.message}}</td>
+            <td>{{e.time | date:'dd/MM/yyyy'}}</td>
+
+        </tr>
+    </table>
+
+</div> -->
+<div *ngIf="devicestoshow" class="row">
+    <div *ngFor="let d of devicestoshow;index as ii" class="block">
+        <!-- {{d|json}} -->
+        <div class="one">
+            <h3> <a *ngIf="d.device.ip" mat-button href="http://{{d.device.ip}}" target="_blank">
+                    {{d.device.name}}</a> <button mat-button (click)="removedevice(d)">X</button>
+                <!-- <a *ngIf="d.device.ip" mat-button href="http://{{d.device.ip}}" target="_blank">
+                    <mat-icon>add_task</mat-icon>
+                </a> -->
+                <a *ngIf="d.device.ip" mat-button href="http://{{d.device.ip}}/setconfig" target="_blank">
+                    <mat-icon>addchart</mat-icon>
+                </a>
+
+                <button mat-button (click)="testport(d.device.ip!!)">
+                    <mat-icon>add_alert</mat-icon>
+                </button>
+
+                <button mat-button (click)="reboot(d.device.ip)">
+                    <mat-icon>autorenew</mat-icon>
+                </button>
+                <a mat-button href="http://{{d.device.ip}}/scanwifi" target="_blank">
+                    <mat-icon>wifi</mat-icon>
+                </a>
+            </h3>
+            <table id="customers">
+
+                <tr>
+                    <td>Parameter</td>
+                    <td>value</td>
+                    <td>Option</td>
+
+                </tr>
+                <tr *ngFor="let show of d.shows;index as i">
+                    <!-- {{d|json}} -->
+                    <td>{{show}}</td>
+                    <td *ngIf="d.result">{{d.result[show]}}</td>
+                    <td *ngIf="d.result"><button mat-button (click)="removeshow(d.shows,i)">x</button></td>
+
+                </tr>
+            </table>
+        </div>
+
+    </div>
+</div>

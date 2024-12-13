@@ -8,13 +8,13 @@ export class DeviceService {
   constructor(public http: HttpClient) {}
   add(newdevice: Device): Observable<Device> {
     return this.http.post(
-      environment.host + '/rest/piserver/device/add',
+      environment.host + '/rest/piserver/pidevice/add',
       newdevice
     );
   }
   get(id: number) {
     return this.http.get<Device>(
-      environment.host + '/rest/piserver/device/get/' + id
+      environment.host + '/rest/piserver/pidevice/get/' + id
     );
   }
   sn(s: any): Observable<Device[]> {
@@ -29,7 +29,7 @@ export class DeviceService {
   }
   edit(device: Device) {
     return this.http.post<Device>(
-      environment.host + '/rest/piserver/device/edit',
+      environment.host + '/rest/piserver/pidevice/edit',
       device
     );
   }

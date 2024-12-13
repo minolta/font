@@ -4,20 +4,16 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Device } from '../device';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
-import { AutoModule } from '@kykub/auto';
+
 @Component({
   selector: 'app-deviceedit',
   templateUrl: './deviceedit.component.html',
   styleUrls: ['./deviceedit.component.css'],
-  standalone: true,
-  imports: [MatFormFieldModule, FormsModule, AutoModule],
 })
 export class DeviceeditComponent implements OnInit {
   device: Device = {};
   id: number = 0;
-  bag:any = { obj: { name: '' } };
+  bag = { obj: { name: '', id: 0 } };
   baguser = { obj: { name: '', id: 0 } };
   constructor(
     private route: ActivatedRoute,

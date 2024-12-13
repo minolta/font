@@ -1,0 +1,20 @@
+<mat-form-field>
+  <input
+    matInput
+    type="text"
+    [(ngModel)]="appname"
+    (change)="lastversion()"
+    placeholder="Appname"
+    required
+  />
+</mat-form-field>
+<mat-form-field>
+  <input matInput type="text" [(ngModel)]="ver" placeholder="Version" />
+</mat-form-field>
+
+<!--
+    (change)="fileChange($event)"
+    -->
+<input type="file" (change)="setfile($event)" placeholder="Upload file" />
+<button mat-button (click)="fileChange()" i18n>Upload</button>
+<h1>{{ msg }}</h1>
