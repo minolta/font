@@ -3,9 +3,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DeviceService } from '../../device/device.service';
 import { environment } from '../../../environments/environment';
 @Component({
-  selector: 'app-editconfig',
-  templateUrl: './editconfig.component.html',
-  styleUrls: ['./editconfig.component.css'],
+    selector: 'app-editconfig',
+    templateUrl: './editconfig.component.html',
+    styleUrls: ['./editconfig.component.css'],
+    standalone: false
 })
 /**
  * สำหรับ edit config ตรงๆ เลยไม่ผ่าน device

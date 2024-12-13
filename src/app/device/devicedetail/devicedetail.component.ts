@@ -13,9 +13,10 @@ import { Dhtcaches } from '../dhtcaches';
 import { Status } from '../status';
 import { Monitorcache } from '../monitorcache';
 @Component({
-  selector: 'app-devicedetail',
-  templateUrl: './devicedetail.component.html',
-  styleUrls: ['./devicedetail.component.css'],
+    selector: 'app-devicedetail',
+    templateUrl: './devicedetail.component.html',
+    styleUrls: ['./devicedetail.component.css'],
+    standalone: false
 })
 export class DevicedetailComponent implements OnInit, OnDestroy {
   getresult = true;

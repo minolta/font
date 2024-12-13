@@ -11,9 +11,10 @@ import { DeviceService } from '../../device/device.service';
 import { Device } from '../../device/device';
 import { SavedataService } from '../../savedata.service';
 @Component({
-  selector: 'app-dustinfo',
-  templateUrl: './dustinfo.component.html',
-  styleUrls: ['./dustinfo.component.css'],
+    selector: 'app-dustinfo',
+    templateUrl: './dustinfo.component.html',
+    styleUrls: ['./dustinfo.component.css'],
+    standalone: false
 })
 export class DustinfoComponent implements OnInit, OnDestroy {
   sd?: Date;

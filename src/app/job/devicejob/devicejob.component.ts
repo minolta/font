@@ -5,9 +5,10 @@ import { Job } from '../job';
 import { Pijob } from '../pijob';
 
 @Component({
-  selector: 'app-devicejob',
-  templateUrl: './devicejob.component.html',
-  styleUrls: ['./devicejob.component.css'],
+    selector: 'app-devicejob',
+    templateUrl: './devicejob.component.html',
+    styleUrls: ['./devicejob.component.css'],
+    standalone: false
 })
 export class DevicejobComponent implements OnInit {
   id?: number;

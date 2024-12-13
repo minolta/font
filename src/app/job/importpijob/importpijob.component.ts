@@ -4,9 +4,10 @@ import { PijobService } from './../pijob.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-importpijob',
-  templateUrl: './importpijob.component.html',
-  styleUrls: ['./importpijob.component.css'],
+    selector: 'app-importpijob',
+    templateUrl: './importpijob.component.html',
+    styleUrls: ['./importpijob.component.css'],
+    standalone: false
 })
 export class ImportpijobComponent implements OnInit {
   msg: any;

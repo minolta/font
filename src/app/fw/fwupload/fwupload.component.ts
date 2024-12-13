@@ -3,9 +3,10 @@ import { FwService } from '../fw.service';
 import { Pifw } from '../pifw';
 
 @Component({
-  selector: 'app-fwupload',
-  templateUrl: './fwupload.component.html',
-  styleUrls: ['./fwupload.component.css']
+    selector: 'app-fwupload',
+    templateUrl: './fwupload.component.html',
+    styleUrls: ['./fwupload.component.css'],
+    standalone: false
 })
 export class FwuploadComponent implements OnInit {
   ver:any

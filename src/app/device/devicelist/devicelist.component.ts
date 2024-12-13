@@ -8,9 +8,10 @@ import { Device } from '../device';
 import { environment } from '../../../environments/environment';
 import { WService } from '../../w.service';
 @Component({
-  selector: 'app-devicelist',
-  templateUrl: './devicelist.component.html',
-  styleUrls: ['./devicelist.component.css'],
+    selector: 'app-devicelist',
+    templateUrl: './devicelist.component.html',
+    styleUrls: ['./devicelist.component.css'],
+    standalone: false
 })
 export class DeviceListComponent implements OnInit {
   n?: Date;

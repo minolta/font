@@ -24,9 +24,10 @@ import { Pijobgroup } from '../pijobgroup';
 import { Port } from '../../port/port';
 
 @Component({
-  selector: 'app-pijobedit',
-  templateUrl: './pijobedit.component.html',
-  styleUrls: ['./pijobedit.component.css'],
+    selector: 'app-pijobedit',
+    templateUrl: './pijobedit.component.html',
+    styleUrls: ['./pijobedit.component.css'],
+    standalone: false
 })
 export class PijobeditComponent implements OnInit {
   sensors?: Sensorinjob[];

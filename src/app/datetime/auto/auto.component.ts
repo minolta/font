@@ -11,9 +11,10 @@ import { UntypedFormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
-  selector: 'app-auto',
-  templateUrl: './auto.component.html',
-  styleUrl: './auto.component.css',
+    selector: 'app-auto',
+    templateUrl: './auto.component.html',
+    styleUrl: './auto.component.css',
+    standalone: false
 })
 export class AutoComponent implements OnInit, OnChanges {
   @Input() label: string = 'Auto';

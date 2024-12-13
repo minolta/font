@@ -4,9 +4,10 @@ import { Ds18sensorService } from './../ds18sensor.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-dssensornew',
-  templateUrl: './dssensornew.component.html',
-  styleUrls: ['./dssensornew.component.css']
+    selector: 'app-dssensornew',
+    templateUrl: './dssensornew.component.html',
+    styleUrls: ['./dssensornew.component.css'],
+    standalone: false
 })
 export class DssensornewComponent implements OnInit {
 

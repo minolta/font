@@ -5,9 +5,10 @@ import { Pijobgroup } from '../pijobgroup';
 import { PijobgroupService } from '../pijobgroup.service';
 
 @Component({
-  selector: 'app-pijobgroupnew',
-  templateUrl: './pijobgroupnew.component.html',
-  styleUrls: ['./pijobgroupnew.component.css']
+    selector: 'app-pijobgroupnew',
+    templateUrl: './pijobgroupnew.component.html',
+    styleUrls: ['./pijobgroupnew.component.css'],
+    standalone: false
 })
 export class PijobgroupnewComponent implements OnInit {
   pijobgroup: Pijobgroup = {}

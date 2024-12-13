@@ -7,9 +7,10 @@ import { Time } from '@angular/common';
 import moment from 'moment';
 import { DeviceService } from './device/device.service';
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css',
+    standalone: false
 })
 export class AppComponent {
   title = 'font';

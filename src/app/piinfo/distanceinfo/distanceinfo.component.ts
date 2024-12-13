@@ -9,9 +9,10 @@ import { Ds18sensorService } from '../../device/ds18sensor.service';
 import { DeviceService } from '../../device/device.service';
 import { Distance } from '../distance';
 @Component({
-  selector: 'app-distanceinfo',
-  templateUrl: './distanceinfo.component.html',
-  styleUrls: ['./distanceinfo.component.css'],
+    selector: 'app-distanceinfo',
+    templateUrl: './distanceinfo.component.html',
+    styleUrls: ['./distanceinfo.component.css'],
+    standalone: false
 })
 export class DistanceinfoComponent implements OnInit, OnDestroy {
   lastupdate: any;

@@ -2,9 +2,10 @@ import { DevicegroupService } from './../devicegroup.service';
 import { Component, OnInit } from '@angular/core';
 import { Devicegroup } from '../devicegroup';
 @Component({
-  selector: 'app-devicegrouplist',
-  templateUrl: './devicegrouplist.component.html',
-  styleUrls: ['./devicegrouplist.component.css'],
+    selector: 'app-devicegrouplist',
+    templateUrl: './devicegrouplist.component.html',
+    styleUrls: ['./devicegrouplist.component.css'],
+    standalone: false
 })
 export class DevicegrouplistComponent implements OnInit {
   rows?: Devicegroup[] = [];

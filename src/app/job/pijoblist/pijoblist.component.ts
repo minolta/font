@@ -20,9 +20,10 @@ import { Device } from '../../device/device';
 import { Pijob } from '../pijob';
 import { environment } from '../../../environments/environment';
 @Component({
-  selector: 'app-pijoblist',
-  templateUrl: './pijoblist.component.html',
-  styleUrls: ['./pijoblist.component.css'],
+    selector: 'app-pijoblist',
+    templateUrl: './pijoblist.component.html',
+    styleUrls: ['./pijoblist.component.css'],
+    standalone: false
 })
 export class PijoblistComponent implements OnInit {
   bag = { obj: { id: 0, name: '' } };

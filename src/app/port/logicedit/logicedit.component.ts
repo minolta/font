@@ -5,9 +5,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-logicedit',
-  templateUrl: './logicedit.component.html',
-  styleUrls: ['./logicedit.component.css'],
+    selector: 'app-logicedit',
+    templateUrl: './logicedit.component.html',
+    styleUrls: ['./logicedit.component.css'],
+    standalone: false
 })
 export class LogiceditComponent implements OnInit {
   logic: Logic = {};

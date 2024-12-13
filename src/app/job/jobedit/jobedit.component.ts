@@ -5,9 +5,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-jobedit',
-  templateUrl: './jobedit.component.html',
-  styleUrls: ['./jobedit.component.css'],
+    selector: 'app-jobedit',
+    templateUrl: './jobedit.component.html',
+    styleUrls: ['./jobedit.component.css'],
+    standalone: false
 })
 export class JobeditComponent implements OnInit {
   job: Job = {};

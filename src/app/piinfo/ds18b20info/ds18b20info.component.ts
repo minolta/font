@@ -23,9 +23,10 @@ import { DeviceService } from '../../device/device.service';
 import { PressureService } from '../../pressure/pressure.service';
 import { environment } from '../../../environments/environment';
 @Component({
-  selector: 'app-ds18b20info',
-  templateUrl: './ds18b20info.component.html',
-  styleUrls: ['./ds18b20info.component.css'],
+    selector: 'app-ds18b20info',
+    templateUrl: './ds18b20info.component.html',
+    styleUrls: ['./ds18b20info.component.css'],
+    standalone: false
 })
 export class Ds18b20infoComponent implements OnInit, OnDestroy {
   vdata: number[] = [];
@@ -359,9 +360,10 @@ export class Ds18b20infoComponent implements OnInit, OnDestroy {
 }
 
 @Component({
-  selector: 'app-askbeforedetele',
-  templateUrl: './askbeforedete.html',
-  styleUrls: ['./ds18b20info.component.css'],
+    selector: 'app-askbeforedetele',
+    templateUrl: './askbeforedete.html',
+    styleUrls: ['./ds18b20info.component.css'],
+    standalone: false
 })
 export class AskbeforedeletedsComponent implements OnInit {
   constructor(

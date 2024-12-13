@@ -3,9 +3,10 @@ import { Component, OnInit } from '@angular/core';
 // import { environment } from 'src/environments/environment';
 import { Activedevice } from '../activedevice';
 @Component({
-  selector: 'app-activedevice',
-  templateUrl: './activedevice.component.html',
-  styleUrls: ['./activedevice.component.css']
+    selector: 'app-activedevice',
+    templateUrl: './activedevice.component.html',
+    styleUrls: ['./activedevice.component.css'],
+    standalone: false
 })
 export class ActivedeviceComponent implements OnInit {
   rows: Activedevice[] = []

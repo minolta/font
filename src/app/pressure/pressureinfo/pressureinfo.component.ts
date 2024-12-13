@@ -17,9 +17,10 @@ import { SavedataService } from '../../savedata.service';
 import { environment } from '../../../environments/environment';
 import { Device } from '../../device/device';
 @Component({
-  selector: 'app-pressureinfo',
-  templateUrl: './pressureinfo.component.html',
-  styleUrls: ['./pressureinfo.component.css'],
+    selector: 'app-pressureinfo',
+    templateUrl: './pressureinfo.component.html',
+    styleUrls: ['./pressureinfo.component.css'],
+    standalone: false
 })
 export class PressureinfoComponent implements OnInit, OnDestroy {
   havechart = false;
