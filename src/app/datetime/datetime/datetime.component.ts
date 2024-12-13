@@ -1,5 +1,5 @@
 import { Time } from '@angular/common';
-import { Component, EventEmitter, Input, Output,ViewChild, ElementRef } from '@angular/core';
+import { Component, EventEmitter, Input, Output,ViewChild, ElementRef, signal } from '@angular/core';
 import moment from 'moment';
 @Component({
   selector: 'app-datetime',
@@ -14,6 +14,8 @@ export class DatetimeComponent {
   full?: string;
   @Input() tl: string = 'Time';
   @Input() dl: string = 'Date';
+  t = signal('')
+  d = signal('')
 
   // @Input()
   // set datetime(d: Date | undefined) {
@@ -31,6 +33,7 @@ export class DatetimeComponent {
   set datetime(d: Date | undefined) {
     this._datetime = d;
     console.debug('Set date time', this._datetime);
+    
   }
 
   _datetime?: Date;

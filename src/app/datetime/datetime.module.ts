@@ -6,8 +6,9 @@ import { AutoComponent } from './auto/auto.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { DatetimesComponent } from './datetimes/datetimes.component';
 @NgModule({
-  declarations: [DatetimeComponent, AutoComponent],
+  declarations: [DatetimeComponent, AutoComponent, DatetimesComponent],
   imports: [
     CommonModule,
     FormsModule,

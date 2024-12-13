@@ -66,4 +66,4 @@ docker rm -f pifont;docker pull  kykub/pinfont:18;docker run -p 900:80 --name pi
 
 ng b;docker build -t kykub/pinfont:20 .;docker push  kykub/pinfont:20
 
-docker rm -f pifont;docker pull  kykub/pinfont:18;docker run -p 900:80 --name pifont -d   --restart=always  kykub/pinfont:20;docker image prune -a -f;docker logs -f pifont17
+docker rm -f pifont;docker pull  kykub/pinfont:20;docker run -p 900:80 --name pifont -d   --restart=always  kykub/pinfont:20;docker image prune -a -f;docker logs -f pifont
