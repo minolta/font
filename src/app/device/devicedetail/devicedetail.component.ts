@@ -45,6 +45,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
   autoupdate = false;
   status?: Status[];
   filtername?: any;
+  movingpressure = 0;
   port = 80;
   dr = false;
   q?: any;
@@ -223,7 +224,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
     });
 
     if (this.device.id != 0) {
-      this.s()
+      this.s();
       this.getwarterstatus();
     } else {
       this.route.params.subscribe((params) => {
@@ -298,6 +299,21 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
       this.status = d;
       console.log('Thread info:' + JSON.stringify(d));
     });
+  }
+  getmovingpressure() {
+    let url = 'http://' + this.ip + ':' + this.port + '/pressureinfo';
+    this.getresult = false;
+    this.service.http.get<number>(url).subscribe(
+      (d) => {
+        console.log('cache dht:', this.dhtcaches);
+        this.movingpressure = d;
+        this.getresult = true;
+      },
+      (e) => {
+        console.error('error', e);
+        this.getresult = true;
+      }
+    );
   }
   showdhts() {
     let url = 'http://' + this.ip + ':' + this.port + '/dhtcaches';
@@ -481,6 +497,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
         this.getusepowerjob();
         this.showopenpumps();
         this.showdhts();
+        this.getmovingpressure();
         // this.getMonitorcache();
         this.getresult = true;
       }

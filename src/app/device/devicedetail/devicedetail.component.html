@@ -110,7 +110,7 @@
   <b>{{ device.ip }}</b>
   <div *ngIf="lastdhtvalue">H:{{ lastdhtvalue.h }} T:{{ lastdhtvalue.t }}</div>
   Last update:{{ uptime }} updatetime: {{ day | number : "1.0" }}วัน
-  {{ h }}ชั่วโมง {{ min }}นาที {{ sec }}วินาที
+  {{ h }}ชั่วโมง {{ min }}นาที {{ sec }}วินาที Moving Pressure:{{movingpressure}}
 </div>
 
 <div *ngIf="!ws.mobile">
@@ -430,3 +430,4 @@
     </code>
   </div>
 </div>
+
