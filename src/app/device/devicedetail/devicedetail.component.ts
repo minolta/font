@@ -498,7 +498,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
         this.showopenpumps();
         this.showdhts();
         this.getmovingpressure();
-        // this.getMonitorcache();
+        this.getMonitorcache();
         this.getresult = true;
       }
     } else {

@@ -216,19 +216,22 @@
 
   <table id="customers" *ngIf="monitors?.length!! > 0">
     <tr>
-      <td colspan="4">Monitor Cache</td>
+      <td colspan="4"><b>Monitor Cache</b></td>
     </tr>
     <tr>
       <td>id</td>
       <td>status</td>
       <td>output</td>
-      <td>readdate</td>
+      <td>Cache date</td>
+      <td>read date</td>
+
     </tr>
     <tr *ngFor="let m of monitors; let i = index">
       <td>{{ m.id }}</td>
       <td>{{ m.status}}</td>
       <td>{{ m.output }}</td>
       <td>{{ m.cachetime| date : "dd/MM/yyyy HH:mm:ss" }}</td>
+      <td>{{ m.readcache| date : "dd/MM/yyyy HH:mm:ss" }}</td>
     </tr>
   </table>
 </div>
@@ -412,6 +415,32 @@
     <!-- <td>{{p.groupid}}</td> -->
   </tr>
 </table>
+
+<!-- <table id="customers" *ngIf="monitors">
+  <tr>
+    <td colspan="4"><b>Monitors</b></td>
+  </tr>
+  <tr>
+    <td>#</td>
+    <td>Ip</td>
+    <td>cache time</td>
+    <td>Status</td>
+    <td>Output</td>
+    <td>Read time</td>
+
+  </tr>
+  <tr *ngFor="let p of monitors; let i = index">
+    <td>{{ i + 1 }}</td>
+    <td>{{ p.id }}</td>
+    <td>{{ p.cachetime }}</td>
+    <td>{{ p.status }}</td>
+    <td>{{ p.output }}</td>
+    <td>{{ p.readcache }}</td>
+
+
+  </tr>
+</table> -->
+
 
 <mat-form-field>
   <input
