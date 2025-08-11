@@ -20,7 +20,7 @@ export class ImportpijobComponent implements OnInit {
   }
   fileChange() {
     console.log(this.file);
-    let URL = environment.host + '/pijob/import';
+    let URL = environment.host + '/rest/piserver/pijob/import';
     let fileList: FileList = this.file;
     if (fileList.length > 0) {
       let file: File = fileList[0];
