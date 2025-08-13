@@ -1,6 +1,7 @@
 import { Component, OnInit, effect, signal } from '@angular/core';
 import { FwService } from '../fw.service';
 import { Pifw } from '../pifw';
+import { Fw } from '../../fw';
 
 @Component({
     selector: 'app-fwupload',
@@ -52,10 +53,11 @@ export class FwuploadComponent implements OnInit {
       this.service.add(formData)
         .subscribe(
           data => {
-            console.log('success : ' + data);
-            this.msg = 'Upload success Version:' + this.ver;
-            this.ver = 0;
-            this.appname = 'default';
+            console.log('upload success : ' , data);
+            let fw = data as any
+            this.msg = 'Upload success Version:' + fw.ver;
+            this.ver = fw.ver
+            this.appname = fw.app.name;
             this.updatelast()
           },
           error => {
@@ -68,7 +70,8 @@ export class FwuploadComponent implements OnInit {
 
   updatelast() {
     this.service.last(this.appname).subscribe(d => {
-
+      
+      console.log('re',d)
       let ver = d as any
       this.ver = ver.ver + 1
       // this.lastver = ver
