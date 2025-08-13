@@ -15,6 +15,6 @@
 <!--
     (change)="fileChange($event)"
     -->
-<input type="file" (change)="setfile($event)" placeholder="Upload file" />
+<input type="file"  #fileInput (change)="setfile($event)" placeholder="Upload file" />
 <button mat-button (click)="fileChange()" i18n>Upload</button>
 <h1>{{ msg }}</h1>
