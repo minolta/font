@@ -25,6 +25,7 @@ import { PressureinfoComponent } from './pressure/pressureinfo/pressureinfo.comp
 import { PortnewComponent } from './port/portnew/portnew.component';
 import { PortlistComponent } from './port/portlist/portlist.component';
 import { PorteditComponent } from './port/portedit/portedit.component';
+import { ExportjobComponent } from './job/exportjob/exportjob.component';
 // import { FwuploadComponent } from './fw/fwupload/fwupload.component';
 
 const routes: Routes = [
@@ -46,7 +47,8 @@ const routes: Routes = [
   { path: 'jobnew', component: JobnewComponent },
   { path: 'zonelist', component: ZonelistComponent },
   { path: 'pijobgroupnew', component: PijobgroupnewComponent },
-
+  { path: 'exportpijob', component: ExportjobComponent },
+  
   { path: 'deviceparameter', component: ParameterviewComponent },
 
   { path: 'directio', component: DirectioComponent },
