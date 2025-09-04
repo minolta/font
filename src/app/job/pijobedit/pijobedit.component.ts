@@ -273,7 +273,7 @@ export class PijobeditComponent implements OnInit {
     //   );
 
     // console.debug('editpijob Save obj:', p);
-
+    this.pijob.ports = p.ports
     this.pjs.edit(this.pijob).subscribe(
       (d) => {
         console.debug('Edit D: ', d);
