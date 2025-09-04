@@ -5,9 +5,10 @@ import * as FileSaver from 'file-saver';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 @Component({
-  selector: 'app-exportjob',
-  templateUrl: './exportjob.component.html',
-  styleUrls: ['./exportjob.component.css']
+    selector: 'app-exportjob',
+    templateUrl: './exportjob.component.html',
+    styleUrls: ['./exportjob.component.css'],
+    standalone: false
 })
 export class ExportjobComponent implements OnInit {
 

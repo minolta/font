@@ -3,9 +3,10 @@ import { LogicService } from '../logic.service';
 import { Logic } from '../logic';
 
 @Component({
-  selector: 'app-logiclist',
-  templateUrl: './logiclist.component.html',
-  styleUrls: ['./logiclist.component.css'],
+    selector: 'app-logiclist',
+    templateUrl: './logiclist.component.html',
+    styleUrls: ['./logiclist.component.css'],
+    standalone: false
 })
 export class LogiclistComponent implements OnInit {
   constructor(public service: LogicService) {}

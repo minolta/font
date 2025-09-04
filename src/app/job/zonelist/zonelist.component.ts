@@ -5,9 +5,10 @@ import { DeviceService } from "../../device/device.service";
 import { Zone } from "../zone";
 
 @Component({
-  selector: "app-zonelist",
-  templateUrl: "./zonelist.component.html",
-  styleUrls: ["./zonelist.component.css"],
+    selector: "app-zonelist",
+    templateUrl: "./zonelist.component.html",
+    styleUrls: ["./zonelist.component.css"],
+    standalone: false
 })
 export class ZonelistComponent implements OnInit {
   s = "";

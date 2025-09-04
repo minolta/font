@@ -4,9 +4,10 @@ import { Job } from '../job';
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-joblist',
-  templateUrl: './joblist.component.html',
-  styleUrls: ['./joblist.component.css'],
+    selector: 'app-joblist',
+    templateUrl: './joblist.component.html',
+    styleUrls: ['./joblist.component.css'],
+    standalone: false
 })
 export class JoblistComponent implements OnInit {
   constructor(public service: JobService) {}

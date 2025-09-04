@@ -13,9 +13,10 @@ import { Status } from '../../device/status';
 import { Port } from '../../port/port';
 import { Device } from '../../device/device';
 @Component({
-  selector: 'app-directio',
-  templateUrl: './directio.component.html',
-  styleUrls: ['./directio.component.css'],
+    selector: 'app-directio',
+    templateUrl: './directio.component.html',
+    styleUrls: ['./directio.component.css'],
+    standalone: false
 })
 export class DirectioComponent implements OnInit, OnDestroy {
   devicebag = { obj: { name: '', ip: '', id: 0 } };

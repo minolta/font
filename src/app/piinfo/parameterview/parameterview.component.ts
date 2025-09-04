@@ -7,9 +7,10 @@ import { Device } from '../../device/device';
 import { Devicetoshow } from '../devicetoshow';
 import { GetserviceService } from '../../getservice.service';
 @Component({
-  selector: 'app-parameterview',
-  templateUrl: './parameterview.component.html',
-  styleUrls: ['./parameterview.component.css'],
+    selector: 'app-parameterview',
+    templateUrl: './parameterview.component.html',
+    styleUrls: ['./parameterview.component.css'],
+    standalone: false
 })
 export class ParameterviewComponent implements OnInit, OnDestroy {
   device: any;

@@ -4,4 +4,5 @@ export interface Monitorcache {
   cachetime?: Date;
   status?: number;
   output?: number;
+  readcache?:Date;
 }

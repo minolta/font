@@ -4,9 +4,10 @@ import { Job } from './../job';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-jobnew',
-  templateUrl: './jobnew.component.html',
-  styleUrls: ['./jobnew.component.css']
+    selector: 'app-jobnew',
+    templateUrl: './jobnew.component.html',
+    styleUrls: ['./jobnew.component.css'],
+    standalone: false
 })
 export class JobnewComponent implements OnInit {
   job: Job = {}

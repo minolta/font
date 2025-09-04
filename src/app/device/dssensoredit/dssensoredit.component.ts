@@ -5,9 +5,10 @@ import { Ds18sensorService } from '../ds18sensor.service';
 import { Ds18b20sensor } from '../ds18b20sensor';
 
 @Component({
-  selector: 'app-dssensoredit',
-  templateUrl: './dssensoredit.component.html',
-  styleUrls: ['./dssensoredit.component.css']
+    selector: 'app-dssensoredit',
+    templateUrl: './dssensoredit.component.html',
+    styleUrls: ['./dssensoredit.component.css'],
+    standalone: false
 })
 export class DssensoreditComponent implements OnInit {
 

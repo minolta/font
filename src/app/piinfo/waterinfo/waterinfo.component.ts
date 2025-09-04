@@ -3,9 +3,10 @@ import { Ds18b20Service } from './../../device/ds18b20.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
-  selector: 'app-waterinfo',
-  templateUrl: './waterinfo.component.html',
-  styleUrls: ['./waterinfo.component.css']
+    selector: 'app-waterinfo',
+    templateUrl: './waterinfo.component.html',
+    styleUrls: ['./waterinfo.component.css'],
+    standalone: false
 })
 export class WaterinfoComponent implements OnInit,OnDestroy {
 

@@ -5,9 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Devicegroup } from '../devicegroup';
 
 @Component({
-  selector: 'app-devicegroupedit',
-  templateUrl: './devicegroupedit.component.html',
-  styleUrls: ['./devicegroupedit.component.css']
+    selector: 'app-devicegroupedit',
+    templateUrl: './devicegroupedit.component.html',
+    styleUrls: ['./devicegroupedit.component.css'],
+    standalone: false
 })
 export class DevicegroupeditComponent implements OnInit {
 

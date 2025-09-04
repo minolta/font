@@ -20,9 +20,10 @@ import { Job } from '../job';
 import { Pijobgroup } from '../pijobgroup';
 
 @Component({
-  selector: 'app-pijobnew',
-  templateUrl: './pijobnew.component.html',
-  styleUrls: ['./pijobnew.component.css'],
+    selector: 'app-pijobnew',
+    templateUrl: './pijobnew.component.html',
+    styleUrls: ['./pijobnew.component.css'],
+    standalone: false
 })
 export class PijobnewComponent implements OnInit {
   sensors: Sensorinjob[] = Array<Sensorinjob>();

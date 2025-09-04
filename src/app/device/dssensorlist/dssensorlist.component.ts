@@ -5,9 +5,10 @@ import { Ds18b20Service } from '../ds18b20.service';
 import { Ds18b20sensor } from '../ds18b20sensor';
 
 @Component({
-  selector: 'app-dssensorlist',
-  templateUrl: './dssensorlist.component.html',
-  styleUrls: ['./dssensorlist.component.css'],
+    selector: 'app-dssensorlist',
+    templateUrl: './dssensorlist.component.html',
+    styleUrls: ['./dssensorlist.component.css'],
+    standalone: false
 })
 export class DssensorListComponent implements OnInit {
   rows?: Ds18b20sensor[];

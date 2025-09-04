@@ -18,9 +18,10 @@ import { ActivatedRoute } from '@angular/router';
 import { BaseChartDirective } from 'ng2-charts';
 import { Device } from '../../device/device';
 @Component({
-  selector: 'app-dhtinfo',
-  templateUrl: './dhtinfo.component.html',
-  styleUrls: ['./dhtinfo.component.css'],
+    selector: 'app-dhtinfo',
+    templateUrl: './dhtinfo.component.html',
+    styleUrls: ['./dhtinfo.component.css'],
+    standalone: false
 })
 export class DhtinfoComponent implements OnInit, OnDestroy {
   hmin? = 0;

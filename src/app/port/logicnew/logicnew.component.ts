@@ -4,9 +4,10 @@ import { Component, OnInit } from '@angular/core';
 import { Logic } from '../logic';
 
 @Component({
-  selector: 'app-logicnew',
-  templateUrl: './logicnew.component.html',
-  styleUrls: ['./logicnew.component.css']
+    selector: 'app-logicnew',
+    templateUrl: './logicnew.component.html',
+    styleUrls: ['./logicnew.component.css'],
+    standalone: false
 })
 export class LogicnewComponent implements OnInit {
   logic: Logic = {}

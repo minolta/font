@@ -9,9 +9,10 @@ import { SavedataService } from '../../savedata.service';
 import { ArgData } from '../argdata';
 
 @Component({
-  selector: 'app-co2',
-  templateUrl: './co2.component.html',
-  styleUrls: ['./co2.component.css'],
+    selector: 'app-co2',
+    templateUrl: './co2.component.html',
+    styleUrls: ['./co2.component.css'],
+    standalone: false
 })
 export class Co2Component implements OnInit, OnDestroy {
   autoupdate = false;

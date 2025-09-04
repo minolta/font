@@ -12,9 +12,10 @@ import { HttpClient } from '@angular/common/http';
 import { Vdata } from '../../piinof/vdata';
 import { Device } from '../../device/device';
 @Component({
-  selector: 'app-vbattinfo',
-  templateUrl: './vbattinfo.component.html',
-  styleUrls: ['./vbattinfo.component.css'],
+    selector: 'app-vbattinfo',
+    templateUrl: './vbattinfo.component.html',
+    styleUrls: ['./vbattinfo.component.css'],
+    standalone: false
 })
 export class VbattinfoComponent implements OnInit {
   imin? = 0;

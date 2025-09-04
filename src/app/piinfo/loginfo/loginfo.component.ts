@@ -10,9 +10,10 @@ import { AskbeforedeletedsComponent } from '../ds18b20info/ds18b20info.component
 import { Logic } from '../../port/logic';
 import { Log } from '../log';
 @Component({
-  selector: 'app-loginfo',
-  templateUrl: './loginfo.component.html',
-  styleUrls: ['./loginfo.component.css'],
+    selector: 'app-loginfo',
+    templateUrl: './loginfo.component.html',
+    styleUrls: ['./loginfo.component.css'],
+    standalone: false
 })
 export class LoginfoComponent implements OnInit {
   sd?: Date;

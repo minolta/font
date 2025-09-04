@@ -16,8 +16,10 @@ import { Monitorcache } from '../monitorcache';
   selector: 'app-devicedetail',
   templateUrl: './devicedetail.component.html',
   styleUrls: ['./devicedetail.component.css'],
+  standalone: false,
 })
 export class DevicedetailComponent implements OnInit, OnDestroy {
+  msg = ''; //สำหรับแจ้ง info
   getresult = true;
   uptime = 0;
   day = 0;
@@ -43,6 +45,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
   autoupdate = false;
   status?: Status[];
   filtername?: any;
+  movingpressure = 0;
   port = 80;
   dr = false;
   q?: any;
@@ -74,7 +77,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
       console.log('Unsubscription');
     }
     this.getresult = false;
-    console.debug("Clear Interval",this.itid)
+    console.debug('Clear Interval', this.itid);
     clearInterval(this.itid);
   }
 
@@ -221,17 +224,18 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
     });
 
     if (this.device.id != 0) {
-      this.showthread(this.device.ip!!);
+      this.s();
       this.getwarterstatus();
     } else {
       this.route.params.subscribe((params) => {
         this.id = params['id'];
         this.service.get(this.id).subscribe((d) => {
           this.device = d;
+          this.msg = 'get info from device ' + this.device.name;
           // this.bag.obj = d as any;
           if (this.device.id) this.last(this.device.id);
           this.lastdht(this.device.id);
-          this.showthread(this.device.ip!!);
+          this.s();
         });
       });
     }
@@ -245,8 +249,8 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
     this.update();
   }
   getMonitorcache() {
-    let url = 'http://' + this.device.ip +':'+this.port+'/monitorcache';
-    console.debug('load monitor ',url,this.device)
+    let url = 'http://' + this.device.ip + ':' + this.port + '/monitorcache';
+    console.debug('load monitor ', url, this.device);
     this.ts.http.get<Monitorcache[]>(url).subscribe(
       (d) => {
         this.monitors = d;
@@ -295,6 +299,21 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
       this.status = d;
       console.log('Thread info:' + JSON.stringify(d));
     });
+  }
+  getmovingpressure() {
+    let url = 'http://' + this.ip + ':' + this.port + '/pressureinfo';
+    this.getresult = false;
+    this.service.http.get<number>(url).subscribe(
+      (d) => {
+        console.log('cache dht:', this.dhtcaches);
+        this.movingpressure = d;
+        this.getresult = true;
+      },
+      (e) => {
+        console.error('error', e);
+        this.getresult = true;
+      }
+    );
   }
   showdhts() {
     let url = 'http://' + this.ip + ':' + this.port + '/dhtcaches';
@@ -373,9 +392,10 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
       );
   }
   showthreadfiltername(ip: string, filtername: String) {
+    this.getresult = false;
     if (!ip && this.ip != null) ip = this.ip;
     let url = 'http://' + ip + ':' + this.port + '/l3/' + filtername;
-    console.log(url);
+    console.log('get info by fliter ', url);
     if (!this.dr)
       this.service.http
         // .post(environment.host + "/rest/piserver/getrequest", { url: url })
@@ -383,19 +403,32 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
         .subscribe(
           (d: any) => {
             console.log('Return Thread', d);
+            this.getresult = true;
             if (this.onlyactive)
               this.thread = d.filter((i: any) => i.runstatus);
             else this.thread = d;
           },
           (e) => {
             // this.error = e;
+            this.msg = e.message;
+            this.getresult = true;
           }
         );
-    else
-      this.service.http.get<any>(url).subscribe((d) => {
-        this.thread = d;
-        console.log('Thread info:' + JSON.stringify(d));
-      });
+    else {
+      this.getresult = false;
+      this.service.http.get<any>(url).subscribe(
+        (d) => {
+          this.thread = d;
+          this.getresult = true;
+          if (this.onlyactive) this.thread = d.filter((i: any) => i.runstatus);
+          else this.thread = d;
+          console.log('Thread info:' + JSON.stringify(d));
+        },
+        (e) => {
+          this.msg = e.message;
+        }
+      );
+    }
   }
   showthreadinpool(ip: string) {
     let url = 'http://' + ip + '/listpool';
@@ -449,22 +482,27 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
   }
   update() {
     // this.error = null;
-    this.getresult = false;
-    console.log('To show ' + this.toshow);
-    this.activejob();
-    if (this.autoupdate) {
-      if (!this.filtername || 0 === this.filtername.length)
-        this.showthread(this.bag.obj.ip);
-      else {
-        this.showthreadfiltername(this.bag.obj.ip, this.filtername);
+    if (this.getresult) {
+      this.getresult = false;
+      console.log('To show ' + this.toshow);
+      this.activejob();
+      if (this.autoupdate) {
+        if (!this.filtername || 0 === this.filtername.length)
+          this.showthread(this.bag.obj.ip);
+        else {
+          this.showthreadfiltername(this.bag.obj.ip, this.filtername);
+        }
+        this.lq();
+        this.getdate();
+        this.getusepowerjob();
+        this.showopenpumps();
+        this.showdhts();
+        this.getmovingpressure();
+        this.getMonitorcache();
+        this.getresult = true;
       }
-      this.lq();
-      this.getdate();
-      this.getusepowerjob();
-      this.showopenpumps();
-      this.showdhts();
-      // this.getMonitorcache();
-      this.getresult = true;
+    } else {
+      console.debug('not getresult ', true);
     }
   }
 
@@ -474,7 +512,12 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
     this.device = e;
   }
   s() {
-    this.showthread(this.bag.obj.ip);
+    if (this.filtername.length > 0) {
+      this.showthreadfiltername(this.bag.obj.ip, this.filtername);
+    } else {
+      this.showthread(this.bag.obj.ip);
+    }
+
     this.toshow = 0;
     this.savedevice();
   }
@@ -509,7 +552,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
   getdate() {
     let url = 'http://' + this.ip + ':' + this.port + '';
     this.service.http.get(url).subscribe((d) => {
-      console.log('uptime', d);
+      console.debug('uptime', d);
       let aa = d as any;
       this.uptime = aa.uptime;
 

@@ -4,9 +4,10 @@ import { PijobService } from './../pijob.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-importpijob',
-  templateUrl: './importpijob.component.html',
-  styleUrls: ['./importpijob.component.css'],
+    selector: 'app-importpijob',
+    templateUrl: './importpijob.component.html',
+    styleUrls: ['./importpijob.component.css'],
+    standalone: false
 })
 export class ImportpijobComponent implements OnInit {
   msg: any;
@@ -19,7 +20,7 @@ export class ImportpijobComponent implements OnInit {
   }
   fileChange() {
     console.log(this.file);
-    let URL = environment.host + '/pijob/import';
+    let URL = environment.host + '/rest/piserver/pijob/import';
     let fileList: FileList = this.file;
     if (fileList.length > 0) {
       let file: File = fileList[0];

@@ -27,6 +27,7 @@ import { Port } from '../../port/port';
   selector: 'app-pijobedit',
   templateUrl: './pijobedit.component.html',
   styleUrls: ['./pijobedit.component.css'],
+  standalone: false,
 })
 export class PijobeditComponent implements OnInit {
   sensors?: Sensorinjob[];
@@ -79,9 +80,10 @@ export class PijobeditComponent implements OnInit {
     console.log('Call pijobedit');
     this.route.params.subscribe((params) => {
       this.id = params['id'];
-      console.info('id:' + this.id);
+      console.info('pijob id', this.id);
       this.pjs.get(this.id).subscribe(
         (d) => {
+          console.info('Get pijobdata', d);
           this.pijob = d;
           this.loadSensorinpijob();
           if (this.pijob.id) this.loadpump(this.pijob.id);
@@ -140,8 +142,7 @@ export class PijobeditComponent implements OnInit {
       found = this.sensors.find((i) => i.sensor!!.id == this.devicedes.id);
     }
     if (!found) {
-      if (!this.sensors)
-       this.sensors = Array<Sensorinjob>();
+      if (!this.sensors) this.sensors = Array<Sensorinjob>();
       this.sensors.push({
         sensor: this.devicedes,
       });
@@ -245,39 +246,39 @@ export class PijobeditComponent implements OnInit {
       pij.device = i.device;
       pij.enable = i.enable;
       pij.portname = i.portname;
-      pij.portname_id = i.portname.id
+      pij.portname_id = i.portname.id;
       pij.status = i.status;
       pij.runtime = i.runtime;
       pij.waittime = i.waittime;
       pij.ver = i.ver;
-      pij.pijob_id = this.pijob.id;
-      pij.pijob = this.pijob;
+      // pij.pijob_id = this.pijob.id;
+      // pij.pijob = this.pijob;
       return pij;
     });
-    console.debug('port to edit', p.ports);
-    this.http
-      .post<Portinjobobj[]>(
-        environment.host + '/rest/piserver/pijob/editport',
-        p.ports
-      )
-      .subscribe(
-        (d) => {
-          console.debug('Edit port return ', d);
-          this.ports = d;
-          console.debug('ser  new port ', this.ports);
-        },
-        (e) => {
-          console.error('ERROR edit port', e);
-        }
-      );
+    // console.debug('port to edit', p.ports);
+    // this.http
+    //   .post<Portinjobobj[]>(
+    //     environment.host + '/rest/piserver/pijob/editport',
+    //     p.ports
+    //   )
+    //   .subscribe(
+    //     (d) => {
+    //       console.debug('Edit port return ', d);
+    //       this.ports = d;
+    //       console.debug('ser  new port ', this.ports);
+    //     },
+    //     (e) => {
+    //       console.error('ERROR edit port', e);
+    //     }
+    //   );
 
-    console.debug('editpijob Save obj:', p);
+    // console.debug('editpijob Save obj:', p);
 
     this.pjs.edit(this.pijob).subscribe(
       (d) => {
         console.debug('Edit D: ', d);
         this.pijob = d;
-        this.setport();
+        // this.setport();
         this.bar.open('Edit ', '' + this.pijob.name, { duration: 2000 });
         //this.bar.open("Edit", "", { duration: 2000 })
       },
@@ -327,49 +328,82 @@ export class PijobeditComponent implements OnInit {
       });
   }
   setport2() {
-    this.pjs.listport(this.id).subscribe(
-      (d) => {
-        console.debug('Load port', d);
-        let s = d.map((item) => {
-          let o: Portinjobobj = {
-            id: item.id,
-            enable: item.enable,
-            portname: item.portname,
-            status: item.status,
-            runtime: item.runtime,
-            waittime: item.waittime,
-            device: item.device,
-            pijob_id: item.pijob_id,
-            pijob: this.pijob, //ไม่ติด pijob มา
-            ver: item.ver, //สำหรับ delete
-          };
-          return o;
-        });
+    let s = this.pijob.ports.map((item:any) => {
+      let o: Portinjobobj = {
+        id: item.id,
+        enable: item.enable,
+        portname: item.portname,
+        status: item.status,
+        runtime: item.runtime,
+        waittime: item.waittime,
+        device: item.device,
+        pijob_id: item.pijob_id,
+        pijob: this.pijob, //ไม่ติด pijob มา
+        ver: item.ver, //สำหรับ delete
+      };
+      return o;
+    });
+    s.sort(function (a:Portinjobobj, b:Portinjobobj) {
+      var x = a.device.name.toLowerCase();
+      var y = b.device.name.toLowerCase();
+      var p1 = a.portname.name.toLocaleLowerCase();
+      var p2 = b.portname.name.toLocaleLowerCase();
 
-        s.sort(function (a, b) {
-          var x = a.device.name.toLowerCase();
-          var y = b.device.name.toLowerCase();
-          var p1 = a.portname.name.toLocaleLowerCase();
-          var p2 = b.portname.name.toLocaleLowerCase();
+      if (x < y) return -1;
+      if (x > y) return 1;
 
-          if (x < y) return -1;
-          if (x > y) return 1;
+      //ถ้า เท่ากันให้เรียง port ด้วย
+      //   return 0;
+      if (p1 < p2) return -1;
+      if (p1 > p2) return 1;
 
-          //ถ้า เท่ากันให้เรียง port ด้วย
-          //   return 0;
-          if (p1 < p2) return -1;
-          if (p1 > p2) return 1;
+      return 0;
+    });
 
-          return 0;
-        });
+    this.ports = s;
+    // this.pjs.listport(this.id).subscribe(
+    //   (d) => {
+    //     console.debug('Load port', d);
+    //     let s = d.map((item) => {
+    //       let o: Portinjobobj = {
+    //         id: item.id,
+    //         enable: item.enable,
+    //         portname: item.portname,
+    //         status: item.status,
+    //         runtime: item.runtime,
+    //         waittime: item.waittime,
+    //         device: item.device,
+    //         pijob_id: item.pijob_id,
+    //         pijob: this.pijob, //ไม่ติด pijob มา
+    //         ver: item.ver, //สำหรับ delete
+    //       };
+    //       return o;
+    //     });
 
-        console.debug('load port', s);
-        this.ports = s;
-      },
-      (e) => {
-        console.error('load port error',e)
-      }
-    );
+    //     s.sort(function (a, b) {
+    //       var x = a.device.name.toLowerCase();
+    //       var y = b.device.name.toLowerCase();
+    //       var p1 = a.portname.name.toLocaleLowerCase();
+    //       var p2 = b.portname.name.toLocaleLowerCase();
+
+    //       if (x < y) return -1;
+    //       if (x > y) return 1;
+
+    //       //ถ้า เท่ากันให้เรียง port ด้วย
+    //       //   return 0;
+    //       if (p1 < p2) return -1;
+    //       if (p1 > p2) return 1;
+
+    //       return 0;
+    //     });
+
+    //     console.debug('load port', s);
+    //     this.ports = s;
+    //   },
+    //   (e) => {
+    //     console.error('load port error',e)
+    //   }
+    // );
   }
 
   /**

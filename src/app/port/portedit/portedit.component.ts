@@ -5,9 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-portedit',
-  templateUrl: './portedit.component.html',
-  styleUrls: ['./portedit.component.css'],
+    selector: 'app-portedit',
+    templateUrl: './portedit.component.html',
+    styleUrls: ['./portedit.component.css'],
+    standalone: false
 })
 export class PorteditComponent implements OnInit {
   portname: Port = {};

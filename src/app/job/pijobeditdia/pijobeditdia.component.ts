@@ -13,9 +13,10 @@ import { Pijobsave } from '../pijobsave';
 import { Portinjobobj } from '../portinjobobj';
 
 @Component({
-  selector: 'app-pijobeditdia',
-  templateUrl: './pijobeditdia.component.html',
-  styleUrls: ['./pijobeditdia.component.css'],
+    selector: 'app-pijobeditdia',
+    templateUrl: './pijobeditdia.component.html',
+    styleUrls: ['./pijobeditdia.component.css'],
+    standalone: false
 })
 export class PijobeditdiaComponent implements OnInit {
   id: number = 0;

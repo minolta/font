@@ -6,9 +6,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Device } from '../device';
 
 @Component({
-  selector: 'app-deviceedit',
-  templateUrl: './deviceedit.component.html',
-  styleUrls: ['./deviceedit.component.css'],
+    selector: 'app-deviceedit',
+    templateUrl: './deviceedit.component.html',
+    styleUrls: ['./deviceedit.component.css'],
+    standalone: false
 })
 export class DeviceeditComponent implements OnInit {
   device: Device = {};

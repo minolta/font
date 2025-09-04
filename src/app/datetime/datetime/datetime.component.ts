@@ -2,9 +2,10 @@ import { Time } from '@angular/common';
 import { Component, EventEmitter, Input, Output,ViewChild, ElementRef, signal } from '@angular/core';
 import moment from 'moment';
 @Component({
-  selector: 'app-datetime',
-  templateUrl: './datetime.component.html',
-  styleUrl: './datetime.component.css',
+    selector: 'app-datetime',
+    templateUrl: './datetime.component.html',
+    styleUrl: './datetime.component.css',
+    standalone: false
 })
 export class DatetimeComponent {
   // @ViewChild('date') dateinput?: ElementRef;

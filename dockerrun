@@ -53,6 +53,8 @@ docker image prune -a -f
 docker logs -f pifonttest
 
 
+
+
 ng b;docker build -t kykub/pinfont:17 .;docker push  kykub/pinfont:17
 
 docker rm -f pifont;docker pull  kykub/pinfont:17;docker run -p 900:80 --name pifont -d   --restart=always  kykub/pinfont:17;docker image prune -a -f;docker logs -f pifont
@@ -67,3 +69,10 @@ docker rm -f pifont;docker pull  kykub/pinfont:18;docker run -p 900:80 --name pi
 ng b;docker build -t kykub/pinfont:20 .;docker push  kykub/pinfont:20
 
 docker rm -f pifont;docker pull  kykub/pinfont:20;docker run -p 900:80 --name pifont -d   --restart=always  kykub/pinfont:20;docker image prune -a -f;docker logs -f pifont
+
+
+#update angular 19
+ng b -c production
+docker build -t kykub/pinfont:to19 .
+docker push  kykub/pinfont:to19
+docker rm -f pifont;docker pull  kykub/pinfont:to19;docker run -p 900:80 --name pifont -d   --restart=always  kykub/pinfont:to19;docker image prune -a -f;docker logs -f pifont

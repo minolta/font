@@ -4,9 +4,10 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-devicenew',
-  templateUrl: './devicenew.component.html',
-  styleUrls: ['./devicenew.component.css']
+    selector: 'app-devicenew',
+    templateUrl: './devicenew.component.html',
+    styleUrls: ['./devicenew.component.css'],
+    standalone: false
 })
 export class DevicenewComponent implements OnInit {
 

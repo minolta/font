@@ -4,9 +4,10 @@ import { DeviceService } from '../../device/device.service';
 import { environment } from '../../../environments/environment';
 
 @Component({
-  selector: 'app-deviceactive',
-  templateUrl: './deviceactive.component.html',
-  styleUrls: ['./deviceactive.component.css'],
+    selector: 'app-deviceactive',
+    templateUrl: './deviceactive.component.html',
+    styleUrls: ['./deviceactive.component.css'],
+    standalone: false
 })
 export class DeviceactiveComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {

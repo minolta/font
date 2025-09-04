@@ -4,9 +4,10 @@ import { Component, OnInit } from '@angular/core';
 import { Devicegroup } from '../devicegroup';
 
 @Component({
-  selector: 'app-devicegroupnew',
-  templateUrl: './devicegroupnew.component.html',
-  styleUrls: ['./devicegroupnew.component.css']
+    selector: 'app-devicegroupnew',
+    templateUrl: './devicegroupnew.component.html',
+    styleUrls: ['./devicegroupnew.component.css'],
+    standalone: false
 })
 export class DevicegroupnewComponent implements OnInit {
 

@@ -4,9 +4,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Ds18b20Service } from '../../device/ds18b20.service';
 import { Ds18b20sensor } from '../../device/ds18b20sensor';
 @Component({
-  selector: 'app-dss',
-  templateUrl: './dss.component.html',
-  styleUrls: ['./dss.component.css'],
+    selector: 'app-dss',
+    templateUrl: './dss.component.html',
+    styleUrls: ['./dss.component.css'],
+    standalone: false
 })
 export class DssComponent implements OnInit, OnDestroy {
   subscription: any;

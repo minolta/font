@@ -4,9 +4,10 @@ import { Component, OnInit } from '@angular/core';
 import { Port } from '../port';
 import { Output, EventEmitter } from '@angular/core';
 @Component({
-  selector: 'app-portnew',
-  templateUrl: './portnew.component.html',
-  styleUrls: ['./portnew.component.css']
+    selector: 'app-portnew',
+    templateUrl: './portnew.component.html',
+    styleUrls: ['./portnew.component.css'],
+    standalone: false
 })
 export class PortnewComponent implements OnInit {
   @Output() newItemEvent = new EventEmitter<Port>();
