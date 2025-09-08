@@ -20,10 +20,10 @@ import { Job } from '../job';
 import { Pijobgroup } from '../pijobgroup';
 
 @Component({
-    selector: 'app-pijobnew',
-    templateUrl: './pijobnew.component.html',
-    styleUrls: ['./pijobnew.component.css'],
-    standalone: false
+  selector: 'app-pijobnew',
+  templateUrl: './pijobnew.component.html',
+  styleUrls: ['./pijobnew.component.css'],
+  standalone: false,
 })
 export class PijobnewComponent implements OnInit {
   sensors: Sensorinjob[] = Array<Sensorinjob>();
@@ -111,17 +111,19 @@ export class PijobnewComponent implements OnInit {
       this.pijob.ds18sensor = this.dssensorbag.obj;
       this.pijob.pidevice = this.device;
       this.pijob.job = this.job;
+      this.pijob.id = 0;
       this.pijob.desdevice = this.devicedes;
       this.pijob.pijobgroup = this.pijobgroup;
 
       p.pijob = this.pijob;
+      console.debug("Port before map",this.ports)
       p.ports = this.ports?.map((i) => {
         let pij: Portinjob = {};
         pij.id = i.id;
-        pij.device = i.device.obj;
+        pij.device = i.device;
         pij.enable = i.enable;
-        pij.portname = i.portname.obj;
-        pij.status = i.status.obj;
+        pij.portname = i.portname;
+        pij.status = i.status;
         pij.runtime = i.runtime;
         pij.waittime = i.waittime;
         pij.ver = i.ver;
@@ -236,11 +238,14 @@ export class PijobnewComponent implements OnInit {
     });
     if (l.length > 0) {
       let url = environment.host + '/rest/piserver/addsensorinpijob';
-      this.dss.http.post(url, l).subscribe((d) => {
-        console.log('add sensor', d);
-      },e=>{
-        console.error('Save sensor error',e)
-      });
+      this.dss.http.post(url, l).subscribe(
+        (d) => {
+          console.log('add sensor', d);
+        },
+        (e) => {
+          console.error('Save sensor error', e);
+        }
+      );
     }
     console.log('Data sensor for save:', l);
   }
