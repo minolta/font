@@ -92,12 +92,12 @@ export class ParameterviewComponent implements OnInit, OnDestroy {
     console.log('select profile ' + found);
   }
   reload() {
-    // if (this.devices)
-    //   this.devices.forEach((i) => {
-    //     this.service.get(i.id!!).subscribe((d) => {
-    //       i = d;
-    //     });
-    //   });
+    if (this.devices)
+      this.devices.forEach((i) => {
+        this.service.get(i.device.id!!).subscribe((d) => {
+          i.device = d;
+        });
+      });
   }
   getvalue(obj: any, name: any) {
     console.log(obj.name);
@@ -146,6 +146,7 @@ export class ParameterviewComponent implements OnInit, OnDestroy {
     return null;
   }
   add() {
+    console.log('Device',this.device)
     let havedevice = this.finddevice(this.device.id);
     console.debug('find Device ', havedevice);
     if (!havedevice) {
