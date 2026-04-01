@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Pijob } from '../pijob';
 import { PijobService } from '../pijob.service';
 import { DeviceService } from '../../device/device.service';
@@ -30,12 +30,12 @@ import { Port } from '../../port/port';
   standalone: false,
 })
 export class PijobeditComponent implements OnInit {
-  sensors?: Sensorinjob[];
+  sensors = signal<Sensorinjob[]>([]);
   error = null;
-  pumps?: Pumpinjob[];
+  pumps = signal<Pumpinjob[]>([]);
   id: number = 0;
   pijob: Pijob = {};
-  ports?: Portinjobobj[];
+  ports = signal<Portinjobobj[]>([]);
   devicebag = { obj: { id: 0, name: '' } };
   pumpbag = { obj: { id: 0, name: '' } };
   pbag = { obj: { id: 0, name: '' } };
@@ -122,7 +122,7 @@ export class PijobeditComponent implements OnInit {
     console.log('Load sensor for this job ', url);
 
     this.http.get(url).subscribe((d) => {
-      this.sensors = d as any;
+      this.sensors.set((d as Sensorinjob[]) ?? []);
       console.log('****** Found sensor for job *******', d);
     });
   }
@@ -131,16 +131,14 @@ export class PijobeditComponent implements OnInit {
     let url = environment.host + '/removesensor/' + i;
     this.dss.http.get(url).subscribe((d) => {
       console.log('Delete sensor in job', d);
-      if (this.sensors) this.sensors.splice(index, 1);
+      this.sensors.update((sensors) => sensors.filter((_, idx) => idx !== index));
     });
   }
   addsensor() {
     console.log('Sensor', this.devicedes);
 
     let found: Sensorinjob | undefined;
-    if (this.sensors) {
-      found = this.sensors.find((i) => i.sensor!!.id == this.devicedes.id);
-    }
+    found = this.sensors().find((i) => i.sensor!!.id == this.devicedes.id);
     if (!found) {
     
       let sensorinjob:Sensorinjob = {}
@@ -167,8 +165,8 @@ export class PijobeditComponent implements OnInit {
   }
 
   savesensor() {
-    if (this.sensors) {
-      let l = this.sensors.map((i) => {
+    if (this.sensors().length > 0) {
+      let l = this.sensors().map((i) => {
         i.pijob = this.pijob;
         return i;
       });
@@ -210,8 +208,7 @@ export class PijobeditComponent implements OnInit {
       pijob: this.pijob,
       pijob_id: this.pijob.id,
     };
-    if (!this.ports) this.ports = Array<Portinjobobj>();
-    this.ports.push(p);
+    this.ports.update((ports) => [...ports, p]);
   }
 
   removeport(r: Portinjobobj) {
@@ -220,9 +217,10 @@ export class PijobeditComponent implements OnInit {
       r.portname = r.portname!!.obj;
       this.pjs.removeport(r).subscribe((d) => {
         console.log('Delete ' + d);
-        var idx = this.ports!!.indexOf(r);
+        const currentPorts = this.ports();
+        var idx = currentPorts.indexOf(r);
         if (idx !== -1) {
-          this.ports!!.splice(idx, 1);
+          this.ports.update((ports) => ports.filter((_, i) => i !== idx));
         }
       });
     }
@@ -254,9 +252,9 @@ export class PijobeditComponent implements OnInit {
     p.pijob = this.pijob;
 
     console.debug('editpijob 1', p);
-    console.debug('editpijob Port before conver ', this.ports);
+    console.debug('editpijob Port before conver ', this.ports());
 
-    p.ports = this.ports?.map((i) => {
+    p.ports = this.ports().map((i) => {
       let pij: Portinjob = {};
       pij.id = i.id;
       pij.device = i.device;
@@ -305,11 +303,12 @@ export class PijobeditComponent implements OnInit {
   }
 
   editsensor(i: number,event: Event) {
-    if (this.sensors) {
-      let sensor = this.sensors[i];
-      console.log('All sensor',this.sensors)
+    const sensors = this.sensors();
+    const sensor = sensors[i];
+    if (sensor) {
+      console.log('All sensor', sensors);
       console.log('Edit sensor', sensor);
-      sensor.pijob = this.pijob
+      sensor.pijob = this.pijob;
       sensor.enable = (event.target as HTMLInputElement).checked;
       let url = environment.host + '/rest/piserver/sensorinjob/edit';
       this.http.post<Sensorinjob>(url, sensor).subscribe((d) => {
@@ -328,7 +327,7 @@ export class PijobeditComponent implements OnInit {
       let url = environment.host + '/pump/' + pijobid;
       this.http.get(url).subscribe((d) => {
         console.log(d);
-        this.pumps = d as any;
+        this.pumps.set((d as Pumpinjob[]) ?? []);
       });
     }
   }
@@ -389,7 +388,7 @@ export class PijobeditComponent implements OnInit {
       return 0;
     });
 
-    this.ports = s;
+    this.ports.set(s);
     // this.pjs.listport(this.id).subscribe(
     //   (d) => {
     //     console.debug('Load port', d);
@@ -440,12 +439,12 @@ export class PijobeditComponent implements OnInit {
    * @param ps load port เข้ามาเพื่อแก้ไข
    */
   setport() {
-    this.ports = []; //reset port
+    this.ports.set([]); //reset port
 
     this.pjs.listport(this.id).subscribe((d) => {
       console.log('Port in side:' + JSON.stringify(d));
       console.debug('load port 1', d);
-      this.ports = d
+      this.ports.set(d
         .map((i) => {
           let po: Portinjobobj = {};
           po.enable = i.enable;
@@ -474,7 +473,7 @@ export class PijobeditComponent implements OnInit {
           if (p1 > p2) return 1;
 
           return 0;
-        });
+        }));
     });
   }
 }

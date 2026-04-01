@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DeviceService } from '../../device/device.service';
 import { Profiles } from '../profiles';
@@ -13,21 +13,21 @@ import { GetserviceService } from '../../getservice.service';
     standalone: false
 })
 export class ParameterviewComponent implements OnInit, OnDestroy {
-  device: any;
-  getresult = false;
-  parametertoshow? = '';
-  search = '';
+  device = signal<any>(null);
+  getresult = signal(false);
+  parametertoshow = signal('');
+  search = signal('');
   subscription: any;
   description = '';
   bag = { obj: { name: '', id: 0, ip: '' } };
-  parameter = '';
+  parameter = signal('');
   timetoupdate = 60000;
   // t;
-  profiles: Profiles[] = Array<Profiles>();
-  profile?: string = '';
-  currentprofile?: Profiles;
-  devices?: Devicetoshow[] = Array<Devicetoshow>();
-  devicestoshow?: Devicetoshow[];
+  profiles = signal<Profiles[]>([]);
+  profile = signal('');
+  currentprofile = signal<Profiles | undefined>(undefined);
+  devices = signal<Devicetoshow[]>([]);
+  devicestoshow = signal<Devicetoshow[]>([]);
   result = {};
   errormessage = [];
   sub: any;
@@ -42,7 +42,7 @@ export class ParameterviewComponent implements OnInit, OnDestroy {
     // console.log("SUB", this.sub);
     // this.sub.unsubscribe();
     console.debug('stop Interval', this.id);
-    this.getresult = false;
+    this.getresult.set(false);
     clearInterval(this.id);
   }
   ngOnInit(): void {
@@ -51,49 +51,49 @@ export class ParameterviewComponent implements OnInit, OnDestroy {
       if (document.hidden) {
         console.info('Hidden info ', 'Hidden');
         clearInterval(this.id);
-        this.getresult = false;
+        this.getresult.set(false);
         // tab is changed
       } else {
-        this.getresult = true;
+        this.getresult.set(true);
         this.id = setInterval(() => {
-          if (this.getresult) this.g();
+          if (this.getresult()) this.g();
         }, this.timetoupdate*1000);
       }
     });
 
     this.id = setInterval(() => {
-      if (this.getresult) this.g();
+      if (this.getresult()) this.g();
     }, this.timetoupdate*1000);
     this.g();
   }
   updateprofile() {
-    console.log('PROFILE:' + this.profile);
-    let found = this.profiles.find((e) => e.profile === this.profile);
+    console.log('PROFILE:' + this.profile());
+    let found = this.profiles().find((e) => e.profile === this.profile());
     console.log(found);
     if (!found) {
       //new profile
       let f: Profiles = {
-        profile: this.profile,
+        profile: this.profile(),
         devices: Array<Devicetoshow>(),
         parametertoshow: '',
       };
-      this.parametertoshow = '';
-      this.profiles.push(f);
-      this.currentprofile = f;
-      this.devices = this.currentprofile.devices;
+      this.parametertoshow.set('');
+      this.profiles.update((profiles) => [...profiles, f]);
+      this.currentprofile.set(f);
+      this.devices.set(this.currentprofile()?.devices ?? []);
       this.savedevice();
     } else {
-      this.currentprofile = found;
-      this.devices = this.currentprofile.devices;
-      this.parametertoshow = found.parametertoshow;
+      this.currentprofile.set(found);
+      this.devices.set(this.currentprofile()?.devices ?? []);
+      this.parametertoshow.set(found.parametertoshow ?? '');
     }
 
     this.g();
     console.log('select profile ' + found);
   }
   reload() {
-    if (this.devices)
-      this.devices.forEach((i) => {
+    if (this.devices())
+      this.devices().forEach((i) => {
         this.service.get(i.device.id!!).subscribe((d) => {
           i.device = d;
         });
@@ -105,30 +105,30 @@ export class ParameterviewComponent implements OnInit, OnDestroy {
   }
   loaddevice() {
     if (localStorage.getItem('parameterdevices') != null)
-      this.devices = JSON.parse(localStorage.getItem('parameterdevices')!!);
+      this.devices.set(JSON.parse(localStorage.getItem('parameterdevices')!!));
     if (localStorage.getItem('gettime') != null)
       this.timetoupdate = JSON.parse(localStorage.getItem('gettime')!!);
     if (localStorage.getItem('getprofile') != null) {
-      this.profiles = JSON.parse(localStorage.getItem('getprofile')!!);
+      this.profiles.set(JSON.parse(localStorage.getItem('getprofile')!!));
     }
     if (localStorage.getItem('getcurrentprofiles') != null) {
-      this.currentprofile = JSON.parse(
+      this.currentprofile.set(JSON.parse(
         localStorage.getItem('getcurrentprofiles')!!
-      );
-      if (this.currentprofile) {
-        this.devices = this.currentprofile.devices;
-        this.profile = this.currentprofile.profile;
-        this.parametertoshow = this.currentprofile.parametertoshow;
+      ));
+      if (this.currentprofile()) {
+        this.devices.set(this.currentprofile()?.devices ?? []);
+        this.profile.set(this.currentprofile()?.profile ?? '');
+        this.parametertoshow.set(this.currentprofile()?.parametertoshow ?? '');
       }
     }
   }
   savedevice() {
-    localStorage.setItem('parameterdevices', JSON.stringify(this.devices));
+    localStorage.setItem('parameterdevices', JSON.stringify(this.devices()));
     localStorage.setItem('gettime', JSON.stringify(this.timetoupdate));
-    localStorage.setItem('getprofile', JSON.stringify(this.profiles));
+    localStorage.setItem('getprofile', JSON.stringify(this.profiles()));
     localStorage.setItem(
       'getcurrentprofiles',
-      JSON.stringify(this.currentprofile)
+      JSON.stringify(this.currentprofile())
     );
   }
   removeshow(show: any, i: any) {
@@ -138,30 +138,31 @@ export class ParameterviewComponent implements OnInit, OnDestroy {
 
   finddevice(id: number) {
     console.log(this.currentprofile);
-    if (this.currentprofile?.devices) {
-      let f = this.currentprofile.devices!!.find((dd) => dd.device?.id == id);
+    if (this.currentprofile()?.devices) {
+      let f = this.currentprofile()!.devices!!.find((dd) => dd.device?.id == id);
       console.log('find device:' + id + ' found:' + f);
       return f;
     }
     return null;
   }
   add() {
-    console.log('Device',this.device)
-    let havedevice = this.finddevice(this.device.id);
+    console.log('Device', this.device());
+    let havedevice = this.finddevice(this.device().id);
     console.debug('find Device ', havedevice);
     if (!havedevice) {
-      let d = this.service.get(this.device.id).subscribe((d) => {
+      let d = this.service.get(this.device().id).subscribe((d) => {
         let o: Devicetoshow = {
           ip: this.bag.obj.ip,
           device: d,
           // shows: [this.parameter],
           result: {},
         };
-        if (this.currentprofile?.devices) {
-          this.currentprofile.devices.push(o);
-          this.devices = this.currentprofile.devices;
-          this.devicestoshow = this.devices;
-          console.log(this.devices);
+        const profile = this.currentprofile();
+        if (profile?.devices) {
+          profile.devices.push(o);
+          this.devices.set(profile.devices);
+          this.devicestoshow.set(this.devices());
+          console.log(this.devices());
         }
       });
     } else {
@@ -184,8 +185,8 @@ export class ParameterviewComponent implements OnInit, OnDestroy {
   }
 
   removedevice(o: Devicetoshow) {
-    if (this.devices) {
-      let index = this.devices.findIndex((i) => o.device?.id == i.device?.id);
+    if (this.devices()) {
+      let index = this.devices().findIndex((i) => o.device?.id == i.device?.id);
 
       // let ei = this.errormessage.findIndex((ee) => ee.device.id == o.device.id);
 
@@ -193,9 +194,9 @@ export class ParameterviewComponent implements OnInit, OnDestroy {
       //   this.errormessage.splice(ei, 1);
       // }
 
-      console.log('Array devices ' + this.devices.length + ' ' + index);
+      console.log('Array devices ' + this.devices().length + ' ' + index);
       if (index > -1) {
-        this.devices.splice(index, 1);
+        this.devices.update((devices) => devices.filter((_, idx) => idx !== index));
       }
 
       this.g();
@@ -206,23 +207,23 @@ export class ParameterviewComponent implements OnInit, OnDestroy {
     console.log('Change speed ' + this.timetoupdate);
     clearInterval(this.id);
     this.id = setInterval(() => {
-      if (this.getresult) this.g();
+      if (this.getresult()) this.g();
     }, this.timetoupdate * 1000);
     this.savedevice();
   }
 
   customshow?: string[];
   showsomeparameter() {
-    if (this.parametertoshow) {
-      console.log(this.parametertoshow);
-      let toshows = this.parametertoshow.split(',');
-      if (this.currentprofile) {
-        this.currentprofile.parametertoshow = this.parametertoshow;
+    if (this.parametertoshow()) {
+      console.log(this.parametertoshow());
+      let toshows = this.parametertoshow().split(',');
+      if (this.currentprofile()) {
+        this.currentprofile()!.parametertoshow = this.parametertoshow();
         if (toshows.length > 0) {
           this.customshow = toshows;
         }
-        if (this.devices)
-          this.devices.map((i) => {
+        if (this.devices())
+          this.devices().map((i) => {
             i.shows = this.customshow;
             console.debug('show', this.customshow);
           });
@@ -231,17 +232,17 @@ export class ParameterviewComponent implements OnInit, OnDestroy {
   }
   g() {
     this.showsomeparameter();
-    if (this.search == '') {
-      this.devicestoshow = this.devices;
+    if (this.search() == '') {
+      this.devicestoshow.set(this.devices());
 
-      if (this.devicestoshow)
-        this.devicestoshow.map((i) => {
+      if (this.devicestoshow())
+        this.devicestoshow().map((i) => {
           let url = 'http://' + i.device?.ip;
-          this.getresult = false;
+          this.getresult.set(false);
 
           this.getService.get(url).subscribe(d=>{
             i.result = d;
-            this.getresult = true;
+            this.getresult.set(true);
             // i.shows = this.parameter.split(',')
             console.debug('Device paramter view', i);
           })

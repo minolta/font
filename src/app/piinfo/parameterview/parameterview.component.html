@@ -1,25 +1,25 @@
 <mat-form-field>
    <mat-label>Profile</mat-label>
-    <input matInput i18n-placeholder placeholder="profile" (change)="updateprofile()" [(ngModel)]="profile">
+    <input matInput i18n-placeholder placeholder="profile" (change)="updateprofile()" [ngModel]="profile()" (ngModelChange)="profile.set($event)">
 </mat-form-field>
 
 
 <mat-form-field>
     <mat-label>Search</mat-label>
-    <input matInput i18n-placeholder placeholder="search" [(ngModel)]="search">
+    <input matInput i18n-placeholder placeholder="search" [ngModel]="search()" (ngModelChange)="search.set($event)">
 </mat-form-field>
 
 <mat-form-field>
     <mat-label>Parameter to show</mat-label>
 
-    <textarea matInput placeholder="parameter to show" [(ngModel)]="parametertoshow" rows="4" cols="50"></textarea>
+    <textarea matInput placeholder="parameter to show" [ngModel]="parametertoshow()" (ngModelChange)="parametertoshow.set($event)" rows="4" cols="50"></textarea>
     <!-- <input matInput i18n-placeholder placeholder="parameter to show" width="400px" [(ngModel)]="parametertoshow"> -->
 </mat-form-field>
 <!-- <kyl-kyauto [service]="service" [widthvalue]="'250px'" [bag]="bag" [p]="'Select device'"></kyl-kyauto> -->
-<app-auto [service]="service" [p]="'select device to add'" [(obj)]="device" [label]="'Device to show'"></app-auto>
+<app-auto [service]="service" [p]="'select device to add'" [obj]="device()" (objChange)="device.set($event)" [label]="'Device to show'"></app-auto>
 <mat-form-field>
     <mat-label>Parameter</mat-label>
-    <input matInput i18n-placeholder placeholder="parameter" [(ngModel)]="parameter">
+    <input matInput i18n-placeholder placeholder="parameter" [ngModel]="parameter()" (ngModelChange)="parameter.set($event)">
 </mat-form-field>
 <!-- 
 <mat-form-field>
@@ -46,8 +46,8 @@
     </table>
 
 </div> -->
-<div *ngIf="devicestoshow" class="row">
-    <div *ngFor="let d of devicestoshow;index as ii" class="block">
+<div *ngIf="devicestoshow().length > 0" class="row">
+    <div *ngFor="let d of devicestoshow();index as ii" class="block">
         <!-- {{d|json}} -->
         <div class="one">
             <h3> <a *ngIf="d.device.ip" mat-button href="http://{{d.device.ip}}" target="_blank">

@@ -194,7 +194,7 @@
     <td>Option</td>
   </tr>
 
-  <tr *ngFor="let p of ports">
+  <tr *ngFor="let p of ports()">
     <td>
       <mat-checkbox [(ngModel)]="p.enable" color="primary">Enable</mat-checkbox>
     </td>
@@ -293,7 +293,7 @@
     <td>Pump</td>
     <td>x</td>
   </tr>
-  <tr *ngFor="let p of pumps">
+  <tr *ngFor="let p of pumps()">
     <td>{{ p.pidevice?.name }}</td>
     <!-- <td>{{p.portname.name}}</td> -->
     <td>{{ p.portname?.name }}</td>
@@ -307,9 +307,9 @@
 </table>
 
 <mat-divider></mat-divider>
-<table id="customres" *ngIf="sensors && sensors.length > 0">
+<table id="customres" *ngIf="sensors().length > 0">
   <!-- {{sensors|json}} -->
-  <tr *ngFor="let s of sensors; index as i">
+  <tr *ngFor="let s of sensors(); index as i">
     <td>{{ s.sensor!!.name }}</td>
     <td><mat-checkbox checked="{{ s.enable }}" (click)="editsensor(i,$event)"></mat-checkbox></td>
     <td><button mat-button (click)="removesensor(s.id!!, i)">X</button></td>
