@@ -12,14 +12,23 @@
 <kyl-kyauto [service]="dss" [bag]="dssensorbag" [p]="'Ds Sensor'" [widthvalue]="'400px'"></kyl-kyauto>
 <kyl-kyauto [service]="ds" [bag]="devicedesbag" [p]="'Target Device'" [widthvalue]="'400px'"></kyl-kyauto> -->
 
-<app-auto [service]="ds" [(obj)]="device" [p]="'Device'"   [label]="'For Device'"></app-auto>
 <app-auto
-
+  [service]="ds"
+  [(obj)]="device"
+  [p]="'Device'"
+  [label]="'For Device'"
+></app-auto>
+<app-auto
   [service]="dss"
   [(obj)]="devicesensor"
   [p]="'Device sensor'"
 ></app-auto>
-<app-auto [service]="ds" [(obj)]="devicedes" [p]="'Device traget'"   [label]="'Traget Device'"></app-auto>
+<app-auto
+  [service]="ds"
+  [(obj)]="devicedes"
+  [p]="'Device traget'"
+  [label]="'Traget Device'"
+></app-auto>
 
 <button mat-button (click)="addsensor()">+</button>
 <mat-divider></mat-divider>
@@ -74,10 +83,9 @@
     onclick="select()"
   />
 </mat-form-field>
-<mat-form-field
-  >
-  
-  <mat-label>Start time</mat-label><input
+<mat-form-field>
+  <mat-label>Start time</mat-label
+  ><input
     matInput
     type="time"
     [(ngModel)]="pijob.stimes"
@@ -128,12 +136,18 @@
 </mat-form-field>
 <!-- <kyl-kyauto [service]="js" [bag]="jobbag" [p]="'Job type'" [widthvalue]="'400px'"></kyl-kyauto>
  -->
-<app-auto [service]="js" [(obj)]="jobtype" [p]="'Job type'"  [label]="'Job type'"></app-auto>
+<app-auto
+  [service]="js"
+  [(obj)]="jobtype"
+  [p]="'Job type'"
+  [label]="'Job type'"
+></app-auto>
 <mat-checkbox [(ngModel)]="pijob.enable" i18n>Enable</mat-checkbox>
-<app-auto 
+<app-auto
   [service]="pijobgroupservice"
   [(obj)]="pijobgroup"
-  [p]="'Job group'" [label]="'Job group'"
+  [p]="'Job group'"
+  [label]="'Job group'"
 ></app-auto>
 <!-- <kyl-kyauto [service]="pijobgroupservice" [bag]="pijobgroupbag" [p]="'Job group'" [widthvalue]="'250px'"></kyl-kyauto> -->
 <!-- <app-auto
@@ -155,7 +169,12 @@
 </mat-form-field>
 <mat-form-field>
   <mat-label>Token</mat-label>
-  <input type="text" matInput [(ngModel)]="pijob.token" placeholder="Token for line" />
+  <input
+    type="text"
+    matInput
+    [(ngModel)]="pijob.token"
+    placeholder="Token for line"
+  />
 </mat-form-field>
 <!-- <kyl-kyauto
   [service]="pjs"
@@ -181,7 +200,12 @@
     </td>
     <td>
       <!-- <kyl-kyauto [service]="ds" [p]="'Target'" [(obj)]="p.device" [bag]="p.device"></kyl-kyauto> -->
-      <app-auto [service]="ds" [p]="'Traget'"  [label]="'Traget device'"  [(obj)]="p.device"></app-auto>
+      <app-auto
+        [service]="ds"
+        [p]="'Traget'"
+        [label]="'Traget device'"
+        [(obj)]="p.device"
+      ></app-auto>
     </td>
     <td>
       <!-- <kyl-kyauto
@@ -190,11 +214,21 @@
         [bag]="p.portname"
       ></kyl-kyauto> -->
 
-      <app-auto [service]="pns" [p]="'Port'" [(obj)]="p.portname"  [label]="'Port name'"></app-auto>
+      <app-auto
+        [service]="pns"
+        [p]="'Port'"
+        [(obj)]="p.portname"
+        [label]="'Port name'"
+      ></app-auto>
     </td>
     <td>
       <!-- <kyl-kyauto [service]="ls" [p]="'Logic'" [bag]="p.status"></kyl-kyauto> -->
-      <app-auto [service]="ls" [p]="'Logic'"   [label]="'Logic'" [(obj)]="p.status"></app-auto>
+      <app-auto
+        [service]="ls"
+        [p]="'Logic'"
+        [label]="'Logic'"
+        [(obj)]="p.status"
+      ></app-auto>
     </td>
     <td>
       <mat-form-field>
@@ -239,7 +273,12 @@
   [p]="'Pump'"
   [widthvalue]="'400px'"
 ></kyl-kyauto> -->
-<app-auto [service]="ds" [(obj)]="pump" [p]="'Pump'"  [label]="'Pump'"></app-auto>
+<app-auto
+  [service]="ds"
+  [(obj)]="pump"
+  [p]="'Pump'"
+  [label]="'Pump'"
+></app-auto>
 <!-- <kyl-kyauto
   [service]="pns"
   [bag]="pbag"
@@ -269,8 +308,10 @@
 
 <mat-divider></mat-divider>
 <table id="customres" *ngIf="sensors && sensors.length > 0">
+  <!-- {{sensors|json}} -->
   <tr *ngFor="let s of sensors; index as i">
     <td>{{ s.sensor!!.name }}</td>
+    <td><mat-checkbox checked="{{ s.enable }}" (click)="editsensor(i,$event)"></mat-checkbox></td>
     <td><button mat-button (click)="removesensor(s.id!!, i)">X</button></td>
   </tr>
 </table>

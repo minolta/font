@@ -9,4 +9,8 @@ export interface Sensorinjob {
     pijob_id?:number
     refid?:number
     sensor?:Device
+    enable?:boolean
+    ver?:number
+    verref?:number
+
 }

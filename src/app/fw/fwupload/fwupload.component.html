@@ -2,14 +2,15 @@
   <input
     matInput
     type="text"
-    [(ngModel)]="appname"
+    [ngModel]="appname()"
+    (ngModelChange)="appname.set($event)"
     (change)="lastversion()"
     placeholder="Appname"
     required
   />
 </mat-form-field>
 <mat-form-field>
-  <input matInput type="text" [(ngModel)]="ver" placeholder="Version" />
+  <input matInput type="text" [ngModel]="ver()" (ngModelChange)="ver.set($event)" placeholder="Version" />
 </mat-form-field>
 
 <!--
@@ -17,4 +18,4 @@
     -->
 <input type="file"  #fileInput (change)="setfile($event)" placeholder="Upload file" />
 <button mat-button (click)="fileChange()" i18n>Upload</button>
-<h1>{{ msg }}</h1>
+<h1>{{ msg() }}</h1>

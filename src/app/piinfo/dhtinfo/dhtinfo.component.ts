@@ -7,6 +7,7 @@ import {
   ElementRef,
   OnChanges,
   ViewChild,
+  signal,
 } from '@angular/core';
 import { Forgraph } from '../forg';
 import { interval } from 'rxjs';
@@ -28,7 +29,7 @@ export class DhtinfoComponent implements OnInit, OnDestroy {
   hmax? = 0;
   tmax? = 0;
   tmin? = 0;
-  device: Device = {};
+  device = signal<Device>({});
   hdata: number[] = [];
   tdata: number[] = [];
   labels: string[] = [];
@@ -83,36 +84,36 @@ export class DhtinfoComponent implements OnInit, OnDestroy {
   chart: any;
   havechart = false;
   bag = { obj: { name: '', id: 0 } };
-  sd: any;
-  ed: any;
+  sd = signal<any>(null);
+  ed = signal<any>(null);
   id = 'chart1';
   width = '100%';
   height = 400;
   type = 'msline';
   dataFormat = 'json';
   dataSource: any;
-  autoupdate = false;
+  autoupdate = signal(false);
   subscription: any;
-  ot: any;
-  oh: any;
+  ot = signal<any>(null);
+  oh = signal<any>(null);
   saveinfo() {
     localStorage.setItem(
       'dhtdateinfo',
-      JSON.stringify({ sd: this.sd, ed: this.ed })
+      JSON.stringify({ sd: this.sd(), ed: this.ed() })
     );
-    localStorage.setItem('dhtinfodevice', JSON.stringify(this.device));
+    localStorage.setItem('dhtinfodevice', JSON.stringify(this.device()));
   }
   loadinfo() {
     if (localStorage.getItem('dhtdateinfo')) {
       if (localStorage.getItem('dhtdateinfo')) {
         let dd = JSON.parse(localStorage.getItem('dhtdateinfo')!!);
-        this.sd = dd.sd;
-        this.ed = dd.ed;
+        this.sd.set(dd.sd);
+        this.ed.set(dd.ed);
       }
     }
 
     if (localStorage.getItem('dhtinfodevice') != null) {
-      this.device = JSON.parse(localStorage.getItem('dhtinfodevice')!!);
+      this.device.set(JSON.parse(localStorage.getItem('dhtinfodevice')!!));
       // this.bag.obj = device;
     }
   }
@@ -123,8 +124,8 @@ export class DhtinfoComponent implements OnInit, OnDestroy {
     let p = new Date();
     p.setHours(today.getHours() + -1);
     n.setHours(today.getHours() + 24);
-    this.sd = p;
-    this.ed = n;
+    this.sd.set(p);
+    this.ed.set(n);
   }
   ngOnInit() {
     this.loadinfo();
@@ -140,7 +141,7 @@ export class DhtinfoComponent implements OnInit, OnDestroy {
     }
   }
   autoupdatef() {
-    if (this.autoupdate) {
+    if (this.autoupdate()) {
       this.showdata();
     } else {
     }
@@ -148,7 +149,7 @@ export class DhtinfoComponent implements OnInit, OnDestroy {
 
   showdata() {
     console.log(JSON.stringify(this.bag));
-    this.dhts.getResult(this.sd, this.ed, this.device.id!!).subscribe((d) => {
+    this.dhts.getResult(this.sd(), this.ed(), this.device().id!!).subscribe((d) => {
       this.hdata.length = 0;
       this.tdata.length = 0;
       this.labels.length = 0;
@@ -168,14 +169,14 @@ export class DhtinfoComponent implements OnInit, OnDestroy {
       if (this.hmin!! > item.h!! || this.hmin == 0) this.hmin = item.h;
       this.hdata.push(item.h!!);
       this.tdata.push(item.t!!);
-      this.ot = item.t;
-      this.oh = item.h;
+      this.ot.set(item.t);
+      this.oh.set(item.h);
       // category.push({
       //   label: item.hour + ":" + item.day + "/" + item.month + "/" + item.year,
       // });
       this.labels.push(item.hour + '/' + item.day + '/' + item.month);
-      this.oh = item.h;
-      this.ot = item.t;
+      this.oh.set(item.h);
+      this.ot.set(item.t);
     });
 
     console.log('Data set ', this.lineChartData);
@@ -200,8 +201,8 @@ export class DhtinfoComponent implements OnInit, OnDestroy {
         label: item.hour + ':' + item.day + '/' + item.month + '/' + item.year,
       });
       labels.push(item.hour + '/' + item.day + '/' + item.month);
-      this.oh = item.h;
-      this.ot = item.t;
+      this.oh.set(item.h);
+      this.ot.set(item.t);
     });
 
     let htmlRef = this.elementRef.nativeElement.querySelector('canvas');
@@ -272,9 +273,9 @@ export class DhtinfoComponent implements OnInit, OnDestroy {
         category,
       },
     ];
-    this.dataSource.chart.caption = 'DHT22 value ' + this.device.name;
+    this.dataSource.chart.caption = 'DHT22 value ' + this.device().name;
     this.dataSource.chart.subCaption =
-      this.sd.toLocaleString() + ' ' + this.ed.toLocaleString();
+      this.sd().toLocaleString() + ' ' + this.ed().toLocaleString();
     this.dataSource.dataset = [
       { seriesname: 'H', data: buf },
       { seriesname: 'T', data: buf1 },

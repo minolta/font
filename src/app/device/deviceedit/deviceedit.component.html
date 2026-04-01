@@ -1,27 +1,27 @@
 <mat-form-field>
     <mat-label>Device code</mat-label>
-    <input matInput i18n-placeholder placeholder="Device code" [(ngModel)]="device.code">
+    <input matInput i18n-placeholder placeholder="Device code" [ngModel]="device().code" (ngModelChange)="updateDeviceField('code', $event)">
 </mat-form-field>
 <mat-form-field>
     <mat-label>Device name</mat-label>
-    <input matInput i18n-placeholder placeholder="Device Name" [(ngModel)]="device.name">
+    <input matInput i18n-placeholder placeholder="Device Name" [ngModel]="device().name" (ngModelChange)="updateDeviceField('name', $event)">
 </mat-form-field>
 <mat-form-field>
     <mat-label>Mac address</mat-label>
-    <input  matInput i18n-placeholder placeholder="Mac address" [(ngModel)]="device.mac">
+    <input  matInput i18n-placeholder placeholder="Mac address" [ngModel]="device().mac" (ngModelChange)="updateDeviceField('mac', $event)">
 </mat-form-field>
 <mat-form-field>
     <mat-label>IP</mat-label>
-    <input matInput i18n-placeholder placeholder="IP address" [(ngModel)]="device.ip">
+    <input matInput i18n-placeholder placeholder="IP address" [ngModel]="device().ip" (ngModelChange)="updateDeviceField('ip', $event)">
 </mat-form-field>
 <mat-form-field>
     <mat-label>A0</mat-label>
-    <input matInput type="number" placeholder="A0 tune" [(ngModel)]="device.a0">
+    <input matInput type="number" placeholder="A0 tune" [ngModel]="device().a0" (ngModelChange)="updateDeviceField('a0', $event)">
 </mat-form-field>
 <kyl-kyauto [service]="pgs" [bag]="bag" [p]="'Device group'"></kyl-kyauto>
 <mat-form-field>
-    <textarea matInput i18n-placeholder placeholder="Description" [(ngModel)]="device.description">
-      {{device.description}}
+    <textarea matInput i18n-placeholder placeholder="Description" [ngModel]="device().description" (ngModelChange)="updateDeviceField('description', $event)">
+      {{device().description}}
       </textarea>
 </mat-form-field>
 

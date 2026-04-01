@@ -20,7 +20,7 @@
             <td>Descriotion</td>
             <td colspan="4">Option</td>
         </tr>
-        <tr *ngFor="let r of rows; index as i">
+        <tr *ngFor="let r of rows(); index as i">
             <td>{{i}}</td>
             <td>
                 {{r.pidevice?.name}}
@@ -52,7 +52,7 @@
             <td>JOB NAME</td>
             <td colspan="4">Option</td>
         </tr>
-        <tr *ngFor="let r of rows; index as i">
+        <tr *ngFor="let r of rows(); index as i">
 
             <td> <a mat-button href="#/pijobedit/{{r.id}}" target="_blank"><label
                         [ngStyle]="{'color':r.enable ? 'green' : 'red' }">{{r.name}}</label></a></td>

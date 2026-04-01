@@ -3,7 +3,7 @@ import { OnecommandService } from './../onecommand.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DeviceService } from './../../device/device.service';
 import { PijobService } from './../pijob.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Onecommand } from '../onecommand';
 import {
   MatDialog,
@@ -31,7 +31,7 @@ export class PijoblistComponent implements OnInit {
   device?: Device | null;
   shwodevicename = true;
   limit = 100;
-  rows?: Pijob[];
+  rows = signal<Pijob[]>([]);
   constructor(
     public service: PijobService,
     public ocs: OnecommandService,
@@ -91,7 +91,7 @@ export class PijoblistComponent implements OnInit {
       .sn({ search: this.savesearch, page: 0, limit: this.limit })
       .subscribe((d) => {
         console.log('Found ' + JSON.stringify(d));
-        this.rows = d;
+        this.rows.set(d ?? []);
         if (this.savesearch)
           localStorage.setItem('savesearchpijob', this.savesearch);
         // localStorage.setItem('listbydevice', null);
@@ -102,13 +102,18 @@ export class PijoblistComponent implements OnInit {
       this.device = d;
       localStorage.setItem('listbydevice', JSON.stringify(d));
       this.service.findbydeviceid(d.id!!, this.limit).subscribe((d: any) => {
-        this.rows = d;
+        this.rows.set(d ?? []);
       });
     }
   }
   enable(id: number, index: number) {
     this.service.enable(id).subscribe((d) => {
-      if (this.rows) this.rows[index] = d;
+      this.rows.update((rows) => {
+        if (index < 0 || index >= rows.length) return rows;
+        const next = [...rows];
+        next[index] = d;
+        return next;
+      });
 
       this.bar.open('Set to ', d.enable + '', { duration: 5000 });
     });
@@ -117,7 +122,8 @@ export class PijoblistComponent implements OnInit {
     let pd = pj.pidevice;
 
     console.log('Run one command ', pj);
-    let url = 'http://' + pj.pidevice!!.ip + ':3334/rundirect/' + pj.id;
+    // Use the device ip from the selected pijob row
+    let url = 'http://' + pj.pidevice!.ip + ':3334/rundirect/' + pj.id;
     console.debug('Direct run', url);
     this.http.get(url).subscribe(
       (d) => {
@@ -139,7 +145,7 @@ export class PijoblistComponent implements OnInit {
       console.log('The dialog was closed');
       if (result) {
         this.service.delete(result).subscribe((d) => {
-          if (this.rows) this.rows.splice(i, 1);
+          this.rows.update((rows) => rows.filter((_, idx) => idx !== i));
           this.bar.open('Delete', '' + r.name, { duration: 3000 });
         });
       }

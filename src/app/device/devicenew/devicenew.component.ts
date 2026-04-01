@@ -1,6 +1,6 @@
 import { DeviceService } from './../device.service';
 import { Device } from './../device';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -11,17 +11,22 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class DevicenewComponent implements OnInit {
 
-  device: Device = {}
+  device = signal<Device>({});
   constructor(public bar: MatSnackBar, public service: DeviceService) { }
 
   ngOnInit() {
   }
 
+  updateDeviceField<K extends keyof Device>(key: K, value: Device[K]) {
+    this.device.update((current) => ({ ...current, [key]: value }));
+  }
+
   save() {
-    console.debug('Add new device',this.device)
-    this.service.add(this.device).subscribe(d => {
+    const payload = this.device();
+    console.debug('Add new device', payload)
+    this.service.add(payload).subscribe(d => {
       this.bar.open('Add device', '', { duration: 5000 })
-      this.device = {}
+      this.device.set({})
     })
   }
 

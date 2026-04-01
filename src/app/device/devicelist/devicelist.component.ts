@@ -1,6 +1,6 @@
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DeviceService } from './../device.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Ds18sensorService } from '../ds18sensor.service';
 import * as FileSaver from 'file-saver';
 // import { TimerObservable } from 'rxjs/observable/TimerObservable';
@@ -15,14 +15,14 @@ import { WService } from '../../w.service';
 })
 export class DeviceListComponent implements OnInit {
   n?: Date;
-  limit = 500;
+  limit = signal(500);
   now: number = 0;
-  s: any;
-  re = 0;
+  s = signal<any>('');
+  re = signal(0);
   subscription: any;
   rowsbuffer = [];
-  ssss = false;
-  rows?: Device[];
+  ssss = signal(false);
+  rows = signal<Device[]>([]);
   constructor(
     public service: DeviceService,
     public ts: Ds18sensorService,
@@ -32,17 +32,17 @@ export class DeviceListComponent implements OnInit {
   load() {
     let ssave = localStorage.getItem('searchdevice');
     console.log(ssave);
-    if (ssave != null) this.s = ssave;
+    if (ssave != null) this.s.set(ssave);
 
     let s = localStorage.getItem('showonly');
     if (s != null) {
-      this.ssss = JSON.parse(s);
+      this.ssss.set(JSON.parse(s));
     }
   }
   savesearch() {
-    console.log('Save:' + this.s);
-    localStorage.setItem('searchdevice', this.s);
-    localStorage.setItem('showonly', JSON.stringify(this.ssss));
+    console.log('Save:' + this.s());
+    localStorage.setItem('searchdevice', this.s());
+    localStorage.setItem('showonly', JSON.stringify(this.ssss()));
   }
   ref() {}
   ngOnInit() {
@@ -83,18 +83,18 @@ export class DeviceListComponent implements OnInit {
     });
   }
   update() {
-    console.log('Update ' + this.s);
+    console.log('Update ' + this.s());
     this.savesearch();
-    this.service.sn({ search: this.s, page: 0, limit: this.limit }).subscribe(
+    this.service.sn({ search: this.s(), page: 0, limit: this.limit() }).subscribe(
       (d) => {
         let dd = d as Array<Device>;
         console.log(d);
-        if (this.ssss) {
-          this.rows = dd.filter((i) => {
+        if (this.ssss()) {
+          this.rows.set(dd.filter((i) => {
             i.lastcheckinlong!! > 0;
-          });
+          }));
         } else {
-          this.rows = d;
+          this.rows.set(dd ?? []);
         }
         this.bar.open('Search', 'Found:' + dd.length, { duration: 2000 });
         // console.log(JSON.stringify(this.rows));
@@ -105,7 +105,7 @@ export class DeviceListComponent implements OnInit {
     );
   }
   showonlyup(e: boolean) {
-    this.ssss = e;
+    this.ssss.set(e);
     this.update();
   }
   exportdevice() {

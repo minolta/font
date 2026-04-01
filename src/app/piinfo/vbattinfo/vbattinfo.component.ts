@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, signal } from '@angular/core';
 import { Chart, ChartConfiguration, ChartType } from 'chart.js';
 import { VbattService } from '../vbatt.service';
 import { Vbatt } from '../vbatt';
@@ -84,11 +84,11 @@ export class VbattinfoComponent implements OnInit {
   dataFormat = 'json';
   dataSource: any;
   lastvalue? = 0;
-  autoupdate = false;
+  autoupdate = signal(false);
   subscription: any;
   tde? = 0;
   tte? = 0;
-  diffwatt: any;
+  diffwatt = signal<any | null>(null);
   constructor(
     public service: VbattService,
     private elementRef: ElementRef,
@@ -103,10 +103,10 @@ export class VbattinfoComponent implements OnInit {
     this.subscription = interval(60000).subscribe((val) => {
       this.autoupdatef();
     });
-    if (this.autoupdate) this.showdata();
+    if (this.autoupdate()) this.showdata();
   }
   autoupdatef() {
-    if (this.autoupdate) {
+    if (this.autoupdate()) {
       this.showdata();
     }
   }
@@ -116,7 +116,7 @@ export class VbattinfoComponent implements OnInit {
       edate: this.ed,
       device: this.device,
       device1: this.device1,
-      auto: this.autoupdate,
+      auto: this.autoupdate(),
     };
     console.debug('save vbattobject', o);
     this.ss.save('vbattobject', o);
@@ -128,7 +128,7 @@ export class VbattinfoComponent implements OnInit {
       this.ed = o.edate;
       this.device = o.device;
       this.device1 = o.device1;
-      this.autoupdate = o.auto;
+      this.autoupdate.set(!!o.auto);
     }
 
     console.debug('load vbatt', o);
@@ -155,7 +155,7 @@ export class VbattinfoComponent implements OnInit {
         e: this.ed,
       })
       .subscribe((d) => {
-        this.diffwatt = d;
+        this.diffwatt.set(d);
         this.bar.open('find message', '', { duration: 1000 });
       });
     this.savedate();

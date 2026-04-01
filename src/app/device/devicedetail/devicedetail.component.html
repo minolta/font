@@ -1,10 +1,10 @@
 <br />
-<label>MSG:{{msg}}</label> |Get result: {{getresult}}
+<label>MSG:{{msg}}</label> |Get result: {{getresult()}}
 <br />
-<div *ngIf="threadobj">
-  Active Thread:<b>{{ threadobj.activecount }}/{{ threadobj.coresize }}</b>
+<div *ngIf="threadobj() as threadState">
+  Active Thread:<b>{{ threadState.activecount }}/{{ threadState.coresize }}</b>
   queue:
-  <b>{{ threadobj.queuesize }}</b>
+  <b>{{ threadState.queuesize }}</b>
 </div>
 <button mat-button (click)="s()">Show thread</button>
 <button mat-button (click)="resetstopwarter()">Reset stop warter</button>
@@ -12,9 +12,9 @@
 <button
   mat-button
   (click)="changehjobstatus()"
-  [ngStyle]="{ color: onoffhjob ? 'green' : 'red' }"
+  [ngStyle]="{ color: onoffhjob() ? 'green' : 'red' }"
 >
-  H job is {{ onoffhjob }}
+  H job is {{ onoffhjob() }}
 </button>
 <button mat-button (click)="showspijob()">Show Pi job</button>
 
@@ -34,7 +34,7 @@
         [(ngModel)]="updatetime"
       />
     </mat-form-field>
-    <mat-checkbox [(ngModel)]="autoupdate">Auto update</mat-checkbox>
+    <mat-checkbox [ngModel]="autoupdate()" (ngModelChange)="autoupdate.set($event)">Auto update</mat-checkbox>
     <mat-checkbox [(ngModel)]="onlyactive">Only active</mat-checkbox>
     <mat-checkbox [(ngModel)]="dr">Direct read </mat-checkbox>
     <mat-form-field>
@@ -77,7 +77,7 @@
       [(ngModel)]="delay"
     />
   </mat-form-field>
-  <mat-checkbox [(ngModel)]="autoupdate">Auto update</mat-checkbox>
+  <mat-checkbox [ngModel]="autoupdate()" (ngModelChange)="autoupdate.set($event)">Auto update</mat-checkbox>
   <mat-checkbox [(ngModel)]="onlyactive">Only active</mat-checkbox>
   <mat-checkbox [(ngModel)]="dr">Direct read </mat-checkbox>
   <mat-form-field>
@@ -114,7 +114,7 @@
 </div>
 
 <div *ngIf="!ws.mobile">
-  <table id="customers" *ngIf="thread">
+  <table id="customers" *ngIf="thread().length > 0">
     <tr>
       <td colspan="8"><b>Thread run</b></td>
     </tr>
@@ -128,7 +128,7 @@
       <td>RUN</td>
       <td>Exit date</td>
     </tr>
-    <tr *ngFor="let run of thread; index as i">
+    <tr *ngFor="let run of thread(); index as i">
       <td>{{ i + 1 }}</td>
       <td>{{ run.id }}</td>
       <td>
@@ -161,8 +161,8 @@
       </td>
     </tr>
   </table>
-  <table id="customers" *ngIf="status">
-    <tr *ngFor="let e of status">
+  <table id="customers" *ngIf="status().length > 0">
+    <tr *ngFor="let e of status()">
       <td>{{ e.name }}</td>
       <td>{{ e.ip }}</td>
       <td>{{ e.ssid }}</td>
@@ -170,7 +170,7 @@
     </tr>
   </table>
   <hr />
-  <table id="customers" *ngIf="q">
+  <table id="customers" *ngIf="q().length > 0">
     <tr>
       <td colspan="4">Q</td>
     </tr>
@@ -180,7 +180,7 @@
       <td>In queue Date</td>
       <td>Message</td>
     </tr>
-    <tr *ngFor="let qq of q; let i = index">
+    <tr *ngFor="let qq of q(); let i = index">
       <td>{{ i + 1 }}</td>
       <td>
         <a
@@ -196,7 +196,7 @@
     </tr>
   </table>
   <pre></pre>
-  <table id="customers" *ngIf="dhtcaches.length > 0">
+  <table id="customers" *ngIf="dhtcaches().length > 0">
     <tr>
       <td colspan="4">DHT Cache</td>
     </tr>
@@ -206,7 +206,7 @@
       <td>ID</td>
       <td>readdate</td>
     </tr>
-    <tr *ngFor="let dht of dhtcaches; let i = index">
+    <tr *ngFor="let dht of dhtcaches(); let i = index">
       <td>{{ dht.h }}</td>
       <td>{{ dht.t }}</td>
       <td>{{ dht.sensorid }}</td>
@@ -214,7 +214,7 @@
     </tr>
   </table>
 
-  <table id="customers" *ngIf="monitors?.length!! > 0">
+  <table id="customers" *ngIf="monitors().length > 0">
     <tr>
       <td colspan="4"><b>Monitor Cache</b></td>
     </tr>
@@ -226,7 +226,7 @@
       <td>read date</td>
 
     </tr>
-    <tr *ngFor="let m of monitors; let i = index">
+    <tr *ngFor="let m of monitors(); let i = index">
       <td>{{ m.id }}</td>
       <td>{{ m.status}}</td>
       <td>{{ m.output }}</td>
@@ -245,7 +245,7 @@
       <td>Options</td>
     </tr>
 
-    <tr *ngFor="let run of thread; index as i">
+    <tr *ngFor="let run of thread(); index as i">
       <td>
         <a
           mat-button
@@ -272,7 +272,7 @@
       </td>
     </tr>
   </table>
-  <table id="customers" *ngIf="q">
+  <table id="customers" *ngIf="q().length > 0">
     <tr>
       <td colspan="4">Q</td>
     </tr>
@@ -282,7 +282,7 @@
       <td>In queue Date</td>
       <td>Message</td>
     </tr>
-    <tr *ngFor="let qq of q; let i = index">
+    <tr *ngFor="let qq of q(); let i = index">
       <td>{{ i + 1 }}</td>
       <td>
         <a
@@ -298,7 +298,7 @@
     </tr>
   </table>
 
-  <table id="customers" *ngIf="dhtcaches.length > 0">
+  <table id="customers" *ngIf="dhtcaches().length > 0">
     <tr>
       <td colspan="4">Q</td>
     </tr>
@@ -308,7 +308,7 @@
       <td>ID</td>
       <td>readdate</td>
     </tr>
-    <tr *ngFor="let dht of dhtcaches; let i = index">
+    <tr *ngFor="let dht of dhtcaches(); let i = index">
       <td>{{ dht.h }}</td>
       <td>{{ dht.t }}</td>
       <td>{{ dht.sensorid }}</td>
@@ -317,7 +317,7 @@
   </table>
 </div>
 
-<table id="customers" *ngIf="lowinfo">
+<table id="customers" *ngIf="lowinfo() as lows">
   <tr>
     <td colspan="4">Low pressure</td>
   </tr>
@@ -328,7 +328,7 @@
     <td>Pi device</td>
     <td>Date</td>
   </tr>
-  <tr *ngFor="let lll of lowinfo; let i = index">
+  <tr *ngFor="let lll of lows; let i = index">
     <td>{{ i + 1 }}</td>
     <td>{{ lll.pidevice.name }}</td>
     <td>{{ lll.job.name }}</td>
@@ -336,7 +336,7 @@
   </tr>
 </table>
 
-<table id="customers" *ngIf="pijobs && pijobs.length > 0">
+<table id="customers" *ngIf="pijobs().length > 0">
   <tr>
     <td colspan="4">Pijob</td>
   </tr>
@@ -346,7 +346,7 @@
     <td>Enable</td>
     <td>Delete</td>
   </tr>
-  <tr *ngFor="let p of pijobs; let i = index">
+  <tr *ngFor="let p of pijobs(); let i = index">
     <td>{{ i + 1 }}</td>
     <td>
       <a
@@ -379,7 +379,7 @@
   </tr>
 </table>
 
-<table id="customers" *ngIf="powers && powers.length > 0">
+<table id="customers" *ngIf="powers().length > 0">
   <tr>
     <td colspan="4"><b>Job use water/power</b></td>
   </tr>
@@ -388,7 +388,7 @@
     <td>Job</td>
     <td>Group id</td>
   </tr>
-  <tr *ngFor="let p of powers; let i = index">
+  <tr *ngFor="let p of powers(); let i = index">
     <td>{{ i + 1 }}</td>
     <td>{{ p.jobname }}</td>
     <td>{{ p.groupid }}</td>
@@ -452,10 +452,10 @@
     [(ngModel)]="refid"
   />
 </mat-form-field>
-<div *ngIf="refidresult">
+<div *ngIf="refidresult() as refResult">
   <div class="box box-default">
     <code>
-      <pre>{{ refidresult | json }}</pre>
+      <pre>{{ refResult | json }}</pre>
     </code>
   </div>
 </div>

@@ -1,5 +1,5 @@
 import { Device } from './../device';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DeviceService } from '../device.service';
@@ -20,7 +20,7 @@ import { Monitorcache } from '../monitorcache';
 })
 export class DevicedetailComponent implements OnInit, OnDestroy {
   msg = ''; //สำหรับแจ้ง info
-  getresult = true;
+  getresult = signal(true);
   uptime = 0;
   day = 0;
   h = 0;
@@ -28,7 +28,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
   min = 0;
   itid?: any;
   sec = 0;
-  powers?: any;
+  powers = signal<any[]>([]);
   coresize = 0;
   activecore = 0;
   onlyactive = false;
@@ -39,27 +39,27 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
   lastdhtvalue?: Dhtcaches;
   subscription?: any;
   lastupdate?: string;
-  thread?: any;
-  refidresult?: any; //สำหรับแสดงผลลัทพของ refid
+  thread = signal<any[]>([]);
+  refidresult = signal<any | null>(null); //สำหรับแสดงผลลัทพของ refid
   job = null;
-  autoupdate = false;
-  status?: Status[];
+  autoupdate = signal(false);
+  status = signal<Status[]>([]);
   filtername?: any;
   movingpressure = 0;
   port = 80;
   dr = false;
-  q?: any;
+  q = signal<any[]>([]);
   ip?: string;
   toshow = 0;
   queuesize?: number;
-  threadobj?: any;
+  threadobj = signal<any | null>(null);
   updatetime = 1;
-  lowinfo?: any;
-  dhtcaches: Dhtcaches[] = Array<Dhtcaches>();
-  onoffhjob = true;
-  pijobs?: Pijob[];
+  lowinfo = signal<any[] | null>(null);
+  dhtcaches = signal<Dhtcaches[]>([]);
+  onoffhjob = signal(true);
+  pijobs = signal<Pijob[]>([]);
   openpumps?: Openpumps[];
-  monitors?: Monitorcache[] = [];
+  monitors = signal<Monitorcache[]>([]);
   constructor(
     public ts: Ds18sensorService,
     private route: ActivatedRoute,
@@ -76,7 +76,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
       console.log('Unsubscription');
     }
-    this.getresult = false;
+    this.getresult.set(false);
     console.debug('Clear Interval', this.itid);
     clearInterval(this.itid);
   }
@@ -87,7 +87,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
     this.service.http.get(url).subscribe(
       (d: any) => {
         console.log('showpijob return', d);
-        this.pijobs = d;
+        this.pijobs.set(d ?? []);
       },
       (e) => {
         console.error('Show pijob Error showpijobs', e);
@@ -97,7 +97,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
   changehjobstatus() {
     let url = 'http://' + this.ip + ':' + this.port + '/togerhjob';
     this.service.http.get(url).subscribe((d) => {
-      this.onoffhjob = d as boolean;
+      this.onoffhjob.set(d as boolean);
       console.log(
         'Change h job status-----------------------------------------------',
         d
@@ -110,7 +110,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
   getwarterstatus() {
     let url = 'http://' + this.ip + ':' + this.port + '/waterlowstatus';
     this.service.http.get(url).subscribe((d) => {
-      this.onoffhjob = d as boolean;
+      this.onoffhjob.set(d as boolean);
     });
   }
   resetstopwarter() {
@@ -121,16 +121,16 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
   }
   showstopinfo() {
     let url = 'http://' + this.ip + ':' + this.port + '/listlows';
-    this.getresult = false;
+    this.getresult.set(false);
     this.service.http.get(url).subscribe(
       (d) => {
         console.log('List lows', d);
-        this.getresult = true;
-        this.lowinfo = d;
+        this.getresult.set(true);
+        this.lowinfo.set((d as any[]) ?? []);
       },
       (e) => {
         console.error('Error', e);
-        this.getresult = true;
+        this.getresult.set(true);
       }
     );
   }
@@ -161,7 +161,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
     localStorage.setItem('showonlyrun', JSON.stringify(this.onlyactive));
     localStorage.setItem(
       'deviceinfoautoupdate',
-      JSON.stringify(this.autoupdate)
+      JSON.stringify(this.autoupdate())
     );
     localStorage.setItem('delay', this.delay.toString());
   }
@@ -183,7 +183,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
 
     d = localStorage.getItem('deviceinfoautoupdate');
     if (d != null) {
-      this.autoupdate = JSON.parse(d);
+      this.autoupdate.set(JSON.parse(d));
     }
     let dp = localStorage.getItem('devicedetaildeviceport');
     if (dp != null) {
@@ -210,15 +210,15 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
         //   this.subscription.unsubscribe();
         //   console.log("Unsubscription");
         // }
-        this.getresult = false;
+        this.getresult.set(false);
         clearInterval(this.itid);
         // tab is changed
       } else {
-        this.getresult = true;
+        this.getresult.set(true);
         // console.info("Hidden info", "Actinve");
         // this.subscription = source.subscribe((val) => this.update());
         this.itid = setInterval(() => {
-          if (this.getresult) this.update();
+          if (this.getresult()) this.update();
         }, this.delay * 1000);
       }
     });
@@ -253,7 +253,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
     console.debug('load monitor ', url, this.device);
     this.ts.http.get<Monitorcache[]>(url).subscribe(
       (d) => {
-        this.monitors = d;
+        this.monitors.set(d ?? []);
         console.debug('Load monitor', d);
       },
       (e) => {
@@ -296,37 +296,37 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
   showstatus(ip: number) {
     let url = 'http://' + ip + '/status';
     this.service.http.get<Status[]>(url).subscribe((d) => {
-      this.status = d;
+      this.status.set(d ?? []);
       console.log('Thread info:' + JSON.stringify(d));
     });
   }
   getmovingpressure() {
     let url = 'http://' + this.ip + ':' + this.port + '/pressureinfo';
-    this.getresult = false;
+    this.getresult.set(false);
     this.service.http.get<number>(url).subscribe(
       (d) => {
-        console.log('cache dht:', this.dhtcaches);
+        console.log('cache dht:', this.dhtcaches());
         this.movingpressure = d;
-        this.getresult = true;
+        this.getresult.set(true);
       },
       (e) => {
         console.error('error', e);
-        this.getresult = true;
+        this.getresult.set(true);
       }
     );
   }
   showdhts() {
     let url = 'http://' + this.ip + ':' + this.port + '/dhtcaches';
-    this.getresult = false;
+    this.getresult.set(false);
     this.service.http.get<Dhtcaches[]>(url).subscribe(
       (d) => {
-        console.log('cache dht:', this.dhtcaches);
-        this.dhtcaches = d;
-        this.getresult = true;
+        console.log('cache dht:', this.dhtcaches());
+        this.dhtcaches.set(d ?? []);
+        this.getresult.set(true);
       },
       (e) => {
         console.error('error', e);
-        this.getresult = true;
+        this.getresult.set(true);
       }
     );
   }
@@ -334,37 +334,37 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
     if (this.ip != null && this.ip.length != 0) ip = this.ip;
     let url = 'http://' + ip + ':' + this.port + '/listtask';
     console.log(url);
-    this.getresult = false;
+    this.getresult.set(false);
     if (!this.dr)
       this.service.http
         // .post(environment.host + "/rest/piserver/getrequest", { url: url })
         .get(url)
         .subscribe(
           (d: any) => {
-            this.getresult = true;
+            this.getresult.set(true);
             console.log('listtask', d);
             if (this.onlyactive)
-              this.thread = d.filter((i: any) => i.runstatus);
-            else this.thread = d;
+              this.thread.set(d.filter((i: any) => i.runstatus));
+            else this.thread.set(d ?? []);
             // this.q = null;
           },
           (e) => {
             // this.error = e;
             console.error('ERROR list task', e);
-            this.getresult = true;
+            this.getresult.set(true);
           }
         );
-    else this.getresult = false;
+    else this.getresult.set(false);
     this.service.http.get(url).subscribe(
       (d) => {
-        this.getresult = true;
-        this.thread = d;
+        this.getresult.set(true);
+        this.thread.set((d as any[]) ?? []);
         console.log('listtask', d);
         // this.q = null;
         console.log('Thread info:' + JSON.stringify(d));
       },
       (e) => {
-        this.getresult = true;
+        this.getresult.set(true);
         console.error('list task II', e);
       }
     );
@@ -377,13 +377,13 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
         // .post(environment.host + "/rest/piserver/getrequest", { url: url })
         .get(url)
         .subscribe((d) => {
-          this.q = d;
+          this.q.set((d as any[]) ?? []);
         });
     else
       this.service.http.get(url).subscribe(
         (d) => {
           // this.thread = null;
-          this.q = d;
+          this.q.set((d as any[]) ?? []);
           console.log('Thread info:' + JSON.stringify(d));
         },
         (e) => {
@@ -392,7 +392,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
       );
   }
   showthreadfiltername(ip: string, filtername: String) {
-    this.getresult = false;
+    this.getresult.set(false);
     if (!ip && this.ip != null) ip = this.ip;
     let url = 'http://' + ip + ':' + this.port + '/l3/' + filtername;
     console.log('get info by fliter ', url);
@@ -403,25 +403,25 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
         .subscribe(
           (d: any) => {
             console.log('Return Thread', d);
-            this.getresult = true;
+            this.getresult.set(true);
             if (this.onlyactive)
-              this.thread = d.filter((i: any) => i.runstatus);
-            else this.thread = d;
+              this.thread.set(d.filter((i: any) => i.runstatus));
+            else this.thread.set(d ?? []);
           },
           (e) => {
             // this.error = e;
             this.msg = e.message;
-            this.getresult = true;
+            this.getresult.set(true);
           }
         );
     else {
-      this.getresult = false;
+      this.getresult.set(false);
       this.service.http.get<any>(url).subscribe(
         (d) => {
-          this.thread = d;
-          this.getresult = true;
-          if (this.onlyactive) this.thread = d.filter((i: any) => i.runstatus);
-          else this.thread = d;
+          this.thread.set((d as any[]) ?? []);
+          this.getresult.set(true);
+          if (this.onlyactive) this.thread.set(d.filter((i: any) => i.runstatus));
+          else this.thread.set(d ?? []);
           console.log('Thread info:' + JSON.stringify(d));
         },
         (e) => {
@@ -434,7 +434,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
     let url = 'http://' + ip + '/listpool';
     console.log(url);
     this.service.http.get<any>(url).subscribe((d) => {
-      this.thread = d;
+      this.thread.set((d as any[]) ?? []);
       console.log('Thread info:' + JSON.stringify(d));
     });
   }
@@ -449,15 +449,15 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
 
     let url = 'http://' + ip + ':' + this.port + '/threadinfo';
     console.log(url);
-    this.getresult = false;
+    this.getresult.set(false);
     this.service.http.get(url).subscribe(
       (d) => {
         console.log(JSON.stringify(d));
-        this.threadobj = d;
-        this.getresult = true;
+        this.threadobj.set(d);
+        this.getresult.set(true);
       },
       (e) => {
-        this.getresult = true;
+        this.getresult.set(true);
       }
     );
   }
@@ -482,11 +482,11 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
   }
   update() {
     // this.error = null;
-    if (this.getresult) {
-      this.getresult = false;
+    if (this.getresult()) {
+      this.getresult.set(false);
       console.log('To show ' + this.toshow);
       this.activejob();
-      if (this.autoupdate) {
+      if (this.autoupdate()) {
         if (!this.filtername || 0 === this.filtername.length)
           this.showthread(this.bag.obj.ip);
         else {
@@ -499,7 +499,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
         this.showdhts();
         this.getmovingpressure();
         this.getMonitorcache();
-        this.getresult = true;
+        this.getresult.set(true);
       }
     } else {
       console.debug('not getresult ', true);
@@ -545,8 +545,8 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
       // .post(environment.host + "/rest/piserver/getrequest", { url: url })
       .get(url)
       .subscribe((d) => {
-        this.powers = d as Array<string>;
-        console.log('powers', this.powers);
+        this.powers.set((d as any[]) ?? []);
+        console.log('powers', this.powers());
       });
   }
   getdate() {
@@ -590,7 +590,7 @@ export class DevicedetailComponent implements OnInit, OnDestroy {
       .get(url)
       .subscribe((d) => {
         console.log('Refid', d);
-        this.refidresult = d;
+        this.refidresult.set(d);
 
         this.bar.open('Get refid', this.refid.toString(), { duration: 2000 });
       });

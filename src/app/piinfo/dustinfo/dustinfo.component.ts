@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { DustService } from '../dust.service';
 import { Chart } from 'chart.js';
 import { ElementRef } from '@angular/core';
@@ -17,8 +17,8 @@ import { SavedataService } from '../../savedata.service';
     standalone: false
 })
 export class DustinfoComponent implements OnInit, OnDestroy {
-  sd?: Date;
-  ed?: Date;
+  sd = signal<Date | undefined>(undefined);
+  ed = signal<Date | undefined>(undefined);
   chart: any;
   havechart = false;
   bag = { obj: { name: '', id: 0 } };
@@ -28,9 +28,9 @@ export class DustinfoComponent implements OnInit, OnDestroy {
   type = 'msline';
   dataFormat = 'json';
   dataSource: any;
-  autoupdate = false;
+  autoupdate = signal(false);
   subscription: any;
-  device: Device = {};
+  device = signal<Device>({});
   constructor(
     public ds: DeviceService,
     public service: DustService,
@@ -47,7 +47,7 @@ export class DustinfoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loaddata();
     this.subscription = interval(60000).subscribe((val) => {
-      if (this.autoupdate) {
+      if (this.autoupdate()) {
         this.showdata();
       }
     });
@@ -62,15 +62,14 @@ export class DustinfoComponent implements OnInit, OnDestroy {
     //     obj: this.bag.obj,
     //   })
     // );
-    this.ss.save('dustdata',{sd:this.sd,ed:this.ed,device:this.device})
+    this.ss.save('dustdata', { sd: this.sd(), ed: this.ed(), device: this.device() });
   }
   loaddata() {
-    let d = this.ss.load('dustdata')
-    if(d)
-    {
-      this.sd = d.sd
-      this.ed = d.ed
-      this.device = d.device
+    let d = this.ss.load('dustdata');
+    if (d) {
+      this.sd.set(d.sd);
+      this.ed.set(d.ed);
+      this.device.set(d.device ?? {});
 
     }
     // if (localStorage.getItem('dustdata') != null) {
@@ -83,12 +82,12 @@ export class DustinfoComponent implements OnInit, OnDestroy {
     // }
   }
   showdata() {
-    console.debug('Search dust',this.device,this.sd,this.ed)
-    if (this.device)
+    console.debug('Search dust', this.device(), this.sd(), this.ed());
+    if (this.device())
       this.service
-        .getGraph(this.device.id!!, this.sd, this.ed)
+        .getGraph(this.device().id!!, this.sd(), this.ed())
         .subscribe((d) => {
-          console.debug('',d);
+          console.debug('', d);
           this.makegraph(d);
           this.savedata();
         });

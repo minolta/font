@@ -9,8 +9,8 @@
     <mat-datepicker type="datetime" touchUi="false" #picker1></mat-datepicker>
 </mat-form-field> -->
 
-<label>Start date:</label><app-datetime [(datetime)]="sd"></app-datetime> -
-<app-datetime [(datetime)]="ed"></app-datetime>
+<label>Start date:</label><app-datetime [datetime]="sd()" (datetimeChange)="sd.set($event)"></app-datetime> -
+<app-datetime [datetime]="ed()" (datetimeChange)="ed.set($event)"></app-datetime>
 <!-- 
 <kyl-kyauto
   [service]="ds"
@@ -19,16 +19,16 @@
   [p]="'Select device'"
 ></kyl-kyauto> -->
 
-<app-auto [service]="ds" [(obj)]="device" [p]="'Device to display'"></app-auto>
+<app-auto [service]="ds" [obj]="device()" (objChange)="device.set($event)" [p]="'Device to display'"></app-auto>
 <button mat-button (click)="showdata()">
   <label i18n>Show value</label>
 </button>
-<mat-checkbox [(ngModel)]="autoupdate" value="false" color="primary"
+<mat-checkbox [ngModel]="autoupdate()" (ngModelChange)="autoupdate.set($event)" value="false" color="primary"
   >Autoupdate</mat-checkbox
 >
 
 <h4>
-  T:{{ ot }} H:{{ oh }} T min/max:{{ tmin }}/{{ tmax }} H min/max {{ hmin }}/{{
+  T:{{ ot() }} H:{{ oh() }} T min/max:{{ tmin }}/{{ tmax }} H min/max {{ hmin }}/{{
     hmax
   }}
 </h4>
